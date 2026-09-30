@@ -1,0 +1,142 @@
+using API.Models;
+using API.Services.Interfaces;
+using API.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace API.Services;
+
+public class MusicService : IMusicService
+{
+    private readonly ILogger<MusicService> _logger;
+    private readonly MusicPlayerDbContext _dbContext;
+
+    public MusicService(ILogger<MusicService> logger, MusicPlayerDbContext dbContext)
+    {
+        _logger = logger;
+        _dbContext = dbContext;
+    }
+
+    public async Task<Music>? AddMusicAsync(Music music)
+    {
+        var result = await _dbContext.Musics.AddAsync(music);
+        if (result != null)
+        {
+            await _dbContext.SaveChangesAsync();
+            return result.Entity;
+        }
+        else
+        {
+            _logger.LogError("Failed to add music: {Title}", music.Title);
+            return null;
+        }
+    }
+
+    public Task<Music[]> GetPlaylistMusics(int[] playlistIDs, int page, int limit)
+    {
+        var musics = await _dbContext.music.Where(music => playlistIDs.Contains(music.id)).Skip((page - 1) * limit).Take(limit).ToListAsync();
+        return musics;
+    }
+
+    public Task<Music> CreateMusicAsync(Music music)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> DeleteMusicAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<Music>> GetFavoriteMusicsByUserIdAsync(int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Music> GetMusicByIDAsync(int id)
+    {
+        var music = _dbContext.Musics.FirstOrDefault(m => m.ID == id);
+        if (music != null)
+        {
+            return Task.FromResult(music);
+        }
+        else
+        {
+            _logger.LogWarning("Music with ID {MusicId} not found.", id);
+            return Task.FromResult<Music>(null);
+        }
+    }
+
+    public async Task<IEnumerable<Music>> GetMusicsAsync(int page = 1, int limit = 10)
+    {
+        _logger.LogInformation("Fetching music data from database...");
+        List<Music> musics = await _dbContext.Musics.Skip((page - 1) * limit).Take(limit).ToListAsync();
+        _logger.LogInformation($"Fetched {musics.Count} music records.");
+        return musics;
+    }
+
+    public async Task<int[]> GetMusicsIDFromDBAsync()
+    {
+        _logger.LogInformation("Fetching music IDs from database...");
+        List<int> musicIDs = await _dbContext.Musics.Select(m => m.ID).ToListAsync();
+        _logger.LogInformation($"Fetched {musicIDs.Count} music IDs.");
+        return musicIDs.ToArray();
+    }
+    
+    public Task<List<Music>> GetMusicsByPlaylistIdAsync(int playlistId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<string> GetGoogleDriveFileIdByMusicIdAsync(int musicID)
+    {
+        var music = await _dbContext.Musics.FirstOrDefaultAsync(m => m.ID == musicID);
+        if (music != null)
+        {
+            return music.File_id;
+        }
+        else
+        {
+            _logger.LogWarning("Music with ID {MusicId} not found.", musicID);
+            return null;
+        }
+    }
+
+    public Task<Music> UpdateMusicAsync(Music music)
+    {
+        throw new NotImplementedException();
+    }
+
+    // public Task<List<Music>> GetMusicsDataAsync()
+    // {
+    //     var googleDrive = new GoogleDriveService();
+    //     var driveConnection = googleDrive.GetServiceAsync().Result;
+
+    //     return googleDrive.ListMusicFilesInFolder(driveConnection);
+    // }
+
+    // public async Task UpdateMusicDataInDBFromGoogleDrive()
+    // {
+    //     var musics = await GetMusicsDataAsync();
+    //     foreach (var music in musics)
+    //     {
+    //         var existingMusic = _dbContext.Musics.FirstOrDefault(m => m.File_id == music.File_id);
+    //         if (existingMusic == null)
+    //         {
+    //             _dbContext.Musics.Add(music);
+    //         }
+    //         else
+    //         {
+    //             existingMusic.Title = music.Title;
+    //             existingMusic.File_id = music.File_id;
+    //         }
+    //     }
+    //     _dbContext.SaveChanges();
+    // }
+
+    // public async Task UploadMusicToGoogleDriveAsync(Music music, Stream fileStream)
+    // {
+    //     var googleDrive = new GoogleDriveService();
+    //     var driveConnection = await googleDrive.GetServiceAsync();
+    //     await googleDrive.UploadFileAsync(driveConnection, music.Title, fileStream);
+    // }
+}

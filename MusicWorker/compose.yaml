@@ -1,0 +1,14 @@
+services:
+  musicworker-server:
+    build:
+      context: .
+    image: musicworker:latest
+    container_name: musicworker
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./musicplayer-api-3abee89ba528.json:/app/var/secrets/google-drive/musicplayer-api-3abee89ba528.json:ro
+
+    restart: unless-stopped

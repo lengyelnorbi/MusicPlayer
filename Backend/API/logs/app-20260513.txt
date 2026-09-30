@@ -1,0 +1,376 @@
+2026-05-13 00:00:39.981 +02:00 [DBG] Registered model binder providers, in the following order: ["Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BinderTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ServicesModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.BodyModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.HeaderModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FloatingPointTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.EnumTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DateTimeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.SimpleTypeModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.TryParseModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CancellationTokenModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ByteArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormFileModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.FormCollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.KeyValuePairModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.DictionaryModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ArrayModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.CollectionModelBinderProvider","Microsoft.AspNetCore.Mvc.ModelBinding.Binders.ComplexObjectModelBinderProvider"]
+2026-05-13 00:00:40.036 +02:00 [DBG] Hosting starting
+2026-05-13 00:00:40.044 +02:00 [INF] User profile is available. Using 'C:\Users\NorbiPC\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-05-13 00:00:40.054 +02:00 [DBG] Reading data from file 'C:\Users\NorbiPC\AppData\Local\ASP.NET\DataProtection-Keys\key-068a7b15-c94c-46c2-b0ee-ff320a28bb53.xml'.
+2026-05-13 00:00:40.070 +02:00 [DBG] Found key {068a7b15-c94c-46c2-b0ee-ff320a28bb53}.
+2026-05-13 00:00:40.076 +02:00 [DBG] Considering key {068a7b15-c94c-46c2-b0ee-ff320a28bb53} with expiration date 2024-01-21 20:48:43Z as default key.
+2026-05-13 00:00:40.077 +02:00 [DBG] Key {068a7b15-c94c-46c2-b0ee-ff320a28bb53} is no longer under consideration as default key because it is expired, revoked, or cannot be deciphered.
+2026-05-13 00:00:40.078 +02:00 [DBG] Repository contains no viable default key. Caller should generate a key with immediate activation.
+2026-05-13 00:00:40.078 +02:00 [DBG] Policy resolution states that a new key should be added to the key ring.
+2026-05-13 00:00:40.080 +02:00 [INF] Creating key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} with creation date 2026-05-12 22:00:40Z, activation date 2026-05-12 22:00:40Z, and expiration date 2026-08-10 22:00:40Z.
+2026-05-13 00:00:40.082 +02:00 [DBG] Descriptor deserializer type for key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} is 'Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel.AuthenticatedEncryptorDescriptorDeserializer, Microsoft.AspNetCore.DataProtection, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
+2026-05-13 00:00:40.083 +02:00 [DBG] No key escrow sink found. Not writing key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} to escrow.
+2026-05-13 00:00:40.085 +02:00 [DBG] Encrypting to Windows DPAPI for current user account (NORBIPC\NorbiPC).
+2026-05-13 00:00:40.087 +02:00 [INF] Writing data to file 'C:\Users\NorbiPC\AppData\Local\ASP.NET\DataProtection-Keys\key-dcfb236e-eb43-4a6d-a7b2-ccafde25a58f.xml'.
+2026-05-13 00:00:40.088 +02:00 [DBG] Key cache expiration token triggered by 'CreateNewKey' operation.
+2026-05-13 00:00:40.088 +02:00 [DBG] Reading data from file 'C:\Users\NorbiPC\AppData\Local\ASP.NET\DataProtection-Keys\key-068a7b15-c94c-46c2-b0ee-ff320a28bb53.xml'.
+2026-05-13 00:00:40.088 +02:00 [DBG] Reading data from file 'C:\Users\NorbiPC\AppData\Local\ASP.NET\DataProtection-Keys\key-dcfb236e-eb43-4a6d-a7b2-ccafde25a58f.xml'.
+2026-05-13 00:00:40.098 +02:00 [DBG] Found key {068a7b15-c94c-46c2-b0ee-ff320a28bb53}.
+2026-05-13 00:00:40.098 +02:00 [DBG] Found key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f}.
+2026-05-13 00:00:40.099 +02:00 [DBG] Considering key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} with expiration date 2026-08-10 22:00:40Z as default key.
+2026-05-13 00:00:40.101 +02:00 [DBG] Opening CNG algorithm 'AES' from provider 'null' with chaining mode CBC.
+2026-05-13 00:00:40.101 +02:00 [DBG] Opening CNG algorithm 'SHA256' from provider 'null' with HMAC.
+2026-05-13 00:00:40.102 +02:00 [DBG] Using key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} as the default key.
+2026-05-13 00:00:40.102 +02:00 [DBG] Key ring with default key {dcfb236e-eb43-4a6d-a7b2-ccafde25a58f} was loaded during application startup.
+2026-05-13 00:00:40.140 +02:00 [DBG] Middleware configuration started with options: {AllowedHosts = *, AllowEmptyHosts = True, IncludeFailureMessage = True}
+2026-05-13 00:00:40.140 +02:00 [DBG] Wildcard detected, all requests with hosts will be allowed.
+2026-05-13 00:00:40.148 +02:00 [INF] Now listening on: http://localhost:5018
+2026-05-13 00:00:40.148 +02:00 [DBG] Loaded hosting startup assembly API
+2026-05-13 00:00:40.149 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-13 00:00:40.149 +02:00 [INF] Hosting environment: Development
+2026-05-13 00:00:40.149 +02:00 [INF] Content root path: C:\Users\NorbiPC\Desktop\MusicPlayer\Backend\API
+2026-05-13 00:00:40.149 +02:00 [DBG] Hosting started
+2026-05-13 17:32:19.254 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:32:19.482 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.486 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.487 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.488 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.489 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.490 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.492 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.493 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.495 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.497 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.498 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.499 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.500 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.504 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.505 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.506 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.508 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:32:19.510 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:19.908 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:34:20.110 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.113 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.115 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.117 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.118 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.119 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.120 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.122 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.123 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.126 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.127 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.130 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.131 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.132 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.133 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.135 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.136 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:34:20.138 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.028 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:35:45.232 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.235 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.236 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.238 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.239 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.240 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.241 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.243 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.244 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.247 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.247 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.249 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.250 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.251 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.252 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.253 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.254 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:35:45.256 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'User', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:13.868 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:36:14.071 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.074 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.076 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.077 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.078 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.079 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.081 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.084 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.085 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.088 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.089 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.090 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.091 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.093 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.094 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.095 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.096 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.100 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:36:14.112 +02:00 [DBG] The index {'PlaylistID'} was not created on entity type 'PlaylistMusic' as the properties are already covered by the index {'PlaylistID', 'MusicID'}.
+2026-05-13 17:36:14.114 +02:00 [DBG] The index {'UserID'} was not created on entity type 'UserPlaylist' as the properties are already covered by the index {'UserID', 'PlaylistID'}.
+2026-05-13 17:37:02.802 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:37:03.008 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.011 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.012 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.013 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.014 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.016 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.017 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.018 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.019 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.021 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.023 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.024 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.025 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.026 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.028 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.029 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.032 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.033 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.034 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.036 +02:00 [DBG] For the relationship between dependent 'AccessToken.User' and principal 'UserDTO', the foreign key properties haven't been configured by convention because the best match {'UserID' : string} are incompatible with the current principal key {'ID' : int}. This message can be disregarded if explicit configuration has been specified in 'OnModelCreating'.
+2026-05-13 17:37:03.048 +02:00 [DBG] The index {'PlaylistID'} was not created on entity type 'PlaylistMusic' as the properties are already covered by the index {'PlaylistID', 'MusicID'}.
+2026-05-13 17:37:03.049 +02:00 [DBG] The index {'UserID'} was not created on entity type 'UserPlaylist' as the properties are already covered by the index {'UserID', 'PlaylistID'}.
+2026-05-13 17:38:25.288 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:38:25.502 +02:00 [DBG] The index {'PlaylistID'} was not created on entity type 'PlaylistMusic' as the properties are already covered by the index {'PlaylistID', 'MusicID'}.
+2026-05-13 17:38:25.505 +02:00 [DBG] The index {'UserID'} was not created on entity type 'UserPlaylist' as the properties are already covered by the index {'UserID', 'PlaylistID'}.
+2026-05-13 17:38:25.601 +02:00 [DBG] Entity Framework Core 9.0.0 initialized 'MusicPlayerDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:9.0.0+f07040d3e35e2a228486f3ee9633784aa196a2c3' with options: None
+2026-05-13 17:38:25.961 +02:00 [DBG] 'MusicPlayerDbContext' disposed.
+2026-05-13 17:39:30.317 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:39:30.537 +02:00 [DBG] The index {'PlaylistID'} was not created on entity type 'PlaylistMusic' as the properties are already covered by the index {'PlaylistID', 'MusicID'}.
+2026-05-13 17:39:30.539 +02:00 [DBG] The index {'UserID'} was not created on entity type 'UserPlaylist' as the properties are already covered by the index {'UserID', 'PlaylistID'}.
+2026-05-13 17:39:30.630 +02:00 [DBG] Entity Framework Core 9.0.0 initialized 'MusicPlayerDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:9.0.0+f07040d3e35e2a228486f3ee9633784aa196a2c3' with options: None
+2026-05-13 17:39:30.646 +02:00 [DBG] Creating DbConnection.
+2026-05-13 17:39:30.667 +02:00 [DBG] Created DbConnection. (20ms).
+2026-05-13 17:39:30.672 +02:00 [DBG] Opening connection to database 'MusicPlayer' on server 'tcp://192.168.1.3:5431'.
+2026-05-13 17:39:45.688 +02:00 [ERR] An error occurred using the connection to database 'MusicPlayer' on server 'tcp://192.168.1.3:5431'.
+2026-05-13 17:39:45.692 +02:00 [DBG] 'MusicPlayerDbContext' disposed.
+2026-05-13 17:39:45.694 +02:00 [DBG] Disposing connection to database 'MusicPlayer' on server 'tcp://192.168.1.3:5431'.
+2026-05-13 17:39:45.696 +02:00 [DBG] Disposed connection to database 'MusicPlayer' on server 'tcp://192.168.1.3:5431' (1ms).
+2026-05-13 17:41:15.372 +02:00 [DBG] An 'IServiceProvider' was created for internal use by Entity Framework.
+2026-05-13 17:41:15.583 +02:00 [DBG] The index {'PlaylistID'} was not created on entity type 'PlaylistMusic' as the properties are already covered by the index {'PlaylistID', 'MusicID'}.
+2026-05-13 17:41:15.585 +02:00 [DBG] The index {'UserID'} was not created on entity type 'UserPlaylist' as the properties are already covered by the index {'UserID', 'PlaylistID'}.
+2026-05-13 17:41:15.676 +02:00 [DBG] Entity Framework Core 9.0.0 initialized 'MusicPlayerDbContext' using provider 'Npgsql.EntityFrameworkCore.PostgreSQL:9.0.0+f07040d3e35e2a228486f3ee9633784aa196a2c3' with options: None
+2026-05-13 17:41:15.690 +02:00 [DBG] Creating DbConnection.
+2026-05-13 17:41:15.704 +02:00 [DBG] Created DbConnection. (14ms).
+2026-05-13 17:41:15.709 +02:00 [DBG] Opening connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.771 +02:00 [DBG] Opened connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.775 +02:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2026-05-13 17:41:15.779 +02:00 [DBG] Created DbCommand for 'ExecuteReader' (3ms).
+2026-05-13 17:41:15.780 +02:00 [DBG] Initialized DbCommand for 'ExecuteReader' (6ms).
+2026-05-13 17:41:15.784 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-13 17:41:15.804 +02:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-13 17:41:15.819 +02:00 [DBG] Closing data reader to 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.824 +02:00 [DBG] A data reader for 'MusicPlayer' on server 'tcp://192.168.1.5:5431' is being disposed after spending 16ms reading results.
+2026-05-13 17:41:15.827 +02:00 [DBG] Closing connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.829 +02:00 [DBG] Closed connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431' (2ms).
+2026-05-13 17:41:15.882 +02:00 [DBG] Migrating using database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.884 +02:00 [DBG] Opening connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.886 +02:00 [DBG] Opening connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.899 +02:00 [DBG] Opened connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.900 +02:00 [DBG] Closing connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.902 +02:00 [DBG] Closed connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431' (1ms).
+2026-05-13 17:41:15.904 +02:00 [DBG] Opening connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.905 +02:00 [DBG] Opened connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.928 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:15.929 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:15.929 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:15.930 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-05-13 17:41:15.937 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2026-05-13 17:41:15.940 +02:00 [DBG] Beginning transaction with isolation level 'Unspecified'.
+2026-05-13 17:41:15.942 +02:00 [DBG] Began transaction with isolation level 'ReadCommitted'.
+2026-05-13 17:41:15.943 +02:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2026-05-13 17:41:15.944 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:15.945 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:15.945 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:15.946 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-05-13 17:41:15.949 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2026-05-13 17:41:15.951 +02:00 [DBG] Creating DbCommand for 'ExecuteReader'.
+2026-05-13 17:41:15.952 +02:00 [DBG] Created DbCommand for 'ExecuteReader' (0ms).
+2026-05-13 17:41:15.953 +02:00 [DBG] Initialized DbCommand for 'ExecuteReader' (1ms).
+2026-05-13 17:41:15.954 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-13 17:41:15.956 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-13 17:41:15.957 +02:00 [DBG] Closing data reader to 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:15.958 +02:00 [DBG] A data reader for 'MusicPlayer' on server 'tcp://192.168.1.5:5431' is being disposed after spending 0ms reading results.
+2026-05-13 17:41:15.962 +02:00 [INF] Applying migration '20260513153825_DBModelChange'.
+2026-05-13 17:41:15.977 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:15.978 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:15.978 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:15.979 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FavoriteMusics";
+2026-05-13 17:41:15.989 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FavoriteMusics";
+2026-05-13 17:41:15.990 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:15.991 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:15.992 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:15.993 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FavoritePlaylists";
+2026-05-13 17:41:15.995 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FavoritePlaylists";
+2026-05-13 17:41:15.997 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:15.998 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:15.998 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:15.999 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FollowedPlaylists";
+2026-05-13 17:41:16.001 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "FollowedPlaylists";
+2026-05-13 17:41:16.002 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.003 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.004 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.005 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "Playlists";
+2026-05-13 17:41:16.007 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" DROP COLUMN "Playlists";
+2026-05-13 17:41:16.008 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.008 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.009 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.011 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" RENAME COLUMN "Name" TO "Username";
+2026-05-13 17:41:16.013 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" RENAME COLUMN "Name" TO "Username";
+2026-05-13 17:41:16.014 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.015 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.016 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.017 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "Jti" character varying(255) NOT NULL DEFAULT '';
+2026-05-13 17:41:16.023 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "Jti" character varying(255) NOT NULL DEFAULT '';
+2026-05-13 17:41:16.025 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.026 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.027 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (2ms).
+2026-05-13 17:41:16.028 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "Role" character varying(50) NOT NULL DEFAULT 'User';
+2026-05-13 17:41:16.030 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Users" ADD "Role" character varying(50) NOT NULL DEFAULT 'User';
+2026-05-13 17:41:16.031 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.032 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.033 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.034 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Musics" ALTER COLUMN "AddedAt" SET DEFAULT (CURRENT_DATE);
+2026-05-13 17:41:16.036 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "Musics" ALTER COLUMN "AddedAt" SET DEFAULT (CURRENT_DATE);
+2026-05-13 17:41:16.038 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.038 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.039 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.040 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AccessToken" (
+    "ID" integer GENERATED BY DEFAULT AS IDENTITY,
+    jti character varying(255) NOT NULL,
+    "UserID" integer NOT NULL,
+    "DeviceFingerprint" character varying(255) NOT NULL,
+    "IpAddress" character varying(255) NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL DEFAULT (CURRENT_DATE),
+    "IsRevoked" boolean NOT NULL DEFAULT FALSE,
+    CONSTRAINT "PK_AccessToken" PRIMARY KEY ("ID"),
+    CONSTRAINT "FK_AccessToken_Users_UserID" FOREIGN KEY ("UserID") REFERENCES "Users" ("ID") ON DELETE CASCADE
+);
+2026-05-13 17:41:16.052 +02:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AccessToken" (
+    "ID" integer GENERATED BY DEFAULT AS IDENTITY,
+    jti character varying(255) NOT NULL,
+    "UserID" integer NOT NULL,
+    "DeviceFingerprint" character varying(255) NOT NULL,
+    "IpAddress" character varying(255) NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL DEFAULT (CURRENT_DATE),
+    "IsRevoked" boolean NOT NULL DEFAULT FALSE,
+    CONSTRAINT "PK_AccessToken" PRIMARY KEY ("ID"),
+    CONSTRAINT "FK_AccessToken_Users_UserID" FOREIGN KEY ("UserID") REFERENCES "Users" ("ID") ON DELETE CASCADE
+);
+2026-05-13 17:41:16.054 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.055 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.057 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (2ms).
+2026-05-13 17:41:16.058 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "ID" integer GENERATED BY DEFAULT AS IDENTITY,
+    "UserID" integer NOT NULL,
+    "TokenHash" character varying(255) NOT NULL,
+    "ExpiresAt" timestamp with time zone NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL DEFAULT (CURRENT_DATE),
+    "DeviceFingerprint" character varying(255) NOT NULL,
+    "IpAddress" character varying(255) NOT NULL,
+    "IsRevoked" boolean NOT NULL DEFAULT FALSE,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("ID"),
+    CONSTRAINT "FK_RefreshTokens_Users_UserID" FOREIGN KEY ("UserID") REFERENCES "Users" ("ID") ON DELETE CASCADE
+);
+2026-05-13 17:41:16.062 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "RefreshTokens" (
+    "ID" integer GENERATED BY DEFAULT AS IDENTITY,
+    "UserID" integer NOT NULL,
+    "TokenHash" character varying(255) NOT NULL,
+    "ExpiresAt" timestamp with time zone NOT NULL,
+    "CreatedAt" timestamp with time zone NOT NULL DEFAULT (CURRENT_DATE),
+    "DeviceFingerprint" character varying(255) NOT NULL,
+    "IpAddress" character varying(255) NOT NULL,
+    "IsRevoked" boolean NOT NULL DEFAULT FALSE,
+    CONSTRAINT "PK_RefreshTokens" PRIMARY KEY ("ID"),
+    CONSTRAINT "FK_RefreshTokens_Users_UserID" FOREIGN KEY ("UserID") REFERENCES "Users" ("ID") ON DELETE CASCADE
+);
+2026-05-13 17:41:16.064 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.065 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.065 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.066 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
+2026-05-13 17:41:16.068 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
+2026-05-13 17:41:16.069 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.070 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.071 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.073 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_AccessToken_jti" ON "AccessToken" (jti);
+2026-05-13 17:41:16.076 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_AccessToken_jti" ON "AccessToken" (jti);
+2026-05-13 17:41:16.077 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.078 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.078 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.079 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AccessToken_UserID" ON "AccessToken" ("UserID");
+2026-05-13 17:41:16.081 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AccessToken_UserID" ON "AccessToken" ("UserID");
+2026-05-13 17:41:16.082 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.083 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.084 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.085 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_RefreshTokens_UserID" ON "RefreshTokens" ("UserID");
+2026-05-13 17:41:16.087 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_RefreshTokens_UserID" ON "RefreshTokens" ("UserID");
+2026-05-13 17:41:16.088 +02:00 [DBG] Creating DbCommand for 'ExecuteNonQuery'.
+2026-05-13 17:41:16.089 +02:00 [DBG] Created DbCommand for 'ExecuteNonQuery' (0ms).
+2026-05-13 17:41:16.090 +02:00 [DBG] Initialized DbCommand for 'ExecuteNonQuery' (1ms).
+2026-05-13 17:41:16.091 +02:00 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260513153825_DBModelChange', '9.0.0');
+2026-05-13 17:41:16.093 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20260513153825_DBModelChange', '9.0.0');
+2026-05-13 17:41:16.095 +02:00 [DBG] Committing transaction.
+2026-05-13 17:41:16.098 +02:00 [DBG] Committed transaction.
+2026-05-13 17:41:16.100 +02:00 [DBG] Disposing transaction.
+2026-05-13 17:41:16.100 +02:00 [DBG] Closing connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:16.101 +02:00 [DBG] Closed connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431' (0ms).
+2026-05-13 17:41:16.104 +02:00 [DBG] 'MusicPlayerDbContext' disposed.
+2026-05-13 17:41:16.106 +02:00 [DBG] Disposing connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431'.
+2026-05-13 17:41:16.107 +02:00 [DBG] Disposed connection to database 'MusicPlayer' on server 'tcp://192.168.1.5:5431' (1ms).

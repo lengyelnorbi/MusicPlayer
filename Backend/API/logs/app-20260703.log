@@ -1,0 +1,1086 @@
+2026-07-03 21:13:07.309 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:13:07.334 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:13:07.344 +00:00 [INF] Creating key {64941c36-c3f1-422b-9a46-7f6ad69547a8} with creation date 2026-07-03 21:13:07Z, activation date 2026-07-03 21:13:07Z, and expiration date 2026-10-01 21:13:07Z.
+2026-07-03 21:13:07.376 +00:00 [WRN] No XML encryptor configured. Key {64941c36-c3f1-422b-9a46-7f6ad69547a8} may be persisted to storage in unencrypted form.
+2026-07-03 21:13:07.378 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-64941c36-c3f1-422b-9a46-7f6ad69547a8.xml'.
+2026-07-03 21:13:07.428 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:13:07.429 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:13:07.430 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:13:07.430 +00:00 [INF] Content root path: /app
+2026-07-03 21:15:25.610 +00:00 [INF] Application is shutting down...
+2026-07-03 21:15:26.377 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:15:26.403 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:15:26.413 +00:00 [INF] Creating key {a5dd7f61-6398-4116-bbc7-373d02d37784} with creation date 2026-07-03 21:15:26Z, activation date 2026-07-03 21:15:26Z, and expiration date 2026-10-01 21:15:26Z.
+2026-07-03 21:15:26.445 +00:00 [WRN] No XML encryptor configured. Key {a5dd7f61-6398-4116-bbc7-373d02d37784} may be persisted to storage in unencrypted form.
+2026-07-03 21:15:26.447 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-a5dd7f61-6398-4116-bbc7-373d02d37784.xml'.
+2026-07-03 21:15:26.497 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:15:26.499 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:15:26.499 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:15:26.500 +00:00 [INF] Content root path: /app
+2026-07-03 21:17:17.261 +00:00 [INF] Application is shutting down...
+2026-07-03 21:17:18.132 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:17:18.156 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:17:18.166 +00:00 [INF] Creating key {d1d7026c-4ee2-4c36-a872-1cdc2efd45e1} with creation date 2026-07-03 21:17:18Z, activation date 2026-07-03 21:17:18Z, and expiration date 2026-10-01 21:17:18Z.
+2026-07-03 21:17:18.209 +00:00 [WRN] No XML encryptor configured. Key {d1d7026c-4ee2-4c36-a872-1cdc2efd45e1} may be persisted to storage in unencrypted form.
+2026-07-03 21:17:18.212 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-d1d7026c-4ee2-4c36-a872-1cdc2efd45e1.xml'.
+2026-07-03 21:17:18.258 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:17:18.260 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:17:18.260 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:17:18.260 +00:00 [INF] Content root path: /app
+2026-07-03 21:19:33.591 +00:00 [INF] Application is shutting down...
+2026-07-03 21:19:34.409 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:19:34.433 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:19:34.444 +00:00 [INF] Creating key {e1fd67f3-2c3e-4f48-97bf-ad3bf5fe4471} with creation date 2026-07-03 21:19:34Z, activation date 2026-07-03 21:19:34Z, and expiration date 2026-10-01 21:19:34Z.
+2026-07-03 21:19:34.472 +00:00 [WRN] No XML encryptor configured. Key {e1fd67f3-2c3e-4f48-97bf-ad3bf5fe4471} may be persisted to storage in unencrypted form.
+2026-07-03 21:19:34.475 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-e1fd67f3-2c3e-4f48-97bf-ad3bf5fe4471.xml'.
+2026-07-03 21:19:34.524 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:19:34.526 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:19:34.526 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:19:34.527 +00:00 [INF] Content root path: /app
+2026-07-03 21:22:40.186 +00:00 [INF] Application is shutting down...
+2026-07-03 21:22:40.991 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:22:41.016 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:22:41.027 +00:00 [INF] Creating key {b5492aa0-e72e-47d6-bd8f-7833dc968248} with creation date 2026-07-03 21:22:41Z, activation date 2026-07-03 21:22:41Z, and expiration date 2026-10-01 21:22:41Z.
+2026-07-03 21:22:41.052 +00:00 [WRN] No XML encryptor configured. Key {b5492aa0-e72e-47d6-bd8f-7833dc968248} may be persisted to storage in unencrypted form.
+2026-07-03 21:22:41.054 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-b5492aa0-e72e-47d6-bd8f-7833dc968248.xml'.
+2026-07-03 21:22:41.102 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:22:41.103 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:22:41.104 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:22:41.104 +00:00 [INF] Content root path: /app
+2026-07-03 21:26:24.238 +00:00 [INF] Application is shutting down...
+2026-07-03 21:26:28.319 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:26:28.342 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:26:28.423 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:26:28.425 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:26:28.425 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:26:28.426 +00:00 [INF] Content root path: /app
+2026-07-03 21:27:57.721 +00:00 [INF] Application is shutting down...
+2026-07-03 21:27:58.529 +00:00 [WRN] Storing keys in a directory '/home/app/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed. For more information go to https://aka.ms/aspnet/dataprotectionwarning
+2026-07-03 21:27:58.553 +00:00 [INF] User profile is available. Using '/home/app/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2026-07-03 21:27:58.564 +00:00 [INF] Creating key {2e2aeeb7-adf6-49bd-964d-bb29141bb8ed} with creation date 2026-07-03 21:27:58Z, activation date 2026-07-03 21:27:58Z, and expiration date 2026-10-01 21:27:58Z.
+2026-07-03 21:27:58.597 +00:00 [WRN] No XML encryptor configured. Key {2e2aeeb7-adf6-49bd-964d-bb29141bb8ed} may be persisted to storage in unencrypted form.
+2026-07-03 21:27:58.600 +00:00 [INF] Writing data to file '/home/app/.aspnet/DataProtection-Keys/key-2e2aeeb7-adf6-49bd-964d-bb29141bb8ed.xml'.
+2026-07-03 21:27:58.645 +00:00 [INF] Now listening on: http://[::]:8080
+2026-07-03 21:27:58.647 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-07-03 21:27:58.647 +00:00 [INF] Hosting environment: Development
+2026-07-03 21:27:58.647 +00:00 [INF] Content root path: /app
+2026-07-03 21:28:54.614 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - null null
+2026-07-03 21:28:54.628 +00:00 [WRN] Failed to determine the https port for redirect.
+2026-07-03 21:28:54.648 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:28:54.649 +00:00 [INF] Available cookies: 0
+2026-07-03 21:28:54.649 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:28:54.649 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:28:54.651 +00:00 [INF] Executing endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:28:54.666 +00:00 [INF] Route matched with {action = "Get", controller = "Music"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[API.Models.Music]] Get(Int32, Int32) on controller API.Controllers.MusicController (API).
+2026-07-03 21:28:54.748 +00:00 [INF] Fetching music data from database...
+2026-07-03 21:28:55.152 +00:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-03 21:28:55.153 +00:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-03 21:28:55.361 +00:00 [INF] Executed DbCommand (29ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT m."ID", m."AddedAt", m."File_id", m."Title"
+FROM "Musics" AS m
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:28:55.399 +00:00 [INF] Fetched 3 music records.
+2026-07-03 21:28:55.409 +00:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[API.Models.Music, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:28:55.439 +00:00 [INF] Executed action API.Controllers.MusicController.Get (API) in 770.6808ms
+2026-07-03 21:28:55.441 +00:00 [INF] Executed endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:28:55.447 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - 200 null application/json; charset=utf-8 833.5596ms
+2026-07-03 21:32:43.267 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/music - null null
+2026-07-03 21:32:43.267 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - null null
+2026-07-03 21:32:43.270 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:43.270 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:43.270 +00:00 [INF] Available cookies: 0
+2026-07-03 21:32:43.270 +00:00 [INF] Available cookies: 0
+2026-07-03 21:32:43.271 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:32:43.271 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:32:43.271 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:32:43.271 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:32:43.271 +00:00 [INF] Executing endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.271 +00:00 [INF] Executing endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.272 +00:00 [INF] Route matched with {action = "Get", controller = "Music"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[API.Models.Music]] Get(Int32, Int32) on controller API.Controllers.MusicController (API).
+2026-07-03 21:32:43.272 +00:00 [INF] Route matched with {action = "Get", controller = "Music"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[API.Models.Music]] Get(Int32, Int32) on controller API.Controllers.MusicController (API).
+2026-07-03 21:32:43.279 +00:00 [INF] Fetching music data from database...
+2026-07-03 21:32:43.279 +00:00 [WRN] Invalid pagination parameters: page=0, limit=0
+2026-07-03 21:32:43.280 +00:00 [INF] Fetching music data from database...
+2026-07-03 21:32:43.300 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT m."ID", m."AddedAt", m."File_id", m."Title"
+FROM "Musics" AS m
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:43.301 +00:00 [INF] Fetched 3 music records.
+2026-07-03 21:32:43.301 +00:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[API.Models.Music, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:43.302 +00:00 [INF] Executed action API.Controllers.MusicController.Get (API) in 29.6281ms
+2026-07-03 21:32:43.302 +00:00 [INF] Executed endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.302 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - 200 null application/json; charset=utf-8 34.7946ms
+2026-07-03 21:32:43.307 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT m."ID", m."AddedAt", m."File_id", m."Title"
+FROM "Musics" AS m
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:43.308 +00:00 [INF] Fetched 3 music records.
+2026-07-03 21:32:43.308 +00:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[API.Models.Music, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:43.309 +00:00 [INF] Executed action API.Controllers.MusicController.Get (API) in 36.7319ms
+2026-07-03 21:32:43.309 +00:00 [INF] Executed endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.309 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/music - 200 null application/json; charset=utf-8 41.614ms
+2026-07-03 21:32:43.876 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - null null
+2026-07-03 21:32:43.877 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/music - null null
+2026-07-03 21:32:43.878 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:43.878 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:43.880 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:43.880 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:43.880 +00:00 [INF] Available cookies: 0
+2026-07-03 21:32:43.882 +00:00 [INF] Available cookies: 0
+2026-07-03 21:32:43.882 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:32:43.882 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:32:43.883 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:32:43.883 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:32:43.883 +00:00 [INF] Executing endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.883 +00:00 [INF] Executing endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.884 +00:00 [INF] Route matched with {action = "Get", controller = "Music"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[API.Models.Music]] Get(Int32, Int32) on controller API.Controllers.MusicController (API).
+2026-07-03 21:32:43.884 +00:00 [INF] Route matched with {action = "Get", controller = "Music"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.IEnumerable`1[API.Models.Music]] Get(Int32, Int32) on controller API.Controllers.MusicController (API).
+2026-07-03 21:32:43.886 +00:00 [WRN] Invalid pagination parameters: page=0, limit=0
+2026-07-03 21:32:43.886 +00:00 [INF] Fetching music data from database...
+2026-07-03 21:32:43.887 +00:00 [INF] Fetching music data from database...
+2026-07-03 21:32:43.921 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT m."ID", m."AddedAt", m."File_id", m."Title"
+FROM "Musics" AS m
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:43.921 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT m."ID", m."AddedAt", m."File_id", m."Title"
+FROM "Musics" AS m
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:43.922 +00:00 [INF] Fetched 3 music records.
+2026-07-03 21:32:43.922 +00:00 [INF] Fetched 3 music records.
+2026-07-03 21:32:43.922 +00:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[API.Models.Music, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:43.922 +00:00 [INF] Executing ObjectResult, writing value of type 'System.Collections.Generic.List`1[[API.Models.Music, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:43.923 +00:00 [INF] Executed action API.Controllers.MusicController.Get (API) in 39.1039ms
+2026-07-03 21:32:43.923 +00:00 [INF] Executed action API.Controllers.MusicController.Get (API) in 39.2707ms
+2026-07-03 21:32:43.924 +00:00 [INF] Executed endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.924 +00:00 [INF] Executed endpoint 'API.Controllers.MusicController.Get (API)'
+2026-07-03 21:32:43.924 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/music?page=1&limit=10 - 200 null application/json; charset=utf-8 47.986ms
+2026-07-03 21:32:43.924 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/music - 200 null application/json; charset=utf-8 47.565ms
+2026-07-03 21:32:57.020 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth - null null
+2026-07-03 21:32:57.021 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:57.022 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth - 204 null null 1.4246ms
+2026-07-03 21:32:57.025 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth - application/json 74
+2026-07-03 21:32:57.026 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:57.026 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:57.026 +00:00 [INF] Available cookies: 0
+2026-07-03 21:32:57.026 +00:00 [WRN] NO TOKEN FOUND IN COOKIES!
+2026-07-03 21:32:57.027 +00:00 [INF] ====== OnMessageReceived END - Token set: false ======
+2026-07-03 21:32:57.027 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.Authenticate (API)'
+2026-07-03 21:32:57.030 +00:00 [INF] Route matched with {action = "Authenticate", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Authenticate(API.Models.RequestModels.LoginRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:32:57.047 +00:00 [INF] Authentication attempt for email: lengyelnorbi5@gmail.com
+2026-07-03 21:32:57.048 +00:00 [INF] Fetching user by email from database...
+2026-07-03 21:32:57.074 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[@__email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Email" = @__email_0
+LIMIT 1
+2026-07-03 21:32:57.084 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:32:57.087 +00:00 [INF] Fetching user by email from database...
+2026-07-03 21:32:57.090 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__email_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."Email" = @__email_0
+LIMIT 1
+2026-07-03 21:32:57.541 +00:00 [INF] Executed DbCommand (12ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:32:57.573 +00:00 [INF] Executed DbCommand (5ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:32:57.575 +00:00 [INF] Admin user lengyelnorbi5@gmail.com authenticated successfully from admin panel at "2026-07-03T21:32:57.5758696Z"
+2026-07-03 21:32:57.577 +00:00 [INF] --------------------------------------------------------------------
+2026-07-03 21:32:57.577 +00:00 [INF] eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJsZW5neWVsbm9yYmk1QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJsZW5neWVsbm9yYmkiLCJqdGkiOiJhNmNjOWY4MS0zNWE2LTRlYTQtYTVkOC1lMGM1NmY0ZWFkM2YiLCJpYXQiOjE3ODMxMTQzNzcsImV4cCI6MTc4MzExNDY3NywiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJTb3VyY2UiOiJhZG1pbiIsIkRldmljZUlkIjoiUVhhWDNEMFZDY09VaTlCT2xvZjkxTTNjRXM4MTFqY1dEdURobVRUZWxYYz0iLCJJUEFkZHJlc3MiOiI6OmZmZmY6MTcyLjIwLjAuMSIsIlRva2VuVmVyc2lvbiI6IjEiLCJpc3MiOiJNdXNpY1BsYXllckFQSSIsImF1ZCI6Ik11c2ljUGxheWVyQ2xpZW50In0.fQtCMQzEh0ET-hLdN0jsIhvYjQeLOwCw1cmOf6HxSaY
+2026-07-03 21:32:57.577 +00:00 [INF] URctpa+XHikSBrqW9Q+DAcRaSNc5gSZe2apTjSqj5kE=
+2026-07-03 21:32:57.578 +00:00 [INF] Source: admin
+2026-07-03 21:32:57.578 +00:00 [INF] Access Token expires at: "2026-07-03T21:37:57.4705998Z"
+2026-07-03 21:32:57.578 +00:00 [INF] Refresh Token expires at: "2026-07-04T05:32:57.5596347Z"
+2026-07-03 21:32:57.578 +00:00 [INF] tokenCookieName: adminToken
+2026-07-03 21:32:57.578 +00:00 [INF] refreshTokenCookieName: adminRefreshToken
+2026-07-03 21:32:57.578 +00:00 [INF] Refresh token hash stored in cookie: URctpa+XHikSBrqW9Q+DAcRaSNc5gSZe2apTjSqj5kE=
+2026-07-03 21:32:57.578 +00:00 [INF] --------------------------------------------------------------------
+2026-07-03 21:32:57.579 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[<>f__AnonymousType2`3[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:57.582 +00:00 [INF] Executed action API.Controllers.AuthController.Authenticate (API) in 552.0655ms
+2026-07-03 21:32:57.583 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.Authenticate (API)'
+2026-07-03 21:32:57.583 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth - 200 null application/json; charset=utf-8 557.6726ms
+2026-07-03 21:32:59.658 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:32:59.659 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:59.659 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:59.659 +00:00 [INF] Available cookies: 2
+2026-07-03 21:32:59.660 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:32:59.660 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:32:59.660 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:32:59.660 +00:00 [INF] Admin token set in context
+2026-07-03 21:32:59.660 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:32:59.661 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:32:59.661 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:32:59.661 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:32:59.661 +00:00 [INF] Available cookies: 2
+2026-07-03 21:32:59.662 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:32:59.662 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:32:59.662 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:32:59.662 +00:00 [INF] Admin token set in context
+2026-07-03 21:32:59.662 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:32:59.683 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:32:59.683 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:32:59.683 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:32:59.683 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:32:59.683 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:32:59.684 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:32:59.700 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:32:59.700 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:32:59.704 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:32:59.704 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:32:59.707 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:32:59.707 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:32:59.727 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:32:59.727 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:32:59.736 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:59.736 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:32:59.737 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:59.737 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:32:59.740 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 32.8056ms
+2026-07-03 21:32:59.740 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 32.6217ms
+2026-07-03 21:32:59.740 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:32:59.740 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:32:59.740 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 79.7303ms
+2026-07-03 21:32:59.741 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 82.3663ms
+2026-07-03 21:33:02.301 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:33:02.301 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:02.301 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:02.301 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:02.302 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:02.302 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:02.302 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:02.302 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:02.302 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:02.303 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:02.303 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:33:02.303 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:02.307 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:02.307 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:02.307 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:02.309 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:33:02.310 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:33:02.311 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:33:02.311 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 3.526ms
+2026-07-03 21:33:02.311 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:02.312 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 10.7896ms
+2026-07-03 21:33:04.590 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - null null
+2026-07-03 21:33:04.591 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:04.591 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - 204 null null 0.98ms
+2026-07-03 21:33:04.593 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - application/json 0
+2026-07-03 21:33:04.593 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:04.594 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:04.594 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:04.594 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:04.594 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:04.594 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:04.594 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:04.595 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:04.595 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:04.595 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:33:04.595 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:04.598 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:04.601 +00:00 [INF] Executing endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:04.603 +00:00 [INF] Route matched with {action = "GeneratePassword", controller = "Password"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GeneratePassword() on controller API.Controllers.PasswordController (API).
+2026-07-03 21:33:04.604 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:33:04.605 +00:00 [INF] Executed action API.Controllers.PasswordController.GeneratePassword (API) in 1.6753ms
+2026-07-03 21:33:04.605 +00:00 [INF] Executed endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:04.605 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - 200 null application/json; charset=utf-8 11.9123ms
+2026-07-03 21:33:09.386 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - null null
+2026-07-03 21:33:09.386 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:09.386 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - 204 null null 0.5815ms
+2026-07-03 21:33:09.389 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - application/json 0
+2026-07-03 21:33:09.389 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:09.389 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:09.389 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:09.390 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:09.390 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:09.390 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:09.390 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:09.390 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:09.391 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:09.391 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:33:09.391 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:09.393 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:09.394 +00:00 [INF] Executing endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:09.395 +00:00 [INF] Route matched with {action = "GeneratePassword", controller = "Password"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GeneratePassword() on controller API.Controllers.PasswordController (API).
+2026-07-03 21:33:09.395 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:33:09.395 +00:00 [INF] Executed action API.Controllers.PasswordController.GeneratePassword (API) in 0.4742ms
+2026-07-03 21:33:09.395 +00:00 [INF] Executed endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:09.396 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - 200 null application/json; charset=utf-8 6.8498ms
+2026-07-03 21:33:21.565 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/user - null null
+2026-07-03 21:33:21.566 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:21.566 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/user - 204 null null 0.8419ms
+2026-07-03 21:33:21.568 +00:00 [INF] Request starting HTTP/1.1 PUT http://192.168.1.3:8080/api/user - application/json 111
+2026-07-03 21:33:21.568 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:21.568 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:21.568 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:21.568 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:21.569 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:21.569 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:21.569 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:21.569 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:21.569 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:21.570 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:33:21.570 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:21.572 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:21.574 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.UpdateUserAsync (API)'
+2026-07-03 21:33:21.576 +00:00 [INF] Route matched with {action = "UpdateUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateUserAsync(API.Models.RequestModels.UpdateUserRequest) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:21.580 +00:00 [WRN] Updating user with ID: 2, Email: lengyelnorbi55@gmail.com, Username: lengyelnorbi55_1781356466371
+2026-07-03 21:33:21.581 +00:00 [WRN] Updating user with ID: 2, Email: lengyelnorbi55@gmail.com, Username: lengyelnorbi55_1781356466371
+2026-07-03 21:33:21.590 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__p_0
+LIMIT 1
+2026-07-03 21:33:21.795 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[@p5='?' (DbType = Int32), @p0='?', @p1='?', @p2='?' (DbType = Date), @p3='?', @p4='?'], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "Email" = @p0, "PasswordHash" = @p1, "RegisteredAt" = @p2, "Role" = @p3, "Username" = @p4
+WHERE "ID" = @p5;
+2026-07-03 21:33:21.796 +00:00 [INF] User updated successfully
+2026-07-03 21:33:21.796 +00:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2026-07-03 21:33:21.797 +00:00 [INF] Executed action API.Controllers.UserController.UpdateUserAsync (API) in 221.0963ms
+2026-07-03 21:33:21.797 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.UpdateUserAsync (API)'
+2026-07-03 21:33:21.797 +00:00 [INF] Request finished HTTP/1.1 PUT http://192.168.1.3:8080/api/user - 200 null text/plain; charset=utf-8 229.606ms
+2026-07-03 21:33:26.870 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/token/access-token?page=1&limit=10 - null null
+2026-07-03 21:33:26.871 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:26.871 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:26.871 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:26.872 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:26.872 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:26.872 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:26.872 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:26.872 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:26.872 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:26.873 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:33:26.873 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:26.875 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:26.876 +00:00 [INF] Executing endpoint 'API.Controllers.TokenController.GetAccessTokens (API)'
+2026-07-03 21:33:26.879 +00:00 [INF] Route matched with {action = "GetAccessTokens", controller = "Token"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.AccessTokenUserDTO]] GetAccessTokens(Int32, Int32) on controller API.Controllers.TokenController (API).
+2026-07-03 21:33:26.880 +00:00 [INF] Received request to fetch access tokens with pagination: page=1, limit=10
+2026-07-03 21:33:26.888 +00:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "AccessTokens" AS a
+WHERE NOT (a."IsRevoked")
+2026-07-03 21:33:26.893 +00:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-03 21:33:26.893 +00:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-07-03 21:33:26.917 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."ID", a0.jti, a0."DeviceFingerprint", a0."IpAddress", a0."CreatedAt", a0."IsRevoked", a0."ExpiresAt", u."ID" AS "UserID", u."Username", u."Email", u."Role"
+FROM (
+    SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+    FROM "AccessTokens" AS a
+    WHERE NOT (a."IsRevoked")
+    LIMIT @__p_1 OFFSET @__p_0
+) AS a0
+INNER JOIN "Users" AS u ON a0."UserID" = u."ID"
+2026-07-03 21:33:26.918 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.AccessTokenUserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:33:26.923 +00:00 [INF] Executed action API.Controllers.TokenController.GetAccessTokens (API) in 44.0906ms
+2026-07-03 21:33:26.923 +00:00 [INF] Executed endpoint 'API.Controllers.TokenController.GetAccessTokens (API)'
+2026-07-03 21:33:26.924 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/token/access-token?page=1&limit=10 - 200 null application/json; charset=utf-8 53.478ms
+2026-07-03 21:33:27.106 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:33:27.107 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:33:27.107 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:27.107 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:27.107 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:27.107 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:27.107 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:27.108 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:27.108 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:27.108 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:27.108 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:27.108 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:27.108 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:27.109 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:27.109 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:27.109 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:27.109 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:27.109 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:27.110 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:27.110 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:27.110 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:33:27.110 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:33:27.110 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:27.110 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:27.112 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:27.112 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:27.113 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:27.113 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:27.113 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:27.113 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:27.115 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:33:27.115 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:33:27.117 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:33:27.117 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:33:27.117 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:33:27.117 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:33:27.117 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 4.1015ms
+2026-07-03 21:33:27.117 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 3.9684ms
+2026-07-03 21:33:27.118 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:27.118 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:27.118 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 12.1955ms
+2026-07-03 21:33:27.118 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 11.9098ms
+2026-07-03 21:33:30.589 +00:00 [INF] Request starting HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - null null
+2026-07-03 21:33:30.590 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:30.590 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:30.590 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:30.591 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:30.591 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:30.591 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:30.591 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:30.591 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:30.592 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:30.592 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: application/json, text/plain, */*, Encoding: gzip, deflate
+2026-07-03 21:33:30.592 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:30.594 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:30.595 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:30.595 +00:00 [INF] Route matched with {action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[API.Utils.PagedResult`1[API.DTO.UserDTO]] Get(Int32, Int32) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:30.597 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+2026-07-03 21:33:30.599 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Username", u."Email", u."RegisteredAt", u."Role"
+FROM "Users" AS u
+WHERE u."Role" <> 'Admin'
+ORDER BY u."ID"
+LIMIT @__p_1 OFFSET @__p_0
+2026-07-03 21:33:30.599 +00:00 [INF] Executing ObjectResult, writing value of type 'API.Utils.PagedResult`1[[API.DTO.UserDTO, API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-07-03 21:33:30.600 +00:00 [INF] Executed action API.Controllers.UserController.Get (API) in 4.0395ms
+2026-07-03 21:33:30.600 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.Get (API)'
+2026-07-03 21:33:30.600 +00:00 [INF] Request finished HTTP/1.1 GET http://192.168.1.3:8080/api/user?page=1&limit=10 - 200 null application/json; charset=utf-8 10.4678ms
+2026-07-03 21:33:31.801 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - null null
+2026-07-03 21:33:31.802 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:31.802 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/password/generate-password - 204 null null 0.6833ms
+2026-07-03 21:33:31.804 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - application/json 0
+2026-07-03 21:33:31.804 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:31.804 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:31.804 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:31.805 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:31.805 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:31.805 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:31.805 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:31.805 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:31.805 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:31.806 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:33:31.806 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:31.809 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:31.809 +00:00 [INF] Executing endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:31.809 +00:00 [INF] Route matched with {action = "GeneratePassword", controller = "Password"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GeneratePassword() on controller API.Controllers.PasswordController (API).
+2026-07-03 21:33:31.809 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType4`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:33:31.810 +00:00 [INF] Executed action API.Controllers.PasswordController.GeneratePassword (API) in 0.3486ms
+2026-07-03 21:33:31.810 +00:00 [INF] Executed endpoint 'API.Controllers.PasswordController.GeneratePassword (API)'
+2026-07-03 21:33:31.810 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/password/generate-password - 200 null application/json; charset=utf-8 6.2738ms
+2026-07-03 21:33:43.628 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/user - null null
+2026-07-03 21:33:43.629 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:43.629 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/user - 204 null null 0.6712ms
+2026-07-03 21:33:43.631 +00:00 [INF] Request starting HTTP/1.1 PUT http://192.168.1.3:8080/api/user - application/json 93
+2026-07-03 21:33:43.631 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:33:43.632 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:33:43.632 +00:00 [INF] Available cookies: 2
+2026-07-03 21:33:43.632 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:33:43.632 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:33:43.632 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:33:43.632 +00:00 [INF] Admin token set in context
+2026-07-03 21:33:43.633 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:33:43.633 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:33:43.633 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:33:43.633 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:33:43.636 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:33:43.637 +00:00 [INF] Executing endpoint 'API.Controllers.UserController.UpdateUserAsync (API)'
+2026-07-03 21:33:43.637 +00:00 [INF] Route matched with {action = "UpdateUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UpdateUserAsync(API.Models.RequestModels.UpdateUserRequest) on controller API.Controllers.UserController (API).
+2026-07-03 21:33:43.637 +00:00 [WRN] Updating user with ID: 4, Email: lengyelnorbi@gmail.com, Username: lengyelnorbi
+2026-07-03 21:33:43.638 +00:00 [WRN] Updating user with ID: 4, Email: lengyelnorbi@gmail.com, Username: lengyelnorbi
+2026-07-03 21:33:43.639 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__p_0
+LIMIT 1
+2026-07-03 21:33:43.838 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p5='?' (DbType = Int32), @p0='?', @p1='?', @p2='?' (DbType = Date), @p3='?', @p4='?'], CommandType='"Text"', CommandTimeout='30']
+UPDATE "Users" SET "Email" = @p0, "PasswordHash" = @p1, "RegisteredAt" = @p2, "Role" = @p3, "Username" = @p4
+WHERE "ID" = @p5;
+2026-07-03 21:33:43.839 +00:00 [INF] User updated successfully
+2026-07-03 21:33:43.839 +00:00 [INF] Executing ObjectResult, writing value of type 'System.String'.
+2026-07-03 21:33:43.840 +00:00 [INF] Executed action API.Controllers.UserController.UpdateUserAsync (API) in 202.6014ms
+2026-07-03 21:33:43.840 +00:00 [INF] Executed endpoint 'API.Controllers.UserController.UpdateUserAsync (API)'
+2026-07-03 21:33:43.840 +00:00 [INF] Request finished HTTP/1.1 PUT http://192.168.1.3:8080/api/user - 200 null text/plain; charset=utf-8 208.8228ms
+2026-07-03 21:37:27.598 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:37:27.599 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:37:27.599 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 0.8406ms
+2026-07-03 21:37:27.602 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:37:27.603 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:37:27.603 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:37:27.603 +00:00 [INF] Available cookies: 2
+2026-07-03 21:37:27.603 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:37:27.603 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:37:27.603 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:37:27.604 +00:00 [INF] Admin token set in context
+2026-07-03 21:37:27.604 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:37:27.604 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:37:27.604 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:37:27.604 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:37:27.607 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:37:27.607 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:37:27.609 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:37:27.611 +00:00 [INF] Token refresh attempt at "2026-07-03T21:37:27.6118736Z"
+2026-07-03 21:37:27.612 +00:00 [INF] Refreshing admin token at "2026-07-03T21:37:27.6120654Z"
+2026-07-03 21:37:27.618 +00:00 [INF] Executed DbCommand (3ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:37:27.619 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:37:27.620 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:37:27.623 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:37:27.628 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:37:27.632 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:37:27.633 +00:00 [INF] Attempting to revoke access token with jti a6cc9f81-35a6-4ea4-a5d8-e0c56f4ead3f for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:37:27.633 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:37:27.635 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:37:27.635 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:37:27.637 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:37:27.642 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:37:27.644 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:37:27.644 +00:00 [INF] Refresh token URctpa+XHikSBrqW9Q+DAcRaSNc5gSZe2apTjSqj5kE= for user 1 revoked: true
+2026-07-03 21:37:27.644 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:37:27.6449840Z"
+2026-07-03 21:37:27.645 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:37:27.646 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 36.3034ms
+2026-07-03 21:37:27.646 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:37:27.646 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 44.5616ms
+2026-07-03 21:41:57.965 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:41:57.965 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:41:57.966 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 0.6883ms
+2026-07-03 21:41:57.968 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:41:57.968 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:41:57.968 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:41:57.969 +00:00 [INF] Available cookies: 2
+2026-07-03 21:41:57.969 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:41:57.969 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:41:57.969 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:41:57.969 +00:00 [INF] Admin token set in context
+2026-07-03 21:41:57.970 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:41:57.970 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:41:57.970 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:41:57.970 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:41:57.981 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:41:57.981 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:41:57.982 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:41:57.982 +00:00 [INF] Token refresh attempt at "2026-07-03T21:41:57.9825282Z"
+2026-07-03 21:41:57.982 +00:00 [INF] Refreshing admin token at "2026-07-03T21:41:57.9826961Z"
+2026-07-03 21:41:57.984 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:41:57.984 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:41:57.985 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:41:57.986 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:41:57.989 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:41:57.990 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:41:57.990 +00:00 [INF] Attempting to revoke access token with jti ebd12802-901e-4042-9a87-e2d5d7d1adec for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:41:57.990 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:41:57.992 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:41:57.992 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:41:57.994 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:41:57.996 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:41:57.998 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:41:57.998 +00:00 [INF] Refresh token iVEmfjdDuBGXB4oL6frtmsgQms/SyXW7Hsxyl8yKEZI= for user 1 revoked: true
+2026-07-03 21:41:57.998 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:41:57.9984683Z"
+2026-07-03 21:41:57.998 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:41:57.998 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 16.7275ms
+2026-07-03 21:41:57.999 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:41:57.999 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 30.7175ms
+2026-07-03 21:46:28.038 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:46:28.039 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:46:28.040 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 1.7103ms
+2026-07-03 21:46:28.043 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:46:28.043 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:46:28.043 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:46:28.043 +00:00 [INF] Available cookies: 2
+2026-07-03 21:46:28.044 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:46:28.044 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:46:28.044 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:46:28.044 +00:00 [INF] Admin token set in context
+2026-07-03 21:46:28.044 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:46:28.044 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:46:28.045 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:46:28.045 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:46:28.047 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:46:28.047 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:46:28.048 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:46:28.048 +00:00 [INF] Token refresh attempt at "2026-07-03T21:46:28.0485337Z"
+2026-07-03 21:46:28.048 +00:00 [INF] Refreshing admin token at "2026-07-03T21:46:28.0486812Z"
+2026-07-03 21:46:28.050 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:46:28.050 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:46:28.050 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:46:28.051 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:46:28.055 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:46:28.056 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:46:28.057 +00:00 [INF] Attempting to revoke access token with jti bb73e843-93e8-4b10-89fd-8150da7ee327 for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:46:28.057 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:46:28.058 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:46:28.059 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:46:28.060 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:46:28.062 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:46:28.064 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:46:28.064 +00:00 [INF] Refresh token JDciYU8trOrVCNYarlrBUPPiHW/PlhDz69EpstHXCZs= for user 1 revoked: true
+2026-07-03 21:46:28.064 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:46:28.0646041Z"
+2026-07-03 21:46:28.064 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:46:28.065 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 16.8291ms
+2026-07-03 21:46:28.065 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:46:28.065 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 22.1881ms
+2026-07-03 21:50:58.083 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:50:58.084 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:50:58.084 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 0.8967ms
+2026-07-03 21:50:58.089 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:50:58.089 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:50:58.090 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:50:58.090 +00:00 [INF] Available cookies: 2
+2026-07-03 21:50:58.090 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:50:58.091 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:50:58.091 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:50:58.091 +00:00 [INF] Admin token set in context
+2026-07-03 21:50:58.091 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:50:58.091 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:50:58.092 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:50:58.092 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:50:58.103 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:50:58.104 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:50:58.104 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:50:58.105 +00:00 [INF] Token refresh attempt at "2026-07-03T21:50:58.1050927Z"
+2026-07-03 21:50:58.105 +00:00 [INF] Refreshing admin token at "2026-07-03T21:50:58.1053471Z"
+2026-07-03 21:50:58.107 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:50:58.108 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:50:58.108 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:50:58.110 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:50:58.113 +00:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:50:58.115 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:50:58.115 +00:00 [INF] Attempting to revoke access token with jti 355f0571-bb94-4284-86c7-0933b41c3453 for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:50:58.115 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:50:58.118 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:50:58.118 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:50:58.121 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:50:58.123 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:50:58.125 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:50:58.126 +00:00 [INF] Refresh token PiYvFmvnvgrS/C+bbDxv/Ww91BfelX1iafrInOCjyHs= for user 1 revoked: true
+2026-07-03 21:50:58.126 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:50:58.1262915Z"
+2026-07-03 21:50:58.126 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:50:58.126 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 22.0335ms
+2026-07-03 21:50:58.126 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:50:58.127 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 37.5817ms
+2026-07-03 21:55:28.250 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:55:28.251 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:55:28.251 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 1.0009ms
+2026-07-03 21:55:28.254 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:55:28.254 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:55:28.254 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:55:28.255 +00:00 [INF] Available cookies: 2
+2026-07-03 21:55:28.255 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:55:28.255 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:55:28.255 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:55:28.255 +00:00 [INF] Admin token set in context
+2026-07-03 21:55:28.255 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:55:28.256 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:55:28.256 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:55:28.256 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:55:28.259 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:55:28.259 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:55:28.259 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:55:28.260 +00:00 [INF] Token refresh attempt at "2026-07-03T21:55:28.2600704Z"
+2026-07-03 21:55:28.260 +00:00 [INF] Refreshing admin token at "2026-07-03T21:55:28.2602220Z"
+2026-07-03 21:55:28.261 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:55:28.261 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:55:28.261 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:55:28.263 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:55:28.265 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:55:28.267 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:55:28.267 +00:00 [INF] Attempting to revoke access token with jti 1e460f42-fd50-4722-b659-178de6a91174 for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:55:28.267 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:55:28.269 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:55:28.269 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:55:28.271 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:55:28.273 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:55:28.274 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:55:28.274 +00:00 [INF] Refresh token BgvqM/Hd6QZX68jwqJi5gFGixXO0LNMoINZQu4pAKPM= for user 1 revoked: true
+2026-07-03 21:55:28.275 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:55:28.2750007Z"
+2026-07-03 21:55:28.275 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:55:28.275 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 15.7086ms
+2026-07-03 21:55:28.275 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:55:28.275 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 21.3754ms
+2026-07-03 21:59:58.359 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 21:59:58.359 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:59:58.360 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 0.9447ms
+2026-07-03 21:59:58.362 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 21:59:58.363 +00:00 [INF] CORS policy execution successful.
+2026-07-03 21:59:58.363 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 21:59:58.363 +00:00 [INF] Available cookies: 2
+2026-07-03 21:59:58.363 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 21:59:58.363 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 21:59:58.363 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 21:59:58.364 +00:00 [INF] Admin token set in context
+2026-07-03 21:59:58.364 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 21:59:58.364 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 21:59:58.364 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 21:59:58.364 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 21:59:58.374 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 21:59:58.375 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:59:58.375 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 21:59:58.375 +00:00 [INF] Token refresh attempt at "2026-07-03T21:59:58.3759030Z"
+2026-07-03 21:59:58.376 +00:00 [INF] Refreshing admin token at "2026-07-03T21:59:58.3760426Z"
+2026-07-03 21:59:58.377 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 21:59:58.377 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 21:59:58.378 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 21:59:58.379 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 21:59:58.381 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:59:58.382 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:59:58.383 +00:00 [INF] Attempting to revoke access token with jti e0341c53-1b5a-42e9-af6c-f0a471718165 for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 21:59:58.383 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 21:59:58.385 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:59:58.385 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 21:59:58.387 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 21:59:58.388 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 21:59:58.390 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 21:59:58.390 +00:00 [INF] Refresh token RoTPP2j+8BjlKF5t1p5sc9kfoDNMj8neVJX1ZhjOTFw= for user 1 revoked: true
+2026-07-03 21:59:58.390 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T21:59:58.3905640Z"
+2026-07-03 21:59:58.390 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 21:59:58.391 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 15.3716ms
+2026-07-03 21:59:58.391 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 21:59:58.391 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 28.5151ms
+2026-07-03 22:04:28.652 +00:00 [INF] Request starting HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - null null
+2026-07-03 22:04:28.653 +00:00 [INF] CORS policy execution successful.
+2026-07-03 22:04:28.653 +00:00 [INF] Request finished HTTP/1.1 OPTIONS http://192.168.1.3:8080/api/auth/refresh - 204 null null 0.941ms
+2026-07-03 22:04:28.657 +00:00 [INF] Request starting HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - application/json 18
+2026-07-03 22:04:28.657 +00:00 [INF] CORS policy execution successful.
+2026-07-03 22:04:28.658 +00:00 [INF] ====== OnMessageReceived START ======
+2026-07-03 22:04:28.658 +00:00 [INF] Available cookies: 2
+2026-07-03 22:04:28.659 +00:00 [INF] Cookie: adminToken = 844 chars
+2026-07-03 22:04:28.659 +00:00 [INF] Cookie: adminRefreshToken = 44 chars
+2026-07-03 22:04:28.659 +00:00 [INF] Admin token found in cookies, length: 844
+2026-07-03 22:04:28.659 +00:00 [INF] Admin token set in context
+2026-07-03 22:04:28.659 +00:00 [INF] ====== OnMessageReceived END - Token set: true ======
+2026-07-03 22:04:28.660 +00:00 [INF] Token validated successfully for user: lengyelnorbi
+2026-07-03 22:04:28.660 +00:00 [INF] Device fingerprint headers - UA: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0, Accept: */*, Encoding: gzip, deflate
+2026-07-03 22:04:28.660 +00:00 [INF] Device fingerprint validation: Stored=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=, Current=QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc=
+2026-07-03 22:04:28.663 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userId_1 AND NOT (a."IsRevoked") AND a."ExpiresAt" > now()
+LIMIT 1
+2026-07-03 22:04:28.663 +00:00 [INF] Executing endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 22:04:28.664 +00:00 [INF] Route matched with {action = "RefreshToken", controller = "Auth"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RefreshToken(API.Models.RequestModels.RefreshRequest) on controller API.Controllers.AuthController (API).
+2026-07-03 22:04:28.664 +00:00 [INF] Token refresh attempt at "2026-07-03T22:04:28.6647221Z"
+2026-07-03 22:04:28.664 +00:00 [INF] Refreshing admin token at "2026-07-03T22:04:28.6649589Z"
+2026-07-03 22:04:28.667 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@__tokenHash_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND NOT (r."IsRevoked") AND r."ExpiresAt" > now()
+ORDER BY r."CreatedAt" DESC
+LIMIT 1
+2026-07-03 22:04:28.667 +00:00 [INF] Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:152.0) Gecko/20100101 Firefox/152.0
+2026-07-03 22:04:28.667 +00:00 [INF] Fetching user by ID from database...
+2026-07-03 22:04:28.669 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT u."ID", u."Email", u."PasswordHash", u."RegisteredAt", u."Role", u."Username"
+FROM "Users" AS u
+WHERE u."ID" = @__id_0
+LIMIT 1
+2026-07-03 22:04:28.672 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?' (DbType = Int32), @p5='?'], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AccessTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "UserID", jti)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 22:04:28.674 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__jti_0='?', @__userID_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."ID", a."CreatedAt", a."DeviceFingerprint", a."ExpiresAt", a."IpAddress", a."IsRevoked", a."UserID", a.jti
+FROM "AccessTokens" AS a
+WHERE a.jti = @__jti_0 AND a."UserID" = @__userID_1 AND a."DeviceFingerprint" = @__deviceFingerprint_2 AND a."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 22:04:28.674 +00:00 [INF] Attempting to revoke access token with jti 6c48752e-47b7-47ae-ad43-956e65ed8bb0 for user 1 from device QXaX3D0VCcOUi9BOlof91M3cEs811jcWDuDhmTTelXc= and IP ::ffff:172.20.0.1
+2026-07-03 22:04:28.674 +00:00 [INF] Access token found: API.Models.AccessToken
+2026-07-03 22:04:28.676 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "AccessTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 22:04:28.677 +00:00 [INF] Access token AccessToken for user 1 revoked: true
+2026-07-03 22:04:28.680 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p0='?' (DbType = DateTime), @p1='?', @p2='?' (DbType = DateTime), @p3='?', @p4='?', @p5='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "RefreshTokens" ("CreatedAt", "DeviceFingerprint", "ExpiresAt", "IpAddress", "TokenHash", "UserID")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
+RETURNING "ID", "IsRevoked";
+2026-07-03 22:04:28.681 +00:00 [INF] Executed DbCommand (1ms) [Parameters=[@__tokenHash_0='?', @__userId_1='?' (DbType = Int32), @__deviceFingerprint_2='?', @__ipAddress_3='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT r."ID", r."CreatedAt", r."DeviceFingerprint", r."ExpiresAt", r."IpAddress", r."IsRevoked", r."TokenHash", r."UserID"
+FROM "RefreshTokens" AS r
+WHERE r."TokenHash" = @__tokenHash_0 AND r."UserID" = @__userId_1 AND r."DeviceFingerprint" = @__deviceFingerprint_2 AND r."IpAddress" = @__ipAddress_3
+LIMIT 1
+2026-07-03 22:04:28.684 +00:00 [INF] Executed DbCommand (2ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+UPDATE "RefreshTokens" SET "IsRevoked" = @p0
+WHERE "ID" = @p1;
+2026-07-03 22:04:28.684 +00:00 [INF] Refresh token +RRpiBk9AZQBzGfM9PYHtnAqKRV4NBkG+TIZrrVbNXU= for user 1 revoked: true
+2026-07-03 22:04:28.684 +00:00 [INF] Token refreshed successfully for user 1 at "2026-07-03T22:04:28.6848843Z"
+2026-07-03 22:04:28.685 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType3`2[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-07-03 22:04:28.685 +00:00 [INF] Executed action API.Controllers.AuthController.RefreshToken (API) in 21.2533ms
+2026-07-03 22:04:28.685 +00:00 [INF] Executed endpoint 'API.Controllers.AuthController.RefreshToken (API)'
+2026-07-03 22:04:28.685 +00:00 [INF] Request finished HTTP/1.1 POST http://192.168.1.3:8080/api/auth/refresh - 200 null application/json; charset=utf-8 28.2165ms
+2026-07-03 22:04:37.440 +00:00 [INF] Application is shutting down...
