@@ -1,0 +1,8 @@
+<nav>
+    <app-navigation></app-navigation>
+</nav>
+<main>
+    <app-music-list *ngIf="activeTab === 'music-list'"></app-music-list>
+    <app-playlist *ngIf="activeTab === 'playlists'"></app-playlist>
+    <app-music-player-login *ngIf="activeTab === 'login'"></app-music-player-login>
+</main>

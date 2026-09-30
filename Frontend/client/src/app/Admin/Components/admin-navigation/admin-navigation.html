@@ -1,0 +1,136 @@
+<!-- DESKTOP SIDEBAR NAVIGATION -->
+<aside [ngClass]="isNavExpanded() ? 'w-64' : 'w-20'"
+       class="hidden md:flex fixed left-0 top-0 h-screen bg-gradient-to-b from-[#0a1628] to-[#000a21] border-r border-blue-900/40 transition-all duration-300 ease-in-out z-40 flex-col shadow-xl">
+  
+  <!-- LOGO / BRANDING SECTION -->
+  <div class="h-16 flex items-center justify-between px-4 border-b border-blue-900/40 shrink-0">
+    <div *ngIf="isNavExpanded()" class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(217,27,92,0.3)]">
+      Admin
+    </div>
+    <button (click)="toggleNavigation()" 
+            class="p-1.5 hover:bg-blue-900/40 rounded-lg transition-colors text-blue-300 hover:text-pink-400 cursor-pointer">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Chevron Left (collapse) or Chevron Right (expand) -->
+        <path *ngIf="isNavExpanded()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        <path *ngIf="!isNavExpanded()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- NAVIGATION ITEMS SCROLL SECTION -->
+  <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-2">
+    <button *ngFor="let item of navItems"
+            (click)="navigateTo(item)"
+            [ngClass]="activeTab() === item.id ? 
+              'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-l-2 border-pink-500' :
+              'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+            class="w-full flex items-center gap-4 px-3 py-3 rounded-lg transition-all duration-200 group relative cursor-pointer">
+      
+      <!-- Icon -->
+      <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path [attr.d]="item.icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+
+      <!-- Label (shown only when expanded) -->
+      <span *ngIf="isNavExpanded()" class="text-sm font-medium transition-opacity duration-200">
+        {{ item.label }}
+      </span>
+
+      <!-- Tooltip on hover when collapsed -->
+      <div *ngIf="!isNavExpanded()" 
+           class="absolute left-24 px-3 py-1.5 bg-[#0a1628]/95 text-blue-100 text-sm font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap border border-blue-800/50">
+        {{ item.label }}
+      </div>
+    </button>
+  </nav>
+
+  <!-- USER SECTION AT BOTTOM -->
+  <div class="border-t border-blue-900/40 px-3 py-4 space-y-3">
+    <!-- User Profile -->
+    <div *ngIf="isNavExpanded()" class="flex items-center gap-3 p-2 rounded-lg bg-blue-900/20">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-blue-500 flex items-center justify-center shrink-0">
+        <span class="text-xs font-bold text-white"></span>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-white truncate"></p>
+        <p class="text-xs text-blue-400/70 truncate">Administrator</p>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <button (click)="onLogout()"
+            [ngClass]="isNavExpanded() ? 'justify-start px-3' : 'justify-center'"
+            class="w-full flex items-center gap-3 py-2 px-2 rounded-lg text-red-400 hover:bg-red-900/20 transition-colors group relative cursor-pointer">
+      <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+      </svg>
+      <span *ngIf="isNavExpanded()" class="text-sm font-medium">Logout</span>
+      
+      <!-- Tooltip on hover when collapsed -->
+      <div *ngIf="!isNavExpanded()" 
+           class="absolute left-24 px-3 py-1.5 bg-[#0a1628]/95 text-red-400 text-sm font-medium rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap border border-red-800/50">
+        Logout
+      </div>
+    </button>
+  </div>
+</aside>
+
+<!-- MOBILE HEADER WITH HAMBURGER -->
+<header class="md:hidden fixed top-0 left-0 right-0 h-16 bg-gradient-to-r from-[#0a1628] to-[#000a21] border-b border-blue-900/40 flex items-center justify-between px-4 z-50 shadow-lg">
+  
+  <!-- Logo / Title -->
+  <div class="text-lg font-extrabold tracking-wider bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(217,27,92,0.3)]">
+    Admin Panel
+  </div>
+
+  <!-- Hamburger Button -->
+  <button (click)="toggleMobileMenu($event)"
+          class="p-2 text-blue-300 hover:text-pink-400 transition-colors focus:outline-none cursor-pointer">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path *ngIf="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      <path *ngIf="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+</header>
+
+<!-- MOBILE NAVIGATION MENU (DRAWER) -->
+<nav *ngIf="isMobileMenuOpen()" 
+     class="md:hidden fixed top-16 left-0 right-0 bg-gradient-to-b from-[#0a1628] to-[#000a21] border-b border-pink-500/40 z-40 shadow-2xl animate-slide-down">
+  
+  <!-- Navigation Items -->
+  <div class="px-4 py-4 space-y-2">
+    <button *ngFor="let item of navItems"
+            (click)="navigateTo(item)"
+            [ngClass]="activeTab() === item.id ? 
+              'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-l-2 border-pink-500' :
+              'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+            class="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer">
+      
+      <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path [attr.d]="item.icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+      <span class="text-sm font-medium">{{ item.label }}</span>
+    </button>
+  </div>
+
+  <!-- User Section & Logout -->
+  <div class="border-t border-blue-900/40 px-4 py-4 space-y-3">
+    <div class="flex items-center gap-3 p-2 rounded-lg bg-blue-900/20">
+      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-pink-500 to-blue-500 flex items-center justify-center shrink-0">
+        <span class="text-xs font-bold text-white"></span>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-semibold text-white truncate">{{ username() || 'Admin' }}</p>
+        <p class="text-xs text-blue-400/70 truncate">Administrator</p>
+      </div>
+    </div>
+
+    <button (click)="onLogout()"
+            class="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-red-400 hover:bg-red-900/20 transition-colors cursor-pointer">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+      </svg>
+      <span class="text-sm font-medium">Logout</span>
+    </button>
+  </div>
+</nav>

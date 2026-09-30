@@ -1,0 +1,96 @@
+<!-- <div>
+  <h2>Music List</h2>
+  <mat-table [dataSource]="(musics$ | async) ?? []" class="mat-elevation-z8">
+    <ng-container matColumnDef="title">
+      <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+      <mat-cell *matCellDef="let music">{{ music.title }}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let music; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div> -->
+
+
+<!-- Fő háttér polírozott Ford kék és mély magenta színátmenettel -->
+<div class="pt-20 px-6 min-h-screen bg-gradient-to-b from-[#0b3c5d] via-[#000a21] to-[#1d001d] text-white">
+  <div> 
+    <audio #audioPlayer controls [src]="selectedMusicUrl" (ended)="onAudioEnded()"></audio>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <!-- Cím selymes magenta-kék átmenettel
+    <h1 class="text-3xl font-extrabold mb-8 tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
+      Zenék
+    </h1> -->
+
+    <div class="space-y-4 pb-12">
+      <!-- Ciklus a zenéken -->
+      <div *ngFor="let music of musics$ | async" 
+          (click)="selectMusic(music.id)"
+          [ngClass]="{
+            'scale-x-[1.04] scale-y-[1.06] bg-gradient-to-r from-[#d91b5c] to-[#9a0f74] shadow-[0_0_25px_rgba(217,27,92,0.55)] border-pink-400 z-20': activeMusicId === music.id,
+            'bg-[#0f2a4a]/60 border-blue-900/40 hover:scale-x-[1.03] hover:scale-y-[1.04] hover:bg-gradient-to-r hover:from-[#144d75] hover:to-[#5e1252] hover:shadow-[0_8px_20px_rgba(0,0,0,0.4)]': activeMusicId !== music.id,
+            'z-30 relative': openMenuId === music.id,
+            'z-0': activeMusicId !== music.id && openMenuId !== music.id
+          }"
+          class="p-5 rounded-xl border backdrop-blur-md flex items-center justify-between transition-all duration-300 ease-out cursor-pointer relative group">
+        
+        <!-- Zeneszám információk -->
+        <div class="flex items-center gap-4">
+          <div [ngClass]="activeMusicId === music.id ? 'text-pink-300' : 'text-blue-400 group-hover:text-pink-400'" class="transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+            </svg>
+          </div>
+          <div>
+            <p [ngClass]="activeMusicId === music.id ? 'text-white' : 'text-blue-100'" class="font-bold text-base transition-colors">
+              {{ music.title }}
+            </p>
+            <p [ngClass]="activeMusicId === music.id ? 'text-pink-200' : 'text-blue-300/70'" class="text-xs mt-0.5 transition-colors">
+              {{ music.addedAt }}
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 pontos Opciók Menü konténer -->
+        <div class="relative" (click)="$event.stopPropagation()" *ngIf="loggedIn">
+          <button (click)="toggleMenu(music.id)" 
+                  [ngClass]="activeMusicId === music.id ? 'text-white hover:bg-white/10' : 'text-blue-300 hover:bg-blue-900/40 hover:text-pink-400'"
+                  class="p-2 rounded-full focus:outline-none transition-all">
+            <svg class="w-5 h-5 cursor-pointer" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown Menü (Mentés / Kedvencek) -->
+          <!-- Megemelt z-50 érték, hogy biztosan minden felett lebegjen -->
+          <div *ngIf="openMenuId === music.id" 
+              class="absolute right-0 mt-2 w-44 bg-[#0a192f] border border-blue-800/60 rounded-lg shadow-2xl py-1 z-50 animate-fade-in text-left">
+            
+            <button (click)="onSave(music.id)" 
+                    class="w-full px-4 py-2.5 text-sm text-blue-200 hover:bg-blue-900/50 hover:text-white flex items-center gap-2 transition-colors cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+              {{ 'musicOptions.save' | translate }}
+            </button>
+            
+            <button (click)="onDownload(music.id)" 
+                    class="w-full px-4 py-2.5 text-sm text-blue-200 hover:bg-blue-900/50 hover:text-white flex items-center gap-2 transition-colors cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              {{ 'musicOptions.download' | translate }}
+            </button>
+
+            <button (click)="onAddToFavorites(music.id)" 
+                    class="w-full px-4 py-2.5 text-sm text-pink-400 hover:bg-pink-950/30 hover:text-pink-300 flex items-center gap-2 transition-colors border-t border-blue-900/30 cursor-pointer">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.5 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              {{ 'musicOptions.addToFavorites' | translate }}
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

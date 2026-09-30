@@ -1,0 +1,16 @@
+<!-- Admin Main Container -->
+<div class="main-container flex flex-col">
+  <!-- Navigation Component -->
+  <app-admin-navigation (activeTabChange)="onActiveTabChange($event)" (navExpandedChange)="onNavExpandedChange($event)"></app-admin-navigation>
+
+  <!-- Content Area -->
+  <main class="flex-1 h-full transition-all duration-300 ease-in-out overflow-hidden" [style.marginLeft.px]="isNavExpanded ? 256 : 80 ">
+    <!-- Mobile top padding for header -->
+
+    <app-dashboard *ngIf="activeTab === 'dashboard'"></app-dashboard>
+    <app-admin-music *ngIf="activeTab === 'music'"></app-admin-music>
+    <app-admin-user *ngIf="activeTab === 'user'"></app-admin-user>
+    <app-token *ngIf="activeTab === 'token'"></app-token>
+    <!-- <app-admin-settings *ngIf="activeTab === 'settings'"></app-admin-settings> --> 
+  </main>
+</div>

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../node_modules/rxjs/dist/cjs/internal/operators/map.js"],
+  "sourcesContent": ["\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.map = void 0;\nvar lift_1 = require(\"../util/lift\");\nvar OperatorSubscriber_1 = require(\"./OperatorSubscriber\");\nfunction map(project, thisArg) {\n    return lift_1.operate(function (source, subscriber) {\n        var index = 0;\n        source.subscribe(OperatorSubscriber_1.createOperatorSubscriber(subscriber, function (value) {\n            subscriber.next(project.call(thisArg, value, index++));\n        }));\n    });\n}\nexports.map = map;\n"],
+  "mappings": ";;;;;;;;;;AAAA;AAAA;AACA,WAAO,eAAe,SAAS,cAAc,EAAE,OAAO,KAAK,CAAC;AAC5D,YAAQ,MAAM;AACd,QAAI,SAAS;AACb,QAAI,uBAAuB;AAC3B,aAAS,IAAI,SAAS,SAAS;AAC3B,aAAO,OAAO,QAAQ,SAAU,QAAQ,YAAY;AAChD,YAAI,QAAQ;AACZ,eAAO,UAAU,qBAAqB,yBAAyB,YAAY,SAAU,OAAO;AACxF,qBAAW,KAAK,QAAQ,KAAK,SAAS,OAAO,OAAO,CAAC;AAAA,QACzD,CAAC,CAAC;AAAA,MACN,CAAC;AAAA,IACL;AACA,YAAQ,MAAM;AAAA;AAAA;",
+  "names": []
+}

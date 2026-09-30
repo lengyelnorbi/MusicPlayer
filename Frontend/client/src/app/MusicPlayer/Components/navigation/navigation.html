@@ -1,0 +1,198 @@
+<!-- Fő navbar konténer - Polírozott Ford kék alap áttetsző üveghatással és magenta alsó szegéllyel -->
+<nav [ngClass]="isNavbarHidden ? '-translate-y-full' : 'translate-y-0'"
+     class="fixed top-0 left-0 w-full h-16 bg-[#0b3c5d]/90 backdrop-blur-md text-white z-50 transition-transform duration-300 ease-in-out shadow-[0_4px_30px_rgba(0,0,0,0.3)] flex items-center justify-between px-6 border-b border-[#d91b5c]/40">
+  
+  <!-- BAL OLDAL: Logo - Kék-magenta színátmenetes izzással -->
+  <div class="w-1/2 md:w-1/4 flex justify-start">
+    <div class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(217,27,92,0.3)] cursor-pointer">
+      MusicPlayer
+    </div>
+  </div>
+
+  <!-- KÖZÉPSŐ RÉSZ: Asztali menüpontok (csak ha be van jelentkezve) -->
+  <div *ngIf="isLoggedIn" class="hidden md:flex w-2/4 justify-center">
+    <ul class="flex items-center gap-8 text-m font-bold text-blue-100">
+      <li>
+        <a (click)="switchToMusicList()" 
+           [ngClass]="{'text-pink-400': activeTab === 'music-list', 'text-blue-100': activeTab !== 'music-list'}"
+           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2">
+          {{ 'nav.music' | translate }}
+          <span [ngClass]="{'w-full': activeTab === 'music-list', 'w-0': activeTab !== 'music-list'}"
+                class="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-pink-500 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      </li>
+      <li>
+        <a (click)="switchToPlaylists()" 
+           [ngClass]="{'text-pink-400': activeTab === 'playlists', 'text-blue-100': activeTab !== 'playlists'}"
+           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2">
+          {{ 'nav.playlists' | translate }}
+          <span [ngClass]="{'w-full': activeTab === 'playlists', 'w-0': activeTab !== 'playlists'}"
+                class="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-pink-500 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- JOBB OLDAL: Megjelenítés a bejelentkezési állapot alapján -->
+  <div class="w-1/2 md:w-1/4 flex justify-end items-center gap-4">
+    
+    <!-- NEM BEJELENTKEZETT: Zenék és Login gomb jobbra igazítva -->
+    <div *ngIf="!isLoggedIn" class="hidden md:flex items-center gap-6">
+      <a (click)="switchToMusicList()"
+         [ngClass]="{'text-pink-400': activeTab === 'music-list', 'text-blue-100': activeTab !== 'music-list'}"
+         class="text-sm font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer py-2">
+        {{ 'nav.music' | translate }}
+      </a>
+      <a (click)="switchToLogin()"
+         [ngClass]="{'text-pink-400': activeTab === 'login', 'text-blue-100': activeTab !== 'login'}"
+         class="text-sm font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer py-2">
+        {{ 'nav.login' | translate }}
+      </a>
+    </div>
+
+    <!-- LANGUAGE SWITCHER -->
+    <div class="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-[#144d75]/30 border border-blue-800/50">
+      <button (click)="switchLanguage('hu')" 
+              [ngClass]="currentLanguage === 'hu' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+              class="text-xs font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+        HU
+      </button>
+      <span class="text-blue-600">|</span>
+      <button (click)="switchLanguage('en')" 
+              [ngClass]="currentLanguage === 'en' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+              class="text-xs font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+        EN
+      </button>
+    </div>
+    
+    <!-- BEJELENTKEZETT: Profil ikon és dropdown -->
+    <div *ngIf="isLoggedIn" class="relative hidden md:block">
+      <button (click)="toggleDropdown($event)" 
+              class="flex items-center focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-[#0b3c5d] rounded-full transition-all cursor-pointer">
+        <div class="w-10 h-10 rounded-full border-2 border-pink-500 overflow-hidden bg-[#000a21] flex items-center justify-center shadow-[0_0_10px_rgba(217,27,92,0.4)]">
+          <img *ngIf="profileImageUrl; else placeholder" [src]="profileImageUrl" alt="Profil" class="w-full h-full object-cover">
+          <ng-template #placeholder><ng-container *ngTemplateOutlet="userIcon"></ng-container></ng-template>
+        </div>
+      </button>
+
+      <!-- Asztali Dropdown - Mély kék alapon magenta részletekkel -->
+      <div *ngIf="isDropdownOpen" 
+           class="absolute right-0 mt-2 w-48 bg-[#0a192f] border border-blue-900/60 rounded-xl shadow-2xl py-1 z-50 border-t-pink-500/50">
+        <div class="px-4 py-2 border-b border-blue-900/30">
+          <p class="text-sm font-bold text-white truncate">{{ username }}</p>
+          <!-- <p class="text-xs text-blue-300/70 truncate">user&#64;email.com</p> -->
+        </div>
+        <button (click)="onSettings()" class="w-full text-left px-4 py-2.5 text-sm text-blue-100 hover:bg-[#144d75]/40 hover:text-pink-400 flex items-center gap-2 transition-colors cursor-pointer">
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          {{ 'nav.settings' | translate }}
+        </button>
+        <button (click)="onLogout()" class="w-full text-left px-4 py-2.5 text-sm text-pink-400 hover:bg-pink-950/20 flex items-center gap-2 transition-colors border-t border-blue-900/30 cursor-pointer">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          {{ 'nav.logout' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBIL HAMBURGER IKON -->
+    <button (click)="toggleMobileMenu($event)" 
+            class="md:hidden p-2 text-blue-200 hover:text-pink-400 transition-colors focus:outline-none cursor-pointer">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+  </div>
+</nav>
+
+<!-- ÁTALAKÍTOTT MOBILOS MENÜ (csak bejelentkezett felhasználóknak) -->
+<div *ngIf="isMobileMenuOpen && isLoggedIn" 
+     class="md:hidden fixed top-16 left-0 w-full bg-gradient-to-b from-[#0b3c5d] to-[#000a21] border-b border-pink-500/40 z-40 shadow-2xl p-6 flex flex-col items-center animate-fade-in">
+  
+  <!-- 1. Profil szekció neon magenta körrel -->
+  <div class="flex flex-col items-center text-center mb-6 pb-4 border-b border-blue-900/30 w-full">
+    <div class="w-16 h-16 rounded-full border-2 border-pink-500 overflow-hidden bg-[#000a21] flex items-center justify-center mb-2 shadow-[0_0_15px_rgba(217,27,92,0.5)]">
+      <img *ngIf="profileImageUrl; else placeholder" [src]="profileImageUrl" alt="Profil" class="w-full h-full object-cover">
+      <ng-template #placeholder><ng-container *ngTemplateOutlet="userIcon"></ng-container></ng-template>
+    </div>
+    <p class="text-base font-bold text-white">{{ username }}</p>
+    <!-- <p class="text-xs text-blue-300">user&#64;email.com</p> -->
+  </div>
+
+  <!-- 2. Alapértelmezett navigációs menüpontok -->
+  <ul class="w-full text-center space-y-3 text-base font-semibold text-blue-100 mb-6">
+    <li>
+      <a (click)="switchToMusicList()" 
+         [ngClass]="{'bg-[#144d75]/60 text-pink-400': activeTab === 'music-list', 'bg-[#144d75]/20': activeTab !== 'music-list'}"
+         class="block py-2.5 rounded-lg hover:bg-[#144d75]/50 hover:text-pink-400 transition-all cursor-pointer">{{ 'nav.music' | translate }}</a>
+    </li>
+    <li>
+      <a (click)="switchToPlaylists()" 
+         [ngClass]="{'bg-[#144d75]/60 text-pink-400': activeTab === 'playlists', 'bg-[#144d75]/20': activeTab !== 'playlists'}"
+         class="block py-2.5 rounded-lg hover:bg-[#144d75]/50 hover:text-pink-400 transition-all cursor-pointer">{{ 'nav.playlists' | translate }}</a>
+    </li>
+  </ul>
+
+  <!-- 3. Profil specifikus menüpontok legalul -->
+  <div class="w-full pt-4 border-t border-blue-900/30 flex flex-col gap-3">
+    <!-- Language Switcher -->
+    <div class="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#144d75]/30 border border-blue-800/50">
+      <button (click)="switchLanguage('hu')" 
+              [ngClass]="currentLanguage === 'hu' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+              class="text-sm font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+        HU
+      </button>
+      <span class="text-blue-600">|</span>
+      <button (click)="switchLanguage('en')" 
+              [ngClass]="currentLanguage === 'en' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+              class="text-sm font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+        EN
+      </button>
+    </div>
+
+    <button (click)="onSettings()" class="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-blue-100 bg-[#0a192f] border border-blue-800/40 hover:bg-[#144d75]/40 hover:text-pink-400 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+      <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      {{ 'nav.settings' | translate }}
+    </button>
+    
+    <button (click)="onLogout()" class="w-full py-2.5 px-4 rounded-xl text-sm font-bold text-pink-400 bg-pink-950/20 border border-pink-900/40 hover:bg-pink-950/40 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      {{ 'nav.logout' | translate }}
+    </button>
+  </div>
+</div>
+
+<!-- MOBILOS MENÜ NEM BEJELENTKEZETT FELHASZNÁLÓK SZÁMÁRA -->
+<div *ngIf="isMobileMenuOpen && !isLoggedIn" 
+     class="md:hidden fixed top-16 left-0 w-full bg-gradient-to-b from-[#0b3c5d] to-[#000a21] border-b border-pink-500/40 z-40 shadow-2xl p-6 flex flex-col items-center gap-4">
+  <a (click)="switchToMusicList()"
+     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg hover:bg-[#144d75]/30">
+    {{ 'nav.music' | translate }}
+  </a>
+  <a (click)="switchToLogin()"
+     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg hover:bg-[#144d75]/30">
+    {{ 'nav.login' | translate }}
+  </a>
+  
+  <!-- Language Switcher Mobile -->
+  <div class="w-full flex items-center justify-center gap-2 py-3 rounded-lg bg-[#144d75]/30 border border-blue-800/50">
+    <button (click)="switchLanguage('hu')" 
+            [ngClass]="currentLanguage === 'hu' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+            class="text-sm font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+      HU
+    </button>
+    <span class="text-blue-600">|</span>
+    <button (click)="switchLanguage('en')" 
+            [ngClass]="currentLanguage === 'en' ? 'text-pink-400 font-bold' : 'text-blue-300'"
+            class="text-sm font-semibold transition-colors hover:text-pink-400 cursor-pointer">
+      EN
+    </button>
+  </div>
+</div>
+
+<!-- Újrafelhasználható SVG Ikon sablon -->
+<ng-template #userIcon>
+  <svg class="w-6 h-6 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+  </svg>
+</ng-template>

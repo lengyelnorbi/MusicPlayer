@@ -1,0 +1,164 @@
+﻿<div class="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0b3c5d] to-[#000a21] flex items-center justify-center px-4 py-8">
+  <div class="w-full max-w-md">
+    <!-- Update User Card -->
+    <div class="bg-[#0a192f]/80 backdrop-blur-md border border-blue-900/40 rounded-2xl shadow-2xl p-8 space-y-6">
+      
+      <!-- Header -->
+      <div class="text-center space-y-3">
+        <h1 class="text-3xl font-extrabold bg-gradient-to-r from-blue-400 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(217,27,92,0.3)]">
+          Update User
+        </h1>
+        <p class="text-blue-300/60 text-sm">Modify user information</p>
+      </div>
+
+      <!-- Form Content -->
+      <form [formGroup]="updateUserForm" (submit)="$event.preventDefault()" class="space-y-5">
+        
+        <!-- Search User Select Box -->
+        <div class="space-y-2 relative">
+          <label for="user-search" class="block text-sm font-semibold text-blue-200">
+            Select User to Update *
+          </label>
+          <input 
+            type="text" 
+            id="user-search"
+            [(ngModel)]="searchTerm" 
+            [ngModelOptions]="{standalone: true}"
+            (input)="onSearchChange($event)"
+            (click)="$event.stopPropagation()"
+            placeholder="Search by username or email..."
+            required
+            [disabled]="isLoading"
+            class="w-full px-4 py-3 bg-[#000a21] border border-blue-800/50 rounded-lg text-white placeholder-blue-400/40 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+          >
+
+          <!-- Search Dropdown -->
+          <div *ngIf="showSearchDropdown && filteredUsers$.length > 0" 
+              class="absolute z-50 w-full mt-1 bg-[#0a192f] border border-blue-800/60 rounded-lg shadow-xl max-h-64 overflow-y-auto">
+            <div *ngFor="let user of filteredUsers$" 
+                (click)="selectUser(user)"
+                class="px-4 py-3 hover:bg-blue-900/30 cursor-pointer transition-colors border-b border-blue-900/20 last:border-0">
+              <p class="text-white font-semibold text-sm">{{ user.username }}</p>
+              <p class="text-blue-300/70 text-xs">{{ user.email }}</p>
+            </div>
+          </div>
+
+          <!-- Click outside to close dropdown -->
+          <div *ngIf="showSearchDropdown" 
+              (click)="closeSearchDropdown()"
+              class="fixed inset-0 z-40 cursor-default"></div>
+        </div>
+
+        <!-- Email Input -->
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-semibold text-blue-200">
+            Email Address *
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email"
+            placeholder="user@example.com"
+            required
+            class="w-full px-4 py-3 bg-[#000a21] border border-blue-800/50 rounded-lg text-white placeholder-blue-400/40 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+          >
+        </div>
+
+        <!-- Username Input (Auto-populated) -->
+        <div class="space-y-2">
+          <label for="username" class="block text-sm font-semibold text-blue-200">
+            Username
+          </label>
+          <input 
+            type="text" 
+            id="username" 
+            formControlName="username"
+            placeholder="Auto-populated from selection"
+            class="w-full px-4 py-3 bg-[#0a192f]/60 border border-blue-700/50 rounded-lg text-white placeholder-blue-400/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:opacity-50"
+          >
+        </div>
+
+        <!-- Generated Password Display - Always visible, just refreshes content -->
+        <div class="space-y-3 pt-4 border-t border-blue-900/30" [class.opacity-50]="isLoading">
+          <label for="generated-password" class="block text-sm font-semibold text-blue-200">
+            New Password (Optional) 🔒
+          </label>
+          
+          <!-- Show placeholder when no password generated, show input when password exists -->
+          <div class="flex gap-2 items-center bg-[#0a192f]/60 p-4 rounded-lg border border-pink-500/30 shadow-lg transition-all duration-200">
+            <!-- Show password input when generated -->
+            <input 
+              *ngIf="!isLoading && generatedPassword"
+              type="password" 
+              id="generated-password"
+              formControlName="password"
+              [value]="generatedPassword" 
+              class="flex-1 px-3 py-2 bg-[#000a21] border border-blue-700/50 rounded text-white font-mono text-sm focus:outline-none cursor-pointer select-all hover:border-pink-500 transition-colors"
+            />
+
+            <!-- Show message when no password yet -->
+            <input 
+              *ngIf="!isLoading && !generatedPassword"
+              type="text" 
+              id="generated-password"
+              value="" 
+              readonly
+              placeholder="Click generate to create a new password (optional)"
+              class="flex-1 px-3 py-2 bg-[#0a192f]/40 border border-blue-700/50 rounded text-blue-400/60 font-mono text-sm focus:outline-none"
+            />
+
+            <button 
+              type="button" 
+              (click)="generatePassword()" 
+              class="px-4 py-2 bg-gradient-to-r from-blue-600 to-pink-600 hover:from-blue-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-md disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
+              [class.success]="isCopySuccess && generatedPassword"
+            >
+              {{ isLoading ? 'Generating...' : (generatedPassword ? '📋 Copy' : 'Generate') }}
+            </button>
+
+          </div>
+
+          <p class="text-xs text-pink-400/80 flex items-center gap-1" *ngIf="!isLoading && generatedPassword">
+            <span class="inline-block w-2 h-2 bg-pink-500 rounded-full animate-pulse"></span>
+            This password will only be shown once. Make sure to copy it!
+          </p>
+        </div>
+
+        <!-- Generated Password Display - Always visible, just refreshes content -->
+        <div class="space-y-3 pt-4 border-t border-blue-900/30" [class.opacity-50]="isLoading">
+          <label for="generated-password" class="block text-sm font-semibold text-blue-200">
+            Confirm Password* 🔒
+          </label>
+          
+          <!-- Show placeholder when no password generated, show input when password exists -->
+          <div class="flex gap-2 items-center bg-[#0a192f]/60 p-4 rounded-lg border border-pink-500/30 shadow-lg transition-all duration-200">
+            <!-- Show password input when generated -->
+            <input 
+              *ngIf="!isLoading && generatedPassword"
+              type="password" 
+              id="confirm-password"
+              formControlName="confirmPassword"
+              class="flex-1 px-3 py-2 bg-[#000a21] border border-blue-700/50 rounded text-white font-mono text-sm focus:outline-none cursor-pointer select-all hover:border-pink-500 transition-colors"
+            />
+            </div>
+        </div>
+
+        <!-- Update User Button -->
+        <button 
+          type="button" 
+          (click)="updateUser()" 
+          [disabled]="isLoading || !selectedUserId"
+          class="w-full py-3 mt-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-green-500/50 cursor-pointer disabled:opacity-50 disabled:hover:scale-100"
+        >
+          {{ isLoading ? 'Updating User...' : (selectedUserId ? 'Update User' : 'Select a User First') }}
+        </button>
+
+    </form>
+    </div>
+
+    <!-- Background Decoration -->
+    <div class="mt-8 text-center">
+      <p class="text-blue-900/50 text-xs">MusicPlayer © 2026</p>
+    </div>
+  </div>
+</div>

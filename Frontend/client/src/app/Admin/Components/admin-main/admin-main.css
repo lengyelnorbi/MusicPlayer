@@ -1,0 +1,31 @@
+/* Main container styling */
+
+.main-container {
+  height: 100vh;
+}
+
+/* Main content transition for sidebar collapse/expand */
+main {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+    margin-left: 0 !important;
+  }
+}
+
+/* Content padding and layout */
+.max-w-7xl {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure content fills available space */
+div[class*="p-4"],
+div[class*="p-6"] {
+  will-change: margin-left;
+}
+
+/* Ensure flex layout works properly */
