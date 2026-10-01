@@ -14,6 +14,7 @@ public interface IMusicService
     Task<List<Music>> GetFavoriteMusicsByUserIdAsync(int userId);
     Task<string> GetGoogleDriveFileIdByMusicIdAsync(int musicID);
     Task<int[]> GetMusicsIDFromDBAsync();
+    Task<List<Music>> GetPlaylistMusics(List<int> playlistIDs, int page, int limit);
     // Task<List<Music>> GetMusicsDataAsync();
     // Task UpdateMusicDataInDBFromGoogleDrive();
     // Task UploadMusicToGoogleDriveAsync(Music music, Stream fileStream);

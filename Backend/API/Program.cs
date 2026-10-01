@@ -43,6 +43,7 @@ builder.Services.AddDbContext<MusicPlayerDbContext>(options =>
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMusicService, MusicService>();
+builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();

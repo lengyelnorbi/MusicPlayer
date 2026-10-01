@@ -16,6 +16,20 @@ public class PlaylistService : IPlaylistService
         _dbContext = dbContext;
     }
 
+    public async Task<List<Playlist>> GetPlaylistsAsync(int userID)
+    {
+        try
+        {
+            var playlists = await _dbContext.Playlists.ToListAsync();
+            return playlists;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
+            return new List<Playlist>();
+        }
+    }
+
     public async Task<Playlist> AddPlaylistAsync(Playlist playlist)
     {
             try
@@ -62,6 +76,28 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    public async Task<Playlist> GetPlaylistByIDAsync(int playlistID)
+    {
+        try
+        {
+            var playlist = await _dbContext.Playlists.Include(p => p.Musics).FirstOrDefaultAsync(p => p.ID == playlistID);
+            if (playlist != null)
+            {
+                return playlist;
+            }
+            else
+            {
+                _logger.LogWarning("Playlist with ID {PlaylistID} not found.", playlistID);
+                return null!;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching playlist with ID: {PlaylistID}", playlistID);
+            return null!;
+        }
+    }
+
     public async Task<bool> DeletePlaylistAsync(int id)
     {
         try
@@ -86,54 +122,32 @@ public class PlaylistService : IPlaylistService
         }
     }
 
-    public async Task<Playlist> GetPlaylistByIdAsync(int id)
+    public async Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userID)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<Playlist>> GetUserFollowedPlaylistsAsync(int userID)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<Playlist>> GetUserPlaylistsAsync(int userID)
     {
         try
         {
-            var playlist = await _dbContext.Playlists.FindAsync(id);
-            if (playlist != null)
-            {
-                return playlist;
-            }
-            else
-            {
-                _logger.LogWarning("Playlist with ID {Id} not found.", id);
-                return null!;
-            }
+            var userPlaylistsID = await _dbContext.UserPlaylists.Where(p => p.UserID == userID).Select(p => p.PlaylistID).ToListAsync();
+            _logger.LogInformation("Fetched playlist IDs for user ID {UserID}: {PlaylistIDs}", userID, string.Join(", ", userPlaylistsID));
+            var userplaylistTable = await _dbContext.UserPlaylists.ToListAsync();
+            _logger.LogInformation("Fetched UserPlaylists table: {UserPlaylists}", string.Join(", ", userplaylistTable.Select(up => $"UserID: {up.UserID}, PlaylistID: {up.PlaylistID}")));
+            var playlists = await _dbContext.Playlists.Where(p => userPlaylistsID.Contains(p.ID)).ToListAsync();
+            return playlists;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while fetching playlist with ID: {Id}", id);
-            return null!;
+            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
+            return new List<Playlist>();
         }
-    }
-
-    public async Task<IEnumerable<Playlist>> GetPlaylistsAsync()
-    {
-        try
-        {
-            return await _dbContext.Playlists.ToListAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while fetching playlists.");
-            return Enumerable.Empty<Playlist>();
-        }
-    }
-
-    public async Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<List<Playlist>> GetUserFollowedPlaylistsAsync(int userId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<List<Playlist>> GetUserPlaylistsAsync(int userId)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<Playlist> UpdatePlaylistAsync(Playlist playlist)

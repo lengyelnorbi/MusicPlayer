@@ -6,7 +6,7 @@ public class Playlist
     public string Name { get; set; }
     
     // Store related IDs for many-to-many relationships
-    public List<int> Musics { get; set; } = new();
+    public List<Music> Musics { get; set; } = new();
 
     public Playlist(int ID, string Name)
     {

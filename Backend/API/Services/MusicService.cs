@@ -31,9 +31,9 @@ public class MusicService : IMusicService
         }
     }
 
-    public Task<Music[]> GetPlaylistMusics(int[] playlistIDs, int page, int limit)
+    public async Task<List<Music>> GetPlaylistMusics(List<int> playlistIDs, int page, int limit)
     {
-        var musics = await _dbContext.music.Where(music => playlistIDs.Contains(music.id)).Skip((page - 1) * limit).Take(limit).ToListAsync();
+        var musics = await _dbContext.Musics.Where(music => playlistIDs.Contains(music.ID)).Skip((page - 1) * limit).Take(limit).ToListAsync();
         return musics;
     }
 

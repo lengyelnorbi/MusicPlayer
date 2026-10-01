@@ -26,9 +26,10 @@ export class MusicList implements OnInit {
 
   ngOnInit() {
     this.musics$ = this.musicService.getMusicList();
-    
-    if(sessionStorage.getItem('userSourceLoggedInUsername')) {
-      this.loggedIn = true;
+    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      if (sessionStorage.getItem('userSourceLoggedInUsername')) {
+      // A kódod többi része...
+      }
     }
   }
 

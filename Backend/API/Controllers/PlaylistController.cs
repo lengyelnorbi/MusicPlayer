@@ -1,6 +1,7 @@
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
+using API.Services;
 
 namespace API.Controllers;
 
@@ -10,39 +11,46 @@ public class PlaylistController : ControllerBase
 {
     private readonly ILogger<PlaylistController> _logger;
     private readonly IPlaylistService _playlistService;
+    private readonly IMusicService _musicService;
 
-    public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService playlistService)
+    public PlaylistController(ILogger<PlaylistController> logger, IPlaylistService playlistService, IMusicService musicService)
     {
         _logger = logger;
         _playlistService = playlistService;
+        _musicService = musicService;
     }
 
     [HttpGet("", Name = "GetPlaylists")]
-    public IEnumerable<Playlist> Get()
+    public async Task<IEnumerable<Playlist>> GetPlaylists(int userID)
     {
-        return _playlistService.GetPlaylistsAsync().Result;
-    }
-
-    [HttpGet("playlists/{userID}", Name = "GetUserPlaylists")]
-    public IEnumerable<Playlist> Get(int userID)
-    {
-        return _playlistService.GetPlaylistsAsync().Result;
-    }
-
-    [HttpGet("playlists/followed", Name = "GetUserFollowedPlaylists")]
-    public IEnumerable<Playlist> Get(int userID)
-    {
-        return _playlistService.GetUserFollowedPlaylists(userID);
-    }
-
-    [HttpGet("playlists/{id}"), Name = "GetPlaylistByID"]
-    public IEnumerable<Playlist> Get(string playlistID, [FromQuery] int page, [FromQuery] int limit)
-    {
-        var playlist = await _playlistService.GetPlaylistByID(playlistID);
-        if(playlist){
-            MusicService _musicService = new MusicService();
-            await _musicService.GetPlaylistMusics(playlist.musics, page, limit)
+        try
+        {
+            var playlists = await _playlistService.GetPlaylistsAsync(userID);
+            return playlists;
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
+            return new List<Playlist>();
+        }
+    }
+
+    [HttpGet("user/{userID}", Name = "GetUserPlaylists")]
+    public IEnumerable<Playlist> GetUserPlaylists(int userID)
+    {
+        return _playlistService.GetUserPlaylistsAsync(userID).Result;
+    }
+
+    [HttpGet("followed", Name = "GetUserFollowedPlaylists")]
+    public async Task<IEnumerable<Playlist>> GetFollowedPlaylists(int userID)
+    {
+        return await _playlistService.GetUserFollowedPlaylistsAsync(userID);
+    }
+
+    [HttpGet("{id}", Name = "GetPlaylistByID")]
+    public async Task<Playlist> GetPlaylistByID(int playlistID, [FromQuery] int page, [FromQuery] int limit)
+    {
+        return await _playlistService.GetPlaylistByIDAsync(playlistID);
     }
 
     [HttpPost("", Name = "AddPlaylist")]
