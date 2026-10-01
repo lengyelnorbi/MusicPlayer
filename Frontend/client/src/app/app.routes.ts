@@ -21,6 +21,11 @@ export const routes: Routes = [
       loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
       canActivate: [GlobalAuthGuard], data: { guardSource: 'user' }
     },
+    {
+      path : ':lang/home/playlists/:id',
+      loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
+      canActivate: [GlobalAuthGuard], data: { guardSource: 'user' }
+    },
     
     // Login route with language support
     {

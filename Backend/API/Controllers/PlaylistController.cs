@@ -2,6 +2,7 @@ using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Services;
+using API.Utils;
 
 namespace API.Controllers;
 
@@ -21,17 +22,18 @@ public class PlaylistController : ControllerBase
     }
 
     [HttpGet("", Name = "GetPlaylists")]
-    public async Task<IEnumerable<Playlist>> GetPlaylists(int userID)
+    public async Task<PagedResult<Playlist>> GetPlaylists([FromQuery] int page, [FromQuery] int limit)
     {
         try
         {
-            var playlists = await _playlistService.GetPlaylistsAsync(userID);
+            var playlists = await _playlistService.GetPlaylistsAsync(page, limit);
+            _logger.LogInformation("Fetched playlists for page: {Page}, limit: {Limit}", page, limit);
             return playlists;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
-            return new List<Playlist>();
+            _logger.LogError(ex, "An error occurred while fetching playlists!");
+            return new PagedResult<Playlist>();
         }
     }
 
@@ -47,7 +49,7 @@ public class PlaylistController : ControllerBase
         return await _playlistService.GetUserFollowedPlaylistsAsync(userID);
     }
 
-    [HttpGet("{id}", Name = "GetPlaylistByID")]
+    [HttpGet("{playlistID}", Name = "GetPlaylistByID")]
     public async Task<Playlist> GetPlaylistByID(int playlistID, [FromQuery] int page, [FromQuery] int limit)
     {
         return await _playlistService.GetPlaylistByIDAsync(playlistID);

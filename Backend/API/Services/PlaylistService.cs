@@ -2,6 +2,7 @@ using API.Data;
 using API.Services.Interfaces;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using API.Utils;
 
 namespace API.Services;
 
@@ -16,17 +17,36 @@ public class PlaylistService : IPlaylistService
         _dbContext = dbContext;
     }
 
-    public async Task<List<Playlist>> GetPlaylistsAsync(int userID)
+    public async Task<PagedResult<Playlist>> GetPlaylistsAsync(int page, int limit)
     {
         try
         {
-            var playlists = await _dbContext.Playlists.ToListAsync();
-            return playlists;
+            var query = _dbContext.Playlists
+            .Select(at => new Playlist
+            {
+                ID = at.ID,
+                Name = at.Name,
+                MusicCount = _dbContext.PlaylistMusics.Count(pm => pm.PlaylistID == at.ID)
+            });
+
+            var totalItemCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+
+            var items = await query
+                .Skip((page - 1) * limit)
+                .Take(limit)
+                .ToListAsync(); 
+
+            return new PagedResult<Playlist>{
+                Items = items,
+                TotalItemCount = totalItemCount,
+                TotalPages = totalPages,
+            };
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
-            return new List<Playlist>();
+            _logger.LogError(ex, "An error occurred while fetching playlists for page: {Page}, limit: {Limit}", page, limit);
+            return new PagedResult<Playlist>();
         }
     }
 
@@ -80,9 +100,22 @@ public class PlaylistService : IPlaylistService
     {
         try
         {
-            var playlist = await _dbContext.Playlists.Include(p => p.Musics).FirstOrDefaultAsync(p => p.ID == playlistID);
+            var playlist = await _dbContext.Playlists
+                .FirstOrDefaultAsync(p => p.ID == playlistID);
+
             if (playlist != null)
             {
+                playlist.Musics = await _dbContext.PlaylistMusics
+                    .Where(pm => pm.PlaylistID == playlistID)
+                    .Select(pm => pm.Music)
+                    .ToListAsync();
+
+                _logger.LogInformation(
+                    "Fetched playlist with ID {PlaylistID}: {PlaylistName}, Music count: {Count}",
+                    playlistID,
+                    playlist.Name,
+                    playlist.Musics.Count);
+
                 return playlist;
             }
             else

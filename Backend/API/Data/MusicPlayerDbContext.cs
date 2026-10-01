@@ -55,6 +55,7 @@ public class MusicPlayerDbContext : DbContext
             entity.HasKey(e => e.ID);
             entity.Property(e => e.ID).ValueGeneratedOnAdd();
             entity.Property(e => e.Name).HasMaxLength(255).IsRequired();
+            entity.Property(e => e.MusicCount).HasDefaultValue(0);
             entity.Ignore(e => e.Musics); // Ignore the Musics property for database mapping
         });
 

@@ -1,4 +1,5 @@
 using API.Models;
+using API.Utils;
 
 namespace API.Services.Interfaces;
 
@@ -10,5 +11,5 @@ public interface IPlaylistService{
     Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userID);
     Task<List<Playlist>> GetUserFollowedPlaylistsAsync(int userID);
     Task<Playlist> GetPlaylistByIDAsync(int playlistID);
-    Task<List<Playlist>> GetPlaylistsAsync(int userID);
+    Task<PagedResult<Playlist>> GetPlaylistsAsync(int page, int limit);
 }
