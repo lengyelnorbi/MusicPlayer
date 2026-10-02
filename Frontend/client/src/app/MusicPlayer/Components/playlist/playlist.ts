@@ -8,6 +8,7 @@ import { PaginationCountPipe } from '../../../Shared/Pipes/pagination-count-pipe
 import { PagedResult } from '../../../Shared/Utils/PagedResult';
 import * as Models from '../../Models/playlist';
 import { of } from 'rxjs/internal/observable/of';
+import { map } from 'rxjs/internal/operators/map';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { of } from 'rxjs/internal/observable/of';
   styleUrl: './playlist.css',
 })
 export class Playlist {
-  playlists$!: Observable<PagedResult<Models.Playlist>>;
+  playlists$!: Observable<Models.Playlist[]>;
   displayedColumns = ['id', 'name', 'musicCount'];
   selectedPlaylistID: number | null = 0; // Track which token is flipped
   maxItemCount: number = 0; // Default items per page, can be updated based on API response
@@ -33,23 +34,60 @@ export class Playlist {
   constructor(private playlistService: PlaylistService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.loadPlaylistByID(Number(id));
-    } else {
-      this.loadAllPlaylists();
+    this.loggedIn = false; //For development purposes, set to true. In production, this should be determined by actual authentication logic.
+    if(this.loggedIn) {
+      this.setUserPlaylists(1);
     }
-    // this.playlistService.getUserPlaylists(1).then((userPlaylists) => {
-    //   console.log('Fetched user playlists:', userPlaylists);
-    // }).catch((error) => {
-    //   console.error('Error fetching user playlists:', error);
-    // });
+    else{
+      this.setAllPlaylists();
+    }
   }
 
-  loadAllPlaylists(): void {
-    this.playlists$ = this.playlistService.getPlaylists();
-    console.log('Fetched all playlists:', this.playlists$);
-  }
+  setAllPlaylists(): void {
+      console.log('Initializing Playlist component');
+      console.trace('Playlist component initialized, fetching Playlists');
+      this.playlists$ = this.playlistService.getAllPlaylists(this.currentPage, this.limit).pipe(
+        map(result => {
+          this.maxItemCount = result.totalItemCount;
+          this.maxPageCount = result.totalPages;
+          result.items.forEach(playlist => {
+            console.log('Fetched Playlist:', playlist);
+          });
+          return result.items ?? [];
+        })
+      );
+    }
+
+    setUserPlaylists(userID: number): void {
+      console.log('Initializing Playlist component');
+      console.trace('Playlist component initialized, fetching Playlists');
+      this.playlists$ = this.playlistService.getUserPlaylists(userID, this.currentPage, this.limit).pipe(
+        map(result => {
+          this.maxItemCount = result.totalItemCount;
+          this.maxPageCount = result.totalPages;
+          result.items.forEach(playlist => {
+            console.log('Fetched Playlist:', playlist);
+          });
+          return result.items ?? [];
+        })
+      );
+    }
+
+  
+    goToPage(page: number): void {
+      if (page < 1 || page > this.maxPageCount) {
+        console.warn(`Invalid page number: ${page}. Must be between 1 and ${this.maxPageCount}.`);
+        return;
+      }
+      this.currentPage = page;
+      console.log(`Navigating to page ${page} of Playlists`);
+      if(this.loggedIn) {
+        this.setUserPlaylists(1);
+      }
+      else{
+        this.setAllPlaylists();
+      }
+    }
 
   loadPlaylistByID(id: number): void {
     this.playlistService.getPlaylistByID(1).then((playlist) => {
@@ -80,11 +118,5 @@ export class Playlist {
   onSave(id: number) {
     // Implement the logic to save the playlist
     console.log(`Saving playlist with ID ${id}.`);
-  }
-
-  goToPage(page: number) {
-    if (page < 1 || page > this.maxPageCount) {
-      return; // Invalid page number
-    } 
   }
 }

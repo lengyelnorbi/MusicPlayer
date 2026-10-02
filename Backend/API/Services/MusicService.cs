@@ -2,6 +2,7 @@ using API.Models;
 using API.Services.Interfaces;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
+using API.Utils;
 
 namespace API.Services;
 
@@ -66,12 +67,29 @@ public class MusicService : IMusicService
         }
     }
 
-    public async Task<IEnumerable<Music>> GetMusicsAsync(int page = 1, int limit = 10)
+    public async Task<PagedResult<Music>> GetMusicsAsync(int page = 1, int limit = 10)
     {
-        _logger.LogInformation("Fetching music data from database...");
-        List<Music> musics = await _dbContext.Musics.Skip((page - 1) * limit).Take(limit).ToListAsync();
-        _logger.LogInformation($"Fetched {musics.Count} music records.");
-        return musics;
+        var query = _dbContext.Musics
+            .Select(at => new Music
+            {
+                ID = at.ID,
+                Title = at.Title,
+                AddedAt = at.AddedAt,
+            });
+
+        var totalItemCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+
+        var items = await query
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync(); 
+
+        return new PagedResult<Music>{
+            Items = items,
+            TotalItemCount = totalItemCount,
+            TotalPages = totalPages,
+        };
     }
 
     public async Task<int[]> GetMusicsIDFromDBAsync()

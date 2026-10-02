@@ -50,6 +50,62 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    public async Task AddMusicToPlaylistAsync(int playlistID, int musicID)
+    {
+        try
+        {
+            var playlistMusic = new PlaylistMusic
+            {
+                PlaylistID = playlistID,
+                MusicID = musicID
+            };
+
+            await _dbContext.PlaylistMusics.AddAsync(playlistMusic);
+            await _dbContext.SaveChangesAsync();
+
+            var updatedPlaylist = await _dbContext.Playlists
+                .FirstOrDefaultAsync(p => p.ID == playlistID);
+            
+            if(updatedPlaylist != null)
+            {
+                updatedPlaylist.MusicCount += 1;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while adding music ID {MusicID} to playlist ID {PlaylistID}", musicID, playlistID);
+        }
+    }
+
+    public async Task RemoveMusicFromPlaylistAsync(int playlistID, int musicID)
+    {
+        try
+        {
+            var playlistMusic = await _dbContext.PlaylistMusics
+                .FirstOrDefaultAsync(pm => pm.PlaylistID == playlistID && pm.MusicID == musicID);
+
+            if (playlistMusic != null)
+            {
+                _dbContext.PlaylistMusics.Remove(playlistMusic);
+                await _dbContext.SaveChangesAsync();
+
+                var updatedPlaylist = await _dbContext.Playlists
+                    .FirstOrDefaultAsync(p => p.ID == playlistID);
+                
+                if(updatedPlaylist != null && updatedPlaylist.MusicCount > 0)
+                {
+                    updatedPlaylist.MusicCount -= 1;
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while removing music ID {MusicID} from playlist ID {PlaylistID}", musicID, playlistID);
+        }
+    }
+
     public async Task<Playlist> AddPlaylistAsync(Playlist playlist)
     {
             try
@@ -165,21 +221,46 @@ public class PlaylistService : IPlaylistService
         throw new NotImplementedException();
     }
 
-    public async Task<List<Playlist>> GetUserPlaylistsAsync(int userID)
+    public async Task<PagedResult<Playlist>> GetUserPlaylistsAsync(int userID, int page, int limit)
     {
         try
         {
-            var userPlaylistsID = await _dbContext.UserPlaylists.Where(p => p.UserID == userID).Select(p => p.PlaylistID).ToListAsync();
-            _logger.LogInformation("Fetched playlist IDs for user ID {UserID}: {PlaylistIDs}", userID, string.Join(", ", userPlaylistsID));
-            var userplaylistTable = await _dbContext.UserPlaylists.ToListAsync();
-            _logger.LogInformation("Fetched UserPlaylists table: {UserPlaylists}", string.Join(", ", userplaylistTable.Select(up => $"UserID: {up.UserID}, PlaylistID: {up.PlaylistID}")));
-            var playlists = await _dbContext.Playlists.Where(p => userPlaylistsID.Contains(p.ID)).ToListAsync();
-            return playlists;
+            var userPlaylistIDs = _dbContext.UserPlaylists
+            .Where(p => p.UserID == userID)
+            .Select(at => new Playlist
+            {
+                ID = at.Playlist.ID,
+            });
+
+            _logger.LogInformation("userPLaylistIDs: {UserPlaylistIDs}", userPlaylistIDs); ;
+
+            var query = _dbContext.Playlists
+            .Where(p => userPlaylistIDs.Any(up => up.ID == p.ID))
+            .Select(at => new Playlist
+            {
+                ID = at.ID,
+                Name = at.Name,
+                MusicCount = _dbContext.PlaylistMusics.Count(pm => pm.PlaylistID == at.ID)
+            });
+
+            var totalItemCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+
+            var items = await query
+                .Skip((page - 1) * limit)
+                .Take(limit)
+                .ToListAsync(); 
+
+            return new PagedResult<Playlist>{
+                Items = items,
+                TotalItemCount = totalItemCount,
+                TotalPages = totalPages,
+            };
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while fetching playlists for user ID: {UserID}", userID);
-            return new List<Playlist>();
+            _logger.LogError(ex, "An error occurred while fetching playlists for page: {Page}, limit: {Limit}", page, limit);
+            return new PagedResult<Playlist>();
         }
     }
 

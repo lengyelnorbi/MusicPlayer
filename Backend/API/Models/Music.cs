@@ -7,6 +7,10 @@ public class Music
     public string? File_id { get; set; }
     public DateOnly? AddedAt { get; set; }
 
+    public Music()
+    {
+    }
+
     public Music(int ID, string? Title, string? File_id)
     {
         this.ID = ID;

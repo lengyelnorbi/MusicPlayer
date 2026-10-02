@@ -38,9 +38,9 @@ public class PlaylistController : ControllerBase
     }
 
     [HttpGet("user/{userID}", Name = "GetUserPlaylists")]
-    public IEnumerable<Playlist> GetUserPlaylists(int userID)
+    public PagedResult<Playlist> GetUserPlaylists(int userID, [FromQuery] int page, [FromQuery] int limit)
     {
-        return _playlistService.GetUserPlaylistsAsync(userID).Result;
+        return _playlistService.GetUserPlaylistsAsync(userID, page, limit).Result;
     }
 
     [HttpGet("followed", Name = "GetUserFollowedPlaylists")]

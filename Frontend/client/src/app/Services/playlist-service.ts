@@ -15,14 +15,14 @@ export class PlaylistService {
   constructor(private apiConfigService: ApiConfigService,
     private http: HttpClient) { }
 
-  async getUserPlaylists(userID: number): Promise<any> {
-    const endpoint = this.apiConfigService.getEndpoint(`/api/playlist/user/${userID}`);
-    const response = await fetch(endpoint);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  }
+  // async getUserPlaylists(userID: number): Promise<any> {
+  //   const endpoint = this.apiConfigService.getEndpoint(`/api/playlist/user/${userID}`);
+  //   const response = await fetch(endpoint);
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error! status: ${response.status}`);
+  //   }
+  //   return await response.json();
+  // }
 
   async getPlaylistByID(playlistID: number): Promise<any> {
     const endpoint = this.apiConfigService.getEndpoint(`/api/playlist/${playlistID}`);
@@ -33,7 +33,22 @@ export class PlaylistService {
     return await response.json();
   }
 
-  getPlaylists(page: number = 1, limit: number = 10): Observable<PagedResult<Playlist>> {
+  getUserPlaylists(userID: number, page: number = 1, limit: number = 10): Observable<PagedResult<Playlist>> {
+    const params = new URLSearchParams();
+    if (page !== undefined) params.append('page', page.toString());
+    if (limit !== undefined) params.append('limit', limit.toString());
+    const queryString = params.toString() ? `?${params.toString()}` : '';
+    const endpoint = this.apiConfigService.getEndpoint(`/api/playlist/user/${userID}${queryString}`);
+    return this.http.get<PagedResult<Playlist>>(endpoint).pipe(
+        startWith({ totalItemCount: 0, totalPages: 0, items: [] }),
+        catchError((error) => {
+          console.error('Fetch error:', error);
+          return of({ totalItemCount: 0, totalPages: 0, items: [] } as PagedResult<Playlist>);  // Explicitly type as AccessToken[] or RefreshToken[]
+        })
+    );
+  }
+
+  getAllPlaylists(page: number = 1, limit: number = 10): Observable<PagedResult<Playlist>> {
     const params = new URLSearchParams();
     if (page !== undefined) params.append('page', page.toString());
     if (limit !== undefined) params.append('limit', limit.toString());
@@ -43,7 +58,7 @@ export class PlaylistService {
         startWith({ totalItemCount: 0, totalPages: 0, items: [] }),
         catchError((error) => {
           console.error('Fetch error:', error);
-          return of<PagedResult<Playlist>>({ totalItemCount: 0, totalPages: 0, items: [] } as (PagedResult<Playlist> | PagedResult<Playlist>));  // Explicitly type as AccessToken[] or RefreshToken[]
+          return of({ totalItemCount: 0, totalPages: 0, items: [] } as PagedResult<Playlist>);  // Explicitly type as AccessToken[] or RefreshToken[]
         })
     );
   }

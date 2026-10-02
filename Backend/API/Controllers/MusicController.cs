@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Services.Interfaces;
+using API.Utils;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers;
@@ -22,7 +23,7 @@ public class MusicController : ControllerBase
 
 
     [HttpGet("", Name = "GetMusics")]
-    public async Task<IEnumerable<Music>> Get([FromQuery] int page, [FromQuery] int limit)
+    public async Task<PagedResult<Music>> Get([FromQuery] int page, [FromQuery] int limit)
     {
         if (!validateGetMusicsParameters(page, limit))
         {

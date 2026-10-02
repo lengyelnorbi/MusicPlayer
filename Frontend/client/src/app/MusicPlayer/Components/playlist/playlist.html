@@ -1,32 +1,20 @@
-<div class="flex flex-col test min-h-screen bg-gradient-to-b from-[#0a1628] to-[#000a21] text-white pb-20">
-  <div class="shrink-0 pt-10 px-6">
-    <div class="text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
-          {{ maxItemCount | paginationCount: currentPage: limit }}
+<div class="pt-20 px-6 min-h-screen bg-gradient-to-b from-[#0b3c5d] via-[#000a21] to-[#1d001d] text-white">
+    <div class="shrink-0 pt-10 px-6">
+      <div class="text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
+            {{ maxItemCount | paginationCount: currentPage: limit }}
+      </div>
+      <div  class="flex justify-center flex-row gap-2 text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
+        <button *ngFor="let page of [].constructor(maxPageCount); let i = index;" (click)="goToPage(i + 1)"
+                [ngClass]="currentPage === i + 1 ? 'text-pink-300 hover:text-pink-100 hover:bg-pink-900/30' : 'text-blue- 300 hover:text-blue-100 hover:bg-blue-900/40'"
+                class="px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer w-content">
+          {{ i + 1 }}
+        </button>
+      </div>
     </div>
-    <div  class="flex justify-center flex-row gap-2 text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
-      <button *ngFor="let page of [].constructor(maxPageCount); let i = index;" (click)="goToPage(i + 1)"
-              [ngClass]="currentPage === i + 1 ? 'text-pink-300 hover:text-pink-100 hover:bg-pink-900/30' : 'text-blue- 300 hover:text-blue-100 hover:bg-blue-900/40'"
-              class="px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer w-content">
-        {{ i + 1 }}
-      </button>
-    </div>
-  </div>
-  <div class="flex-1 overflow-y-auto">
-    <!-- Cím selymes magenta-kék átmenettel
-    <h1 class="text-3xl font-extrabold mb-8 tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
-      Zenék
-    </h1> -->
-
     <div #scrollable class="space-y-4 px-12 w-full">
-      
-        
-        <!-- Flip Container -->
         <div class="space-y-4 pb-12">
-      <!-- Ciklus a zenéken -->
-        <ng-container *ngIf="playlists$ | async as result">
-
             <div
-            *ngFor="let playlist of result.items"
+            *ngFor="let playlist of playlists$ | async"
             [ngClass]="{
                 'scale-x-[1.04] scale-y-[1.06] bg-gradient-to-r from-[#d91b5c] to-[#9a0f74] shadow-[0_0_25px_rgba(217,27,92,0.55)] border-pink-400 z-20':
                 selectedPlaylistID === playlist.id
@@ -85,12 +73,9 @@
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.5 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                 {{ 'musicOptions.addToFavorites' | translate }}
                 </button>
-
             </div>
-            </div>
-            </div>
-        </ng-container>
-
+          </div>
+        </div>
     </div>
   </div>
 </div>
