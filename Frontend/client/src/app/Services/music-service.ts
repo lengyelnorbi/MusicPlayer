@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Music } from '../MusicPlayer/Models/music';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { startWith, catchError, delay } from 'rxjs/operators';
+import { startWith, catchError, delay, shareReplay } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ApiConfigService } from './api-config-service';
-import { PagedResult } from '../Shared/Utils/PagedResult';
+import { MusicListResponse } from '../MusicPlayer/Models/music-list-response';
 
 @Injectable({
   providedIn: 'root',
@@ -18,19 +18,21 @@ export class MusicService {
   }
 
   // Example method to fetch music data
-  getMusicList(page?: number, limit?: number): Observable<PagedResult<Music>> {
+  getMusicList(page?: number, limit?: number): Observable<MusicListResponse> {
     const params = new URLSearchParams();
     if (page !== undefined) params.append('page', page.toString());
     if (limit !== undefined) params.append('limit', limit.toString());
     
     const queryString = params.toString() ? `?${params.toString()}` : '';
     const endpoint = this.apiConfig.getEndpoint(`/api/music${queryString}`);
-    return this.http.get<PagedResult<Music>>(endpoint).pipe(
-      startWith({ totalItemCount: 0, totalPages: 0, items: [] }),
+    return this.http.get<MusicListResponse>(endpoint, {
+      withCredentials: true
+    }).pipe(
       catchError((error) => {
         console.error('Fetch error:', error);
-        return of<PagedResult<Music>>({ totalItemCount: 0, totalPages: 0, items: [] } as (PagedResult<Music> | PagedResult<Music>));  // Explicitly type as AccessToken[] or RefreshToken[]
-      })
+        return of({ totalItemCount: 0, totalPages: 0, items: [], userPlaylists: [] } as MusicListResponse);
+      }),
+      shareReplay(1)
     );
   }
 
@@ -61,9 +63,16 @@ export class MusicService {
     return response.ok;
   }
 
-  async getMusicsPlaylists(musicID: number): Promise<any> {
-    const endpoint = this.apiConfig.getEndpoint(`/api/music/${musicID}/playlists`);
-    const response = await fetch(endpoint);
+  async getMusicsPlaylists(musicIDs: number[]): Promise<any> {
+    const endpoint = this.apiConfig.getEndpoint(`/api/musicplaylists`);
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ musicIDs }),
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

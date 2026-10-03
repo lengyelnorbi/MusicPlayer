@@ -13,20 +13,24 @@
   <div *ngIf="isLoggedIn" class="hidden md:flex w-2/4 justify-center">
     <ul class="flex items-center gap-8 text-m font-bold text-blue-100">
       <li>
-        <a (click)="switchToMusicList()" 
-           [ngClass]="{'text-pink-400': activeTab === 'music-list', 'text-blue-100': activeTab !== 'music-list'}"
-           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2">
+        <a #musicLink="routerLinkActive"
+           [routerLink]="['/', currentLanguage, 'home', 'music-player']"
+           routerLinkActive="text-pink-400"
+           [routerLinkActiveOptions]="{ exact: true }"
+           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2 text-blue-100">
           {{ 'nav.music' | translate }}
-          <span [ngClass]="{'w-full': activeTab === 'music-list', 'w-0': activeTab !== 'music-list'}"
+          <span [ngClass]="{'w-full': musicLink.isActive, 'w-0': !musicLink.isActive}"
                 class="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-pink-500 transition-all duration-300 group-hover:w-full"></span>
         </a>
       </li>
       <li>
-        <a (click)="switchToPlaylists()" 
-           [ngClass]="{'text-pink-400': activeTab === 'playlists', 'text-blue-100': activeTab !== 'playlists'}"
-           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2">
+        <a #playlistsLink="routerLinkActive"
+           [routerLink]="['/', currentLanguage, 'home', 'playlists']"
+           routerLinkActive="text-pink-400"
+           [routerLinkActiveOptions]="{ exact: true }"
+           class="hover:text-pink-400 transition-colors duration-200 cursor-pointer relative group py-2 text-blue-100">
           {{ 'nav.playlists' | translate }}
-          <span [ngClass]="{'w-full': activeTab === 'playlists', 'w-0': activeTab !== 'playlists'}"
+          <span [ngClass]="{'w-full': playlistsLink.isActive, 'w-0': !playlistsLink.isActive}"
                 class="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-pink-500 transition-all duration-300 group-hover:w-full"></span>
         </a>
       </li>
@@ -38,13 +42,19 @@
     
     <!-- NEM BEJELENTKEZETT: Zenék és Login gomb jobbra igazítva -->
     <div *ngIf="!isLoggedIn" class="hidden md:flex items-center gap-6">
-      <a (click)="switchToMusicList()"
-         [ngClass]="{'text-pink-400': activeTab === 'music-list', 'text-blue-100': activeTab !== 'music-list'}"
+      <a #musicLinkDesktop="routerLinkActive"
+         [routerLink]="['/', currentLanguage, 'home', 'music-player']"
+         routerLinkActive="text-pink-400"
+         [routerLinkActiveOptions]="{ exact: true }"
+         [ngClass]="{'text-pink-400': musicLinkDesktop.isActive}"
          class="text-sm font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer py-2">
         {{ 'nav.music' | translate }}
       </a>
-      <a (click)="switchToLogin()"
-         [ngClass]="{'text-pink-400': activeTab === 'login', 'text-blue-100': activeTab !== 'login'}"
+      <a #loginLinkDesktop="routerLinkActive"
+         [routerLink]="['/', currentLanguage, 'home', 'login']"
+         routerLinkActive="text-pink-400"
+         [routerLinkActiveOptions]="{ exact: true }"
+         [ngClass]="{'text-pink-400': loginLinkDesktop.isActive}"
          class="text-sm font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer py-2">
         {{ 'nav.login' | translate }}
       </a>
@@ -122,13 +132,19 @@
   <!-- 2. Alapértelmezett navigációs menüpontok -->
   <ul class="w-full text-center space-y-3 text-base font-semibold text-blue-100 mb-6">
     <li>
-      <a (click)="switchToMusicList()" 
-         [ngClass]="{'bg-[#144d75]/60 text-pink-400': activeTab === 'music-list', 'bg-[#144d75]/20': activeTab !== 'music-list'}"
+      <a #musicMobileLoggedLink="routerLinkActive"
+         [routerLink]="['/', currentLanguage, 'home', 'music-player']"
+         routerLinkActive
+         [routerLinkActiveOptions]="{ exact: true }"
+         [ngClass]="{'bg-[#144d75]/60 text-pink-400': musicMobileLoggedLink.isActive, 'bg-[#144d75]/20': !musicMobileLoggedLink.isActive}"
          class="block py-2.5 rounded-lg hover:bg-[#144d75]/50 hover:text-pink-400 transition-all cursor-pointer">{{ 'nav.music' | translate }}</a>
     </li>
     <li>
-      <a (click)="switchToPlaylists()" 
-         [ngClass]="{'bg-[#144d75]/60 text-pink-400': activeTab === 'playlists', 'bg-[#144d75]/20': activeTab !== 'playlists'}"
+      <a #playlistsMobileLoggedLink="routerLinkActive"
+         [routerLink]="['/', currentLanguage, 'home', 'playlists']"
+         routerLinkActive
+         [routerLinkActiveOptions]="{ exact: true }"
+         [ngClass]="{'bg-[#144d75]/60 text-pink-400': playlistsMobileLoggedLink.isActive, 'bg-[#144d75]/20': !playlistsMobileLoggedLink.isActive}"
          class="block py-2.5 rounded-lg hover:bg-[#144d75]/50 hover:text-pink-400 transition-all cursor-pointer">{{ 'nav.playlists' | translate }}</a>
     </li>
   </ul>
@@ -165,12 +181,20 @@
 <!-- MOBILOS MENÜ NEM BEJELENTKEZETT FELHASZNÁLÓK SZÁMÁRA -->
 <div *ngIf="isMobileMenuOpen && !isLoggedIn" 
      class="md:hidden fixed top-16 left-0 w-full bg-gradient-to-b from-[#0b3c5d] to-[#000a21] border-b border-pink-500/40 z-40 shadow-2xl p-6 flex flex-col items-center gap-4">
-  <a (click)="switchToMusicList()"
-     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg hover:bg-[#144d75]/30">
+  <a #musicLinkMobile="routerLinkActive"
+     [routerLink]="['/', currentLanguage, 'home', 'music-player']"
+     routerLinkActive
+     [routerLinkActiveOptions]="{ exact: true }"
+     [ngClass]="{'bg-[#144d75]/60 text-pink-400': musicLinkMobile.isActive, 'bg-[#144d75]/20': !musicLinkMobile.isActive}"
+     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg"> 
     {{ 'nav.music' | translate }}
   </a>
-  <a (click)="switchToLogin()"
-     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg hover:bg-[#144d75]/30">
+  <a #loginLinkMobile="routerLinkActive"
+     [routerLink]="['/', currentLanguage, 'home', 'login']"
+     routerLinkActive
+     [routerLinkActiveOptions]="{ exact: true }"
+     [ngClass]="{'bg-[#144d75]/60 text-pink-400': loginLinkMobile.isActive, 'bg-[#144d75]/20': !loginLinkMobile.isActive}"
+     class="w-full py-3 px-4 text-center text-base font-bold text-blue-100 hover:text-pink-400 transition-colors cursor-pointer rounded-lg">
     {{ 'nav.login' | translate }}
   </a>
   

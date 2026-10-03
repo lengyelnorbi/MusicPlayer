@@ -2,6 +2,7 @@ using API.Models;
 using API.Services.Interfaces;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
+using API.DTO;
 using API.Utils;
 
 namespace API.Services;
@@ -67,14 +68,14 @@ public class MusicService : IMusicService
         }
     }
 
-    public async Task<PagedResult<Music>> GetMusicsAsync(int page = 1, int limit = 10)
+    public async Task<MusicListResponseDTO> GetMusicsAsync(int page, int limit, int? userID)
     {
         var query = _dbContext.Musics
-            .Select(at => new Music
+            .Select(m => new MusicDTO
             {
-                ID = at.ID,
-                Title = at.Title,
-                AddedAt = at.AddedAt,
+                ID = m.ID,
+                Title = m.Title,
+                AddedAt = m.AddedAt
             });
 
         var totalItemCount = await query.CountAsync();
@@ -83,12 +84,60 @@ public class MusicService : IMusicService
         var items = await query
             .Skip((page - 1) * limit)
             .Take(limit)
-            .ToListAsync(); 
+            .ToListAsync();
 
-        return new PagedResult<Music>{
+        if (userID == null)
+        {
+            return new MusicListResponseDTO
+            {
+                Items = items,
+                TotalItemCount = totalItemCount,
+                TotalPages = totalPages,
+                UserPlaylists = new List<PlaylistRefDTO>()
+            };
+        }
+
+        var musicIds = items.Select(m => m.ID).ToList();
+
+        var userPlaylists = await (
+            from up in _dbContext.UserPlaylists
+            join p in _dbContext.Playlists on up.PlaylistID equals p.ID
+            where up.UserID == userID.Value
+            select new PlaylistRefDTO
+            {
+                ID = p.ID,
+                Name = p.Name
+            })
+            .ToListAsync();
+
+        var memberships = await (
+            from pm in _dbContext.PlaylistMusics
+            join up in _dbContext.UserPlaylists on pm.PlaylistID equals up.PlaylistID
+            where musicIds.Contains(pm.MusicID) && up.UserID == userID.Value
+            select new
+            {
+                pm.MusicID,
+                pm.PlaylistID
+            })
+            .ToListAsync();
+
+        var membershipsByMusic = memberships
+            .GroupBy(x => x.MusicID)
+            .ToDictionary(g => g.Key, g => g.Select(x => x.PlaylistID).Distinct().ToList());
+
+        foreach (var music in items)
+        {
+            music.PlaylistIDs = membershipsByMusic.TryGetValue(music.ID, out var playlistIds)
+                ? playlistIds
+                : new List<int>();
+        }
+
+        return new MusicListResponseDTO
+        {
             Items = items,
             TotalItemCount = totalItemCount,
             TotalPages = totalPages,
+            UserPlaylists = userPlaylists
         };
     }
 

@@ -3,48 +3,44 @@ import { LoginRedirectGuard } from './Shared/Guards/login-redirect-guard';
 import { LanguageGuard } from './Shared/Guards/language-guard';
 import { GlobalAuthGuard } from './Shared/Guards/global-auth-guard';
 import { AdminMain } from './Admin/Components/admin-main/admin-main';
+import { Main } from './MusicPlayer/Components/main/main';
+import { MusicList } from './MusicPlayer/Components/music-list/music-list';
+import { Playlist } from './MusicPlayer/Components/playlist/playlist';
+import { MusicPlayerLogin } from './Login/Components/music-player-login/music-player-login';
+import { Settings } from './MusicPlayer/Components/settings/settings';
 
 export const routes: Routes = [
     // Default route
-    {path : '', redirectTo : ':lang/home/music-player', pathMatch: 'full'},
-    
-    // Main music player with language support
+    { path: '', redirectTo: ':lang/home/music-player', pathMatch: 'full' },
+
     {
-      path : ':lang/home/music-player',
-      loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
-      canActivate: [LanguageGuard]
+      path: ':lang/home',
+      component: Main,
+      canActivate: [LanguageGuard],
+      children: [
+        { path: '', redirectTo: 'music-player', pathMatch: 'full' },
+        { path: 'music-player', component: MusicList },
+        { path: 'playlists', component: Playlist, canActivate: [GlobalAuthGuard], data: { guardSource: 'user' } },
+        { path: 'playlists/:id', component: Playlist, canActivate: [GlobalAuthGuard], data: { guardSource: 'user' } },
+        { path: 'login', component: MusicPlayerLogin, canActivate: [LoginRedirectGuard] },
+        { path: 'settings', component: Settings }
+      ]
     },
 
-    // Playlists route with language support
     {
-      path : ':lang/home/playlists',
-      loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
-      canActivate: [GlobalAuthGuard], data: { guardSource: 'user' }
+      path: 'home',
+      component: Main,
+      canActivate: [LanguageGuard],
+      children: [
+        { path: '', redirectTo: 'music-player', pathMatch: 'full' },
+        { path: 'music-player', component: MusicList },
+        { path: 'playlists', component: Playlist, canActivate: [GlobalAuthGuard], data: { guardSource: 'user' } },
+        { path: 'playlists/:id', component: Playlist, canActivate: [GlobalAuthGuard], data: { guardSource: 'user' } },
+        { path: 'login', component: MusicPlayerLogin, canActivate: [LoginRedirectGuard] },
+        { path: 'settings', component: Settings }
+      ]
     },
-    {
-      path : ':lang/home/playlists/:id',
-      loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
-      canActivate: [GlobalAuthGuard], data: { guardSource: 'user' }
-    },
-    
-    // Login route with language support
-    {
-      path : ':lang/home/login',
-      loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main),
-      canActivate: [LoginRedirectGuard, LanguageGuard]
-    },
-    // Settings route with language support
-    {
-      path : ':lang/home/settings',
-      loadComponent: () => import('./MusicPlayer/Components/settings/settings').then(m => m.Settings),
-      canActivate: [LanguageGuard]
-    },
-    
-    // Fallback routes without language (will redirect via LanguageGuard)
-    {path : 'home/music-player', canActivate: [LanguageGuard], loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main)},
-    {path : 'home/playlists', canActivate: [GlobalAuthGuard], data: { guardSource: 'user' }, loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main)},
-    {path : 'home/login', canActivate: [LoginRedirectGuard, LanguageGuard], loadComponent: () => import('./MusicPlayer/Components/main/main').then(m => m.Main), data: { source: 'user' }},
-    
+
     // Admin routes
     {
       path: 'admin',
@@ -73,8 +69,8 @@ export const routes: Routes = [
         }
       ]
     },
-    {path : 'admin/login', canActivate: [LoginRedirectGuard], loadComponent: () => import('./Login/Components/admin-login/admin-login').then(m => m.AdminLogin), data: { source: 'admin' }},
-    {path : 'admin', redirectTo : 'admin/login', pathMatch: 'full'},
+    { path: 'admin/login', canActivate: [LoginRedirectGuard], loadComponent: () => import('./Login/Components/admin-login/admin-login').then(m => m.AdminLogin), data: { source: 'admin' } },
+    { path: 'admin', redirectTo: 'admin/login', pathMatch: 'full' },
     // {path : 'admin/dashboard', canActivate: [GlobalAuthGuard], data: { guardSource: 'admin' }, loadComponent: () => import('./Admin/Components/admin-main/admin-main').then(m => m.AdminMain)},
     // {path : 'admin/music', canActivate: [GlobalAuthGuard], data: { guardSource: 'admin' }, loadComponent: () => import('./Admin/Components/admin-main/admin-main').then(m => m.AdminMain)},
     // {path : 'admin/user', canActivate: [GlobalAuthGuard], data: { guardSource: 'admin' }, loadComponent: () => import('./Admin/Components/admin-main/admin-main').then(m => m.AdminMain)},

@@ -6,6 +6,7 @@ public class Music
     public string? Title { get; set; }
     public string? File_id { get; set; }
     public DateOnly? AddedAt { get; set; }
+    public List<Playlist> Playlists { get; set; } = new List<Playlist>();
 
     public Music()
     {

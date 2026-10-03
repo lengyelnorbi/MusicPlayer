@@ -47,6 +47,7 @@ public class MusicPlayerDbContext : DbContext
             entity.Property(e => e.Title).HasMaxLength(255);
             entity.Property(e => e.File_id).HasMaxLength(255);
             entity.Property(e => e.AddedAt).HasDefaultValueSql("CURRENT_DATE");
+            entity.Ignore(e => e.Playlists); // Ignore the Playlists property for database mapping
         });
 
         // Configure Playlist entity

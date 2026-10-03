@@ -1,62 +1,90 @@
-import { Component, OnInit, HostListener, ElementRef, QueryList, ViewChildren } from '@angular/core';
+﻿import { Component, OnInit, HostListener, ElementRef, QueryList, ViewChildren, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { Observable, BehaviorSubject, map } from 'rxjs';
+import { Observable, BehaviorSubject, map, of } from 'rxjs';
 import { Music } from '../../Models/music';
 import { MusicService } from '../../../Services/music-service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../../Shared/Pipes/translate-pipe';
 import { ApiConfigService } from '../../../Services/api-config-service';
-import { PagedResult } from '../../../Shared/Utils/PagedResult';
 import { PaginationCountPipe } from '../../../Shared/Pipes/pagination-count-pipe';
+import { Playlist } from '../../Models/playlist';
+import { FormsModule } from '@angular/forms';
+import { PlaylistService } from '../../../Services/playlist-service';
 
 @Component({
   selector: 'app-music-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, TranslatePipe, PaginationCountPipe],
+  imports: [CommonModule, MatTableModule, TranslatePipe, PaginationCountPipe, FormsModule],
   templateUrl: './music-list.html',
   styleUrl: './music-list.css',
 })
 
 export class MusicList implements OnInit {
-  loggedIn: boolean = false; // Ez a változó jelzi, hogy a felhasználó be van-e jelentkezve
+  loggedIn: boolean = false; // Ez a vÃ¡ltozÃ³ jelzi, hogy a felhasznÃ¡lÃ³ be van-e jelentkezve
   musics$!: Observable<Music[]>;
   displayedColumns = ['title', 'addedAt'];
-  selectedMusicUrl = ''; // Tárolja a kiválasztott zene URL-jét
-  selectedMusicID: number | null = null; // Tárolja a kiválasztott zene ID-jét
+  selectedMusicUrl = ''; // TÃ¡rolja a kivÃ¡lasztott zene URL-jÃ©t
+  selectedMusicID: number | null = null; // TÃ¡rolja a kivÃ¡lasztott zene ID-jÃ©t
   maxItemCount: number = 0; // Default items per page, can be updated based on API response
   currentPage: number = 1; // To keep track of the current page number for pagination
   maxPageCount: number = 0; // To keep track of the current page number for pagination
   limit: number = 10; // Number of items per page
+  showPlaylistOverlay: boolean = false;
+  musicIDs: number[] = []; // TÃ¡rolja az Ã¶sszes zene ID-jÃ©t a listÃ¡ban
+  userPlaylists: Playlist[] = [];
+  showNewPlaylistInput: boolean = false;
+  newPlaylistName: string = '';
+  selectedMusicPlaylistIds: number[] = []; // TÃ¡rolja az Ã¶sszes lejÃ¡tszÃ¡si listÃ¡t a felhasznÃ¡lÃ³hoz
 
  @ViewChildren('scrollable') scrollable!: QueryList<ElementRef>;
 
-  constructor(private musicService: MusicService, private router: Router, private apiConfigService: ApiConfigService) {}
+  constructor(
+    private musicService: MusicService,
+    private router: Router,
+    private apiConfigService: ApiConfigService,
+    private ngZone: NgZone,
+    private changeDetectorRef: ChangeDetectorRef,
+    private playlistService: PlaylistService
+  ) {}
 
   ngOnInit() {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
       if (sessionStorage.getItem('userSourceLoggedInUsername')) {
-      // A kódod többi része...
+        this.loggedIn = true;
       }
     }
-    this.loggedIn = true; //For development purposes, set to true. In production, this should be determined by actual authentication logic.
     this.setMusicList();
   }
 
   setMusicList(): void {
+    // Prevent server-side rendering from calling the API — only fetch in browser.
+    if (typeof window === 'undefined') { this.musics$ = of([]); return; }
     console.log('Initializing Music List component');
     console.trace('Music List component initialized, fetching Music');
     this.musics$ = this.musicService.getMusicList(this.currentPage, this.limit).pipe(
       map(result => {
         this.maxItemCount = result.totalItemCount;
         this.maxPageCount = result.totalPages;
-        result.items.forEach(music => {
-          console.log('Fetched Music:', music);
+        this.userPlaylists = result.userPlaylists ?? [];
+        result.items?.forEach(music => {
+          console.log('playlistIDs:', music.playlistIDs);
         });
         return result.items ?? [];
       })
     );
   } 
+
+  refreshMusicList(response: any): void {
+    console.log('BEFORE refresh:', this.userPlaylists);
+
+    this.userPlaylists = [
+      ...this.userPlaylists,
+      response.result
+    ];
+
+    console.log('AFTER refresh:', this.userPlaylists);
+  }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.maxPageCount) {
@@ -68,21 +96,46 @@ export class MusicList implements OnInit {
     this.setMusicList();
   }
 
+  createNewPlaylist(): void {
+    this.showNewPlaylistInput = true;
+  }
+
+  createPlaylist(): void {
+    this.playlistService.createPlaylist(this.newPlaylistName).then((response) => {
+      console.log('Playlist created successfully:', response);
+      this.showNewPlaylistInput = false;
+      this.newPlaylistName = '';
+      if(response.ok) {
+        this.refreshMusicList(response);
+
+        this.showNewPlaylistInput = false;
+        this.newPlaylistName = '';
+      }
+    }).catch((error) => {
+      console.error('Error creating playlist:', error);
+    });
+  }
+
+  cancelNewPlaylist(): void {
+    this.showNewPlaylistInput = false;
+    this.newPlaylistName = '';
+  }
+
   // @HostListener('window:scroll', [])
   // onWindowScroll() {
   //   const pos = (window.innerHeight + window.scrollY);
   //   const max = document.documentElement.scrollHeight;
     
-  //   // Ha a felhasználó 200 pixelre megközelíti az oldal alját -> Betöltés triggerelése
+  //   // Ha a felhasznÃ¡lÃ³ 200 pixelre megkÃ¶zelÃ­ti az oldal aljÃ¡t -> BetÃ¶ltÃ©s triggerelÃ©se
   //   if (pos >= max - 200) {
   //     this.musicService.loadMoreMusic();
   //   }
   // }
 
-  activeMusicId: number | null = null; // Tárolja az éppen kattintással kijelölt zenét
-  openMenuId: number | null = null;   // Tárolja, hogy melyik zene 3 pontos menüje van nyitva
+  activeMusicId: number | null = null; // TÃ¡rolja az Ã©ppen kattintÃ¡ssal kijelÃ¶lt zenÃ©t
+  openMenuId: number | null = null;   // TÃ¡rolja, hogy melyik zene 3 pontos menÃ¼je van nyitva
 
-  // Zene kijelölése kattintásra
+  // Zene kijelÃ¶lÃ©se kattintÃ¡sra
   selectMusic(id: number) {
     this.activeMusicId = id;
     this.selectedMusicUrl = this.apiConfigService.getEndpoint(`/api/music/${id}/stream`);
@@ -93,53 +146,96 @@ export class MusicList implements OnInit {
     this.selectedMusicUrl = '';
   }
 
-  // 3 pontos menü nyitása/zárása
+  // 3 pontos menÃ¼ nyitÃ¡sa/zÃ¡rÃ¡sa
   toggleMenu(id: number) {
     if (this.openMenuId === id) {
-      this.openMenuId = null; // Ha ugyanarra kattint, bezárja
+      this.openMenuId = null; // Ha ugyanarra kattint, bezÃ¡rja
     } else {
-      this.openMenuId = id;   // Kinyitja a kiválasztottat
+      this.openMenuId = id;   // Kinyitja a kivÃ¡lasztottat
     }
   }
 
-  // Ha bárhova máshova kattint a felhasználó, a kis 3 pontos menü bezárul
+  // Ha bÃ¡rhova mÃ¡shova kattint a felhasznÃ¡lÃ³, a kis 3 pontos menÃ¼ bezÃ¡rul
   @HostListener('document:click', [])
   closeMenu() {
     this.openMenuId = null;
   }
 
-  // Menü funkciók
-  onSaveToPlaylist(id: number) {
-    console.log(`Zene mentése lejátszási listára: ${id}`);
+  openPlaylistOverlay() {
+    this.showPlaylistOverlay = true;
+  }
+
+  closePlaylistOverlay() {
+    this.showPlaylistOverlay = false;
+    this.selectedMusicID = null;
+    this.showNewPlaylistInput = false;
+    this.newPlaylistName = '';
+  }
+
+  // MenÃ¼ funkciÃ³k
+  onSaveToPlaylist(music: Music) {
+    this.selectedMusicID = music.id;
+    this.selectedMusicPlaylistIds = [...music.playlistIDs];
     this.openMenuId = null;
-    this.musicService.addMusicToPlaylist(1, id).then((success) => {
-      if (success) {
-        console.log(`Zene sikeresen hozzáadva a lejátszási listához: ${id}`);
-      } else {
-        console.error(`Hiba történt a zene hozzáadásakor a lejátszási listához: ${id}`);
-      }
-    });
+    this.openPlaylistOverlay();
+  }
+
+  saveOrRemoveMusicToPlaylist(playlistId: number, shouldAdd: boolean) {
+    if (this.selectedMusicID == null) {
+      console.error('No music selected for playlist operation.');
+      return;
+    }
+
+    if (shouldAdd) {
+      this.musicService.addMusicToPlaylist(playlistId, this.selectedMusicID).then((success) => {
+        if (success) {
+          this.ngZone.run(() => {
+            this.selectedMusicPlaylistIds = [...new Set([...this.selectedMusicPlaylistIds, playlistId])];
+            this.changeDetectorRef.detectChanges();
+          });
+          console.log(`Zene sikeresen hozzáadva a lejátszási listához: ${playlistId}`);
+        } else {
+          console.error(`Hiba történt a zene hozzáadásakor a lejátszási listához: ${playlistId}`);
+        }
+      }).catch((error) => {
+        console.error(`Hiba történt a zene hozzáadásakor a lejátszási listához: ${playlistId}`, error);
+      });
+    } else {
+      this.musicService.removeMusicFromPlaylist(playlistId, this.selectedMusicID).then((success) => {
+        if (success) {
+          this.ngZone.run(() => {
+            this.selectedMusicPlaylistIds = this.selectedMusicPlaylistIds.filter(id => id !== playlistId);
+            this.changeDetectorRef.detectChanges();
+          });
+          console.log(`Zene sikeresen eltávolítva a lejátszási listából: ${playlistId}`);
+        } else {
+          console.error(`Hiba történt a zene eltávolításakor a lejátszási listából: ${playlistId}`);
+        }
+      }).catch((error) => {
+        console.error(`Hiba történt a zene eltávolításakor a lejátszási listából: ${playlistId}`, error);
+      });
+    }
   }
 
    onDeleteFromPlaylist(id: number) {
-    console.log(`Zene törlése a lejátszási listából: ${id}`);
+    console.log(`Zene tÃ¶rlÃ©se a lejÃ¡tszÃ¡si listÃ¡bÃ³l: ${id}`);
     this.openMenuId = null;
     this.musicService.removeMusicFromPlaylist(1, id).then((success) => {
       if (success) {
-        console.log(`Zene sikeresen eltávolítva a lejátszási listából: ${id}`);
+        console.log(`Zene sikeresen eltÃ¡volÃ­tva a lejÃ¡tszÃ¡si listÃ¡bÃ³l: ${id}`);
       } else {
-        console.error(`Hiba történt a zene eltávolításakor a lejátszási listából: ${id}`);
+        console.error(`Hiba tÃ¶rtÃ©nt a zene eltÃ¡volÃ­tÃ¡sakor a lejÃ¡tszÃ¡si listÃ¡bÃ³l: ${id}`);
       }
     });
   }
 
   async onDownload(id: number) {
-    console.log(`Zene letöltése: ${id}`);
+    console.log(`Zene letÃ¶ltÃ©se: ${id}`);
     this.openMenuId = null;
   }
 
   onAddToFavorites(id: number) {
-    console.log(`Zene hozzáadva a kedvencekhez: ${id}`);
+    console.log(`Zene hozzÃ¡adva a kedvencekhez: ${id}`);
     this.openMenuId = null;
   }
 }

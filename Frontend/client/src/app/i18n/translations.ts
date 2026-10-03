@@ -45,7 +45,7 @@ export const translations: Record<string, Record<string, any>> = {
 
     musicOptions: {
       save: 'Mentés',
-      addToFavorites: 'Hozzáadás a kedvencekhez',
+      addToFavorites: 'Kedvencekhez ad',
       download: 'Letöltés',
     },
 
@@ -55,6 +55,9 @@ export const translations: Record<string, Record<string, any>> = {
       noPlaylists: 'Nincs lejátszási lista',
       create: 'Lejátszási lista létrehozása',
       addTo: 'Hozzáadás lejátszási listához',
+      newPlaylistPlaceholder: 'Új lejátszási lista neve',
+      cancelButton: 'Mégse',
+      createButton: 'Létrehozás',
     },
 
     // Messages
@@ -124,6 +127,9 @@ export const translations: Record<string, Record<string, any>> = {
       noPlaylists: 'No playlists',
       create: 'Create Playlist',
       addTo: 'Add to Playlist',
+      newPlaylistPlaceholder: 'New playlist name',
+      cancelButton: 'Cancel',
+      createButton: 'Create',
     },
 
     // Messages

@@ -4,7 +4,7 @@ using API.Utils;
 namespace API.Services.Interfaces;
 
 public interface IPlaylistService{
-    Task<Playlist> CreatePlaylistAsync(Playlist playlist);
+    Task<Playlist> CreatePlaylistAsync(string name, int userID);
     Task<Playlist> UpdatePlaylistAsync(Playlist playlist);
     Task<bool> DeletePlaylistAsync(int id);
     Task<PagedResult<Playlist>> GetUserPlaylistsAsync(int userID, int page, int limit);

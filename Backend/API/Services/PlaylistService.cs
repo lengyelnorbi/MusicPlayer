@@ -106,51 +106,66 @@ public class PlaylistService : IPlaylistService
         }
     }
 
-    public async Task<Playlist> AddPlaylistAsync(Playlist playlist)
-    {
-            try
-            {
-                var result = await _dbContext.Playlists.AddAsync(playlist);
-                if (result != null)
-                {
-                    await _dbContext.SaveChangesAsync();
-                    return result.Entity;
-                }
-                else
-                {
-                    _logger.LogError("Failed to add playlist: {Name}", playlist.Name);
-                    return null!;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while adding a playlist: {Name}", playlist.Name);
-                return null!;
-            }
-    }
-
-    public async Task<Playlist> CreatePlaylistAsync(Playlist playlist)
+    public async Task<Playlist> CreatePlaylistAsync(string name, int userID)
     {
         try
         {
+            Playlist playlist = new Playlist
+            {
+                Name = name,
+                MusicCount = 0
+            };
             var result = await _dbContext.Playlists.AddAsync(playlist);
             if (result != null)
             {
                 await _dbContext.SaveChangesAsync();
+
+                var userPlaylist = new UserPlaylist
+                {
+                    UserID = userID,
+                    PlaylistID = result.Entity.ID
+                };
+
+                await _dbContext.UserPlaylists.AddAsync(userPlaylist);
+                await _dbContext.SaveChangesAsync();
+
                 return result.Entity;
             }
             else
             {
-                _logger.LogError("Failed to create playlist: {Name}", playlist.Name);
+                _logger.LogError("Failed to add playlist: {Name}", playlist.Name);
                 return null!;
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while creating a playlist: {Name}", playlist.Name);
+            _logger.LogError(ex, "An error occurred while adding a playlist: {Name}", name);
             return null!;
         }
     }
+
+    // public async Task<Playlist> CreatePlaylistAsync(Playlist playlist)
+    // {
+    //     try
+    //     {
+    //         var result = await _dbContext.Playlists.AddAsync(playlist);
+    //         if (result != null)
+    //         {
+    //             await _dbContext.SaveChangesAsync();
+    //             return result.Entity;
+    //         }
+    //         else
+    //         {
+    //             _logger.LogError("Failed to create playlist: {Name}", playlist.Name);
+    //             return null!;
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         _logger.LogError(ex, "An error occurred while creating a playlist: {Name}", playlist.Name);
+    //         return null!;
+    //     }
+    // }
 
     public async Task<Playlist> GetPlaylistByIDAsync(int playlistID)
     {

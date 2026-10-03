@@ -1,11 +1,12 @@
 using API.Models;
+using API.DTO;
 using API.Utils;
 
 namespace API.Services.Interfaces;
 
 public interface IMusicService
 {
-    Task<PagedResult<Music>> GetMusicsAsync(int page = 1, int limit = 10);
+    Task<MusicListResponseDTO> GetMusicsAsync(int page = 1, int limit = 10, int? userID = null);
     Task<Music> AddMusicAsync(Music music);
     Task<Music> GetMusicByIDAsync(int id);
     Task<Music> CreateMusicAsync(Music music);

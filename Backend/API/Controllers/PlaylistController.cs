@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Services;
 using API.Utils;
+using API.Models.RequestModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -21,6 +24,7 @@ public class PlaylistController : ControllerBase
         _musicService = musicService;
     }
 
+    [Authorize]
     [HttpGet("", Name = "GetPlaylists")]
     public async Task<PagedResult<Playlist>> GetPlaylists([FromQuery] int page, [FromQuery] int limit)
     {
@@ -37,38 +41,52 @@ public class PlaylistController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("user/{userID}", Name = "GetUserPlaylists")]
     public PagedResult<Playlist> GetUserPlaylists(int userID, [FromQuery] int page, [FromQuery] int limit)
     {
         return _playlistService.GetUserPlaylistsAsync(userID, page, limit).Result;
     }
 
+    [Authorize]
     [HttpGet("followed", Name = "GetUserFollowedPlaylists")]
     public async Task<IEnumerable<Playlist>> GetFollowedPlaylists(int userID)
     {
         return await _playlistService.GetUserFollowedPlaylistsAsync(userID);
     }
 
+    [Authorize]
     [HttpGet("{playlistID}", Name = "GetPlaylistByID")]
     public async Task<Playlist> GetPlaylistByID(int playlistID, [FromQuery] int page, [FromQuery] int limit)
     {
         return await _playlistService.GetPlaylistByIDAsync(playlistID);
     }
 
+    [Authorize]
     [HttpPost("", Name = "AddPlaylist")]
-    public IActionResult Post([FromBody] Playlist playlist)
+    public IActionResult Post([FromBody] CreatePlaylistRequest playlistRequest)
     {
-        if (playlist == null)
+        if (playlistRequest == null || string.IsNullOrWhiteSpace(playlistRequest.Name))
         {
-            return BadRequest("Playlist data is null.");
+            return BadRequest("Playlist name is required.");
         }
 
-        _logger.LogInformation("Adding new playlist: {Name}", playlist.Name);
-        var result = _playlistService.CreatePlaylistAsync(playlist).Result;
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userID))
+        {
+            return Unauthorized("User ID claim is missing or invalid.");
+        }
+
+        _logger.LogInformation("Adding new playlist: {Name}", playlistRequest.Name);
+        var result = _playlistService.CreatePlaylistAsync(playlistRequest.Name, userID).Result;
 
         if (result != null)
         {
-            return Ok("Playlist added successfully.");
+            return Ok(new
+            {
+                message = "Playlist added successfully.",
+                result
+            });
         }
         else
         {
@@ -76,6 +94,7 @@ public class PlaylistController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("playlists/{id}", Name = "DeletePlaylist")]
     public IActionResult Delete(int id)
     {
@@ -92,6 +111,7 @@ public class PlaylistController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("playlists/{id}", Name = "UpdatePlaylist")]
     public IActionResult Put(int id, [FromBody] Playlist playlist)
     {

@@ -1,0 +1,55 @@
+.playlist-overlay{
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.overlay-close{
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.playlist-content{
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.playlist-content h2{
+    text-align: center;
+}
+
+.playlist-content hr{
+    margin: 0.5rem 1rem;
+}
+
+.overlay-close span{
+    width: 2rem;
+    height: 2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.overlay-close span:hover{
+    cursor: pointer;
+    padding: 0 0.5rem;
+    scale: 1.1;
+    color: red;
+}
+
+.dropdown-menu-buttons button{
+    text-align: center;
+}
+
+.create-playlist-input:focus{
+    outline: none;
+}

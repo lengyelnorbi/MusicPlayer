@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using API.Services.Interfaces;
 using API.Utils;
+using API.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace API.Controllers;
 
@@ -23,13 +25,40 @@ public class MusicController : ControllerBase
 
 
     [HttpGet("", Name = "GetMusics")]
-    public async Task<PagedResult<Music>> Get([FromQuery] int page, [FromQuery] int limit)
+    public async Task<MusicListResponseDTO> Get([FromQuery] int page, [FromQuery] int limit)
     {
+        int? userID = null;
+
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim != null &&
+            int.TryParse(userIdClaim.Value, out var parsedUserID))
+        {
+            userID = parsedUserID;
+        }
+
+        _logger.LogInformation(
+    "Authenticated: {Authenticated}, AuthType: {AuthType}",
+    User.Identity?.IsAuthenticated,
+    User.Identity?.AuthenticationType
+);
+
+foreach (var claim in User.Claims)
+{
+    _logger.LogInformation(
+        "Claim: {Type} = {Value}",
+        claim.Type,
+        claim.Value
+    );
+}
+
+        _logger.LogInformation("Fetching musics for userID: {UserID}, page: {Page}, limit: {Limit}", userID, page, limit);
+
         if (!validateGetMusicsParameters(page, limit))
         {
             return await _musicService.GetMusicsAsync();
         }
-        return await _musicService.GetMusicsAsync(page, limit);
+        return await _musicService.GetMusicsAsync(page, limit, userID);
     }
 
     [HttpGet("{fileID}/stream")]
