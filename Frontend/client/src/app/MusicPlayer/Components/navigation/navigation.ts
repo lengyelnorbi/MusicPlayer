@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { LanguageService } from '../../../Services/language-service';
 import { TranslationService } from '../../../Services/translation-service';
 import { TranslatePipe } from '../../../Shared/Pipes/translate-pipe';
 import { GlobalAuthService } from '../../../Services/global-auth-service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-navigation',
@@ -24,19 +27,29 @@ export class Navigation implements OnInit {
 
   profileImageUrl: string | null = 'assets/icons/profile.png';
   username: string | null = null;
-  isLoggedIn = false;
+  isLoggedIn: boolean = false;
   currentLanguage: 'en' | 'hu' = 'hu';
+  private sub = new Subscription();
   
   isDropdownOpen = false;
   isMobileMenuOpen = false;
   isNavbarHidden = false;
   private lastScrollTop = 0;
 
-  ngOnInit(): void {
+  private syncAuthState(): void {
     this.isLoggedIn = this.globalAuth.userSourceIsLoggedIn();
     this.username = this.globalAuth.userSourceGetLoggedInUsername();
+  }
+
+  ngOnInit(): void {
+    this.syncAuthState();
     console.log('Navigation initialized. Logged in:', this.isLoggedIn, 'Username:', this.username);
 
+    this.sub.add(
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => this.syncAuthState())
+  );
     // Subscribe to language changes
     this.languageService.currentLanguage$.subscribe(lang => {
       this.currentLanguage = lang;
@@ -96,5 +109,10 @@ export class Navigation implements OnInit {
     sessionStorage.removeItem('userSourceTokenExpiresAt');
     this.globalAuth.userSourceLogout();
     this.router.navigate([`/${this.currentLanguage}/home/login`]);
+    this.username = '';
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }
