@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren} from '@angular/core';
+import { Component, ElementRef, HostListener, QueryList, ViewChildren} from '@angular/core';
 import { TranslatePipe } from '../../../Shared/Pipes/translate-pipe';
 import { CommonModule } from '@angular/common';
 import { PlaylistService } from '../../../Services/playlist-service';
@@ -34,12 +34,11 @@ export class Playlist {
   constructor(private playlistService: PlaylistService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.loggedIn = false; //For development purposes, set to true. In production, this should be determined by actual authentication logic.
-    if(this.loggedIn) {
-      this.setUserPlaylists(1);
-    }
-    else{
-      this.setAllPlaylists();
+    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      if (sessionStorage.getItem('userSourceLoggedInUsername')) {
+        this.loggedIn = true;
+        this.setUserPlaylists(1);
+      }
     }
   }
 
@@ -118,5 +117,10 @@ export class Playlist {
   onSave(id: number) {
     // Implement the logic to save the playlist
     console.log(`Saving playlist with ID ${id}.`);
+  }
+
+  @HostListener('document:click', [])
+  closeMenu() {
+    this.selectedPlaylistID = null;
   }
 }

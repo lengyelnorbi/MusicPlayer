@@ -80,7 +80,7 @@ foreach (var claim in User.Claims)
         return File(
             stream,
             "audio/mp4",
-            enableRangeProcessing: false);
+            enableRangeProcessing: true);
     }
 
     [HttpGet("{musicID}/download")]

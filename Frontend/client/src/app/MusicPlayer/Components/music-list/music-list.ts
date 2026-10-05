@@ -11,11 +11,13 @@ import { PaginationCountPipe } from '../../../Shared/Pipes/pagination-count-pipe
 import { Playlist } from '../../Models/playlist';
 import { FormsModule } from '@angular/forms';
 import { PlaylistService } from '../../../Services/playlist-service';
+import { AudioPlayerService } from '../../../Services/audio-player-service';
 
 @Component({
   selector: 'app-music-list',
   standalone: true,
   imports: [CommonModule, MatTableModule, TranslatePipe, PaginationCountPipe, FormsModule],
+  providers: [MusicService, ApiConfigService, PlaylistService],
   templateUrl: './music-list.html',
   styleUrl: './music-list.css',
 })
@@ -45,7 +47,8 @@ export class MusicList implements OnInit {
     private apiConfigService: ApiConfigService,
     private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private audioPlayerService: AudioPlayerService
   ) {}
 
   ngOnInit() {
@@ -136,9 +139,9 @@ export class MusicList implements OnInit {
   openMenuId: number | null = null;   // TÃ¡rolja, hogy melyik zene 3 pontos menÃ¼je van nyitva
 
   // Zene kijelÃ¶lÃ©se kattintÃ¡sra
-  selectMusic(id: number) {
-    this.activeMusicId = id;
-    this.selectedMusicUrl = this.apiConfigService.getEndpoint(`/api/music/${id}/stream`);
+  playMusic(music: Music): void {
+    this.activeMusicId = music.id;
+    this.audioPlayerService.playTrack(music);
   }
 
   onAudioEnded() {

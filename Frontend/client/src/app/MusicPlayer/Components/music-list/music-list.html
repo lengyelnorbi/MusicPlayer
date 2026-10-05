@@ -14,9 +14,6 @@
 
 <!-- Fő háttér polírozott Ford kék és mély magenta színátmenettel -->
 <div class="pt-20 px-6 min-h-screen bg-gradient-to-b from-[#0b3c5d] via-[#000a21] to-[#1d001d] text-white">
-  <div *ngIf="selectedMusicUrl">
-    <audio #audioPlayer controls [src]="selectedMusicUrl" (ended)="onAudioEnded()"></audio>
-  </div>
   <div class="max-w-2xl mx-auto">
     <!-- CÃ­m selymes magenta-kÃ©k Ã¡tmenettel
     <h1 class="text-3xl font-extrabold mb-8 tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
@@ -37,7 +34,7 @@
     <div class="space-y-4 pb-12">
       <!-- Ciklus a zenÃ©ken -->
       <div *ngFor="let music of musics$ | async" 
-          (click)="selectMusic(music.id)"
+          (click)="playMusic(music)"
           [ngClass]="{
             'scale-x-[1.04] scale-y-[1.06] bg-gradient-to-r from-[#d91b5c] to-[#9a0f74] shadow-[0_0_25px_rgba(217,27,92,0.55)] border-pink-400 z-20': activeMusicId === music.id,
             'bg-[#0f2a4a]/60 border-blue-900/40 hover:scale-x-[1.03] hover:scale-y-[1.04] hover:bg-gradient-to-r hover:from-[#144d75] hover:to-[#5e1252] hover:shadow-[0_8px_20px_rgba(0,0,0,0.4)]': activeMusicId !== music.id,

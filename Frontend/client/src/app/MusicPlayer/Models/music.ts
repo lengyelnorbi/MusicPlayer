@@ -3,4 +3,8 @@ export class Music {
     title: string = '';
     addedAt: string = '';
     playlistIDs: number[] = [];
+
+    constructor(data?: Partial<Music>) {
+        Object.assign(this, data);
+    }
 }

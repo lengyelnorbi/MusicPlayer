@@ -79,6 +79,10 @@ export class MusicService {
     return await response.json();
   }
 
+  streamMusicByID(musicID: number): string {
+    return this.apiConfig.getEndpoint(`/api/music/${musicID}/stream`);
+  }
+
   private musicList = new BehaviorSubject<Music[]>([]);
   // Ezt az Observable-t fogja figyelni az async pipe a HTML-ben
   musics$: Observable<Music[]> = this.musicList.asObservable(); 

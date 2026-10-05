@@ -1,0 +1,140 @@
+<div class="audio-player bg-gray-800">
+    <audio
+        #audioPlayer
+        [src]="audioPlayerURL"
+        preload="metadata"
+        (loadedmetadata)="onMetadataLoaded($event)"
+        (timeupdate)="updateProgress($event)"
+        (ended)="onTrackEnded()">
+    </audio>
+    <div class="audio-player-collapse">
+        <div class="ap-collapse-info">
+            <div class="track-info">
+                <p (click)="togglePlayerExtension()" class="current-track-title text-lg font-semibold">{{ currentTrack?.title || 'No Track Playing' }}</p>
+            </div>
+            <button *ngIf="!isPlayerExtended" (click)="togglePlayPause()" class="collapse-play-pause-btn p-1.5 hover:bg-blue-900/40 rounded-lg transition-colors text-blue-300 hover:text-pink-400 cursor-pointer">
+                <svg *ngIf="isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>
+                </svg>
+                <svg *ngIf="!isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7L8 5z"/>
+                </svg>
+            </button>
+        </div>
+        <button (click)="togglePlayerExtension()" class="p-1.5 hover:bg-blue-900/40 rounded-lg transition-colors text-blue-300 hover:text-pink-400 cursor-pointer">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <!-- Chevron Left (collapse) or Chevron Right (expand) -->
+                <path *ngIf="isPlayerExtended" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 9l7 7 7-7"/>
+                <path *ngIf="!isPlayerExtended" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+        </button>
+    </div>
+    <div *ngIf="isPlayerExtended" class="audio-player-controls mt-4">
+        <div class="audio-content">
+            <div class="progress-container">
+                <span class="current-time">{{ formatTime(trackCurrentTime) }}</span>
+                <input
+                    id="progress-bar"
+                    class="progress-bar"
+                    type="range"
+                    min="0"
+                    [max]="trackDuration"
+                    [value]="trackCurrentTime"
+                    (input)="seekAudio($event)">
+                <span class="duration">{{ formatTime(trackDuration) }}</span>
+            </div>
+        </div>
+        <div class="audio-controls">
+            <!-- Transport controls -->
+            <div class="transport-controls">
+                <!-- Shuffle -->
+                <button type="button" class="control-btn shuffle-btn" title="Shuffle"
+                    [class.control-active]="isShuffleEnabled"
+                    (click)="toggleShuffle()">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M3 7h2.5c2.5 0 3.5 2 5 4l3 5c1.5 2 2.5 3 5 3H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 16l3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 17h2.5c1.5 0 2.5-.7 3.5-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path
+                            d="M13 7c1.5-2 2.5-3 5-3H21"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                        <path d="M18 1l3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <!-- Previous -->
+                <button type="button" class="control-btn" title="Previous track"
+                    (click)="previousTrack()" >
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 5h2v14H6V5zm4 7l9 7V5l-9 7z"/>
+                    </svg>
+                </button>
+                <!-- Play / Pause -->
+                <button class="play-pause-btn" title="Play / Pause"
+                    (click)="togglePlayPause()">
+                    <svg *ngIf="isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>
+                    </svg>
+                    <svg *ngIf="!isPlaying" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7L8 5z"/>
+                    </svg>
+                </button>
+                <!-- Next -->
+                <button type="button" class="control-btn" title="Next track"
+                    (click)="nextTrack()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16 5h2v14h-2V5zM5 5l9 7-9 7V5z"/>
+                    </svg>
+                </button>
+                <!-- Repeat -->
+                <button type="button" class="control-btn repeat-btn" 
+                    [title]="repeatModeLabel"
+                    [class.control-active]="repeatMode !== 'none'"
+                    (click)="cycleRepeatMode()">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M17 3l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 11V9a3 3 0 013-3h15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 21l-4-4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 13v2a3 3 0 01-3 3H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <!-- Repeat one indicator -->
+                    <span *ngIf="repeatMode === 'one'" class="repeat-one">1</span>
+                </button>
+            </div>
+            <!-- Volume -->
+            <div class="volume-control">
+                <!-- Mute button -->
+                <button type="button" class="volume-btn"
+                    [title]="isMuted ? 'Unmute' : 'Mute'"
+                    [class.control-active]="isMuted"
+                    (click)="toggleMute()">
+                    <!-- Muted -->
+                    <svg *ngIf="isMuted || volume === 0" viewBox="0 0 24 24" fill="none">
+                        <path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M18 9l4 6M22 9l-4 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <!-- Volume -->
+                    <svg *ngIf="!isMuted && volume > 0" viewBox="0 0 24 24" fill="none">
+                        <path d="M11 5L6 9H3v6h3l5 4V5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M16 9a5 5 0 010 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M19 6a9 9 0 010 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <!-- Volume slider -->
+                <input type="range" min="0" max="1" step="0.01" class="volume-slider"
+                    [value]="isMuted ? 0 : volume"
+                    (input)="onVolumeChange($event)"/>
+            </div>
+        </div>
+        <div *ngIf="isPlaylistOpen" class="ap-playlist">
+            <p class="ap-playlist-title text-sm">{{ playlistName }} Tracks:</p>
+            <ul class="ap-playlist-tracks">
+                <li *ngFor="let track of playlistTracks; let i = index" (click)="selectTrack(i)" [ngClass]="{'bg-blue-900/40': currentTrackIndex === i}" class="py-2 rounded cursor-pointer hover:bg-blue-900/30 transition-colors">
+                    <p>{{ track.title }}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
