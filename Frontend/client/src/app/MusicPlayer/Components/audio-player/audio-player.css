@@ -12,6 +12,10 @@
     z-index: 1000;
 }
 
+.hidden{
+    display: none;
+}
+
 .audio-player-collapse {
     width: 100%;
     display: flex;
@@ -122,9 +126,34 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 24px;
-    padding: 10px 16px;
+    overflow: hidden; /* Kulcsfontosságú, hogy itt legyen alapból */
+    
+    /* ZÁRT ÁLLAPOT: Mindent nullára kényszerítünk */
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    gap: 0;
+    padding: 0 16px; /* A függőleges padding 0, az oldalsó maradhat */
+
+    /* Kiterjesztjük a transition-t a paddingra és a gap-re is */
+    transition: max-height 0.3s ease-in-out, 
+                opacity 0.2s ease-in-out, 
+                margin-top 0.3s ease-in-out,
+                padding 0.3s ease-in-out,
+                gap 0.3s ease-in-out;
 }
+
+/* Amikor kinyílik a lejátszó */
+.audio-player-controls.extended {
+    max-height: 300px; /* Megemeltem kicsit, hogy a 24px gap + padding biztosan beférjen */
+    opacity: 1;
+    margin-top: 1rem;
+    
+    /* NYITOTT ÁLLAPOT: Visszaadjuk az eredeti értékeket */
+    gap: 24px;
+    padding: 10px 16px; 
+}
+
 
 /* =========================================================
    TRANSPORT CONTROLS
