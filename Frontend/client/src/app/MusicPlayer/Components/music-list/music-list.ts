@@ -38,6 +38,7 @@ export class MusicList implements OnInit {
   showNewPlaylistInput: boolean = false;
   newPlaylistName: string = '';
   selectedMusicPlaylistIds: number[] = []; // TÃ¡rolja az Ã¶sszes lejÃ¡tszÃ¡si listÃ¡t a felhasznÃ¡lÃ³hoz
+  musicList: Music[] = []; // TÃ¡rolja az Ã¶sszes zenÃ©t a listÃ¡ban
 
  @ViewChildren('scrollable') scrollable!: QueryList<ElementRef>;
 
@@ -70,6 +71,7 @@ export class MusicList implements OnInit {
         this.maxItemCount = result.totalItemCount;
         this.maxPageCount = result.totalPages;
         this.userPlaylists = result.userPlaylists ?? [];
+        this.musicList = result.items ?? [];
         result.items?.forEach(music => {
           console.log('playlistIDs:', music.playlistIDs);
         });
@@ -141,7 +143,7 @@ export class MusicList implements OnInit {
   // Zene kijelÃ¶lÃ©se kattintÃ¡sra
   playMusic(music: Music): void {
     this.activeMusicId = music.id;
-    this.audioPlayerService.playTrack(music);
+    this.audioPlayerService.playTrack(music, this.musicList);
   }
 
   onAudioEnded() {

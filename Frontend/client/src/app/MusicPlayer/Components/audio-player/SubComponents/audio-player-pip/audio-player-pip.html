@@ -1,0 +1,326 @@
+<div class="pip-player">
+
+  <div class="pip-header">
+
+    <div class="pip-track-info">
+
+      <div class="pip-title">
+        {{ currentTrack?.title || 'No Track Playing' }}
+      </div>
+
+      <div
+        class="pip-playlist-name"
+        *ngIf="playlistName">
+        {{ playlistName }}
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="pip-close-btn"
+      title="Close Picture in Picture"
+      (click)="closePiP()">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor">
+
+        <path
+          d="M6 6l12 12M18 6L6 18"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+      </svg>
+
+    </button>
+
+  </div>
+
+
+  <div class="pip-progress">
+
+    <span>
+      {{ formatTime(currentTime) }}
+    </span>
+
+    <input
+      type="range"
+      min="0"
+      [max]="duration || 0"
+      [value]="currentTime"
+      (input)="seekAudio($event)"
+    />
+
+    <span>
+      {{ formatTime(duration) }}
+    </span>
+
+  </div>
+
+
+  <div class="pip-controls">
+
+    <button
+      type="button"
+      class="pip-control"
+      title="Shuffle"
+      [class.active]="isShuffleEnabled"
+      (click)="toggleShuffle()">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none">
+
+        <path
+          d="M3 7h2.5c2.5 0 3.5 2 5 4l3 5c1.5 2.5 2.5 3 5 3H21"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M18 16l3 3-3 3"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M3 17h2.5c1.5 0 2.5-.7 3.5-2"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+        <path
+          d="M13 7c1.5-2 2.5-3 5-3H21"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M18 1l3 3-3 3"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+      </svg>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="pip-control"
+      title="Previous"
+      (click)="previousTrack()">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="currentColor">
+
+        <path
+          d="M6 5h2v14H6V5zm4 7l9 7V5l-9 7z"/>
+
+      </svg>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="pip-play-btn"
+      [title]="isPlaying ? 'Pause' : 'Play'"
+      (click)="togglePlayPause()">
+
+      <svg
+        *ngIf="isPlaying"
+        viewBox="0 0 24 24"
+        fill="currentColor">
+
+        <path
+          d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/>
+
+      </svg>
+
+      <svg
+        *ngIf="!isPlaying"
+        viewBox="0 0 24 24"
+        fill="currentColor">
+
+        <path
+          d="M8 5v14l11-7L8 5z"/>
+
+      </svg>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="pip-control"
+      title="Next"
+      (click)="nextTrack()">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="currentColor">
+
+        <path
+          d="M16 5h2v14h-2V5zM5 5l9 7-9 7V5z"/>
+
+      </svg>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="pip-control repeat-btn"
+      [class.active]="repeatMode !== 'none'"
+      [title]="repeatModeLabel"
+      (click)="cycleRepeatMode()">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none">
+
+        <path
+          d="M17 3l4 4-4 4"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M3 11V9a3 3 0 013-3h15"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M7 21l-4-4 4-4"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M21 13v2a3 3 0 01-3 3H3"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+      </svg>
+
+      <span
+        *ngIf="repeatMode === 'one'"
+        class="repeat-one">
+        1
+      </span>
+
+    </button>
+
+  </div>
+
+
+  <div class="pip-volume">
+
+    <button
+      type="button"
+      class="pip-volume-btn"
+      [title]="isMuted ? 'Unmute' : 'Mute'"
+      (click)="toggleMute()">
+
+      <svg
+        *ngIf="isMuted || volume === 0"
+        viewBox="0 0 24 24"
+        fill="none">
+
+        <path
+          d="M11 5L6 9H3v6h3l5 4V5z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M18 9l4 6M22 9l-4 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+      </svg>
+
+      <svg
+        *ngIf="!isMuted && volume > 0"
+        viewBox="0 0 24 24"
+        fill="none">
+
+        <path
+          d="M11 5L6 9H3v6h3l5 5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"/>
+
+        <path
+          d="M16 9a5 5 0 010 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+        <path
+          d="M19 6a9 9 0 010 12"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+      </svg>
+
+    </button>
+
+
+    <input
+      type="range"
+      min="0"
+      max="1"
+      step="0.01"
+      [value]="isMuted ? 0 : volume"
+      (input)="onVolumeChange($event)"
+    />
+
+  </div>
+
+
+  <div
+    class="pip-playlist"
+    *ngIf="playlistTracks.length">
+
+    <div class="pip-playlist-title">
+      {{ playlistName }} Tracks
+    </div>
+
+    <div class="pip-playlist-scroll">
+
+      <div
+        *ngFor="
+          let track of playlistTracks;
+          let i = index
+        "
+        class="pip-track"
+        [class.current]="i === currentTrackIndex"
+        (click)="selectTrack(i)">
+
+        {{ track.title }}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
