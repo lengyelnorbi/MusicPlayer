@@ -73,6 +73,11 @@ export class AudioPlayer implements OnInit, OnDestroy {
       console.log('Received queue from audio player service:', queue);
       this.trackQueue = queue;
     });
+
+    this.audioPlayerService.isPlaylist$.subscribe(isPlaylist => {
+      console.log('Received isPlaylist from audio player service:', isPlaylist);
+      this.isPlaylistOpen = isPlaylist;
+    });
   }
 
   seekAudio(event: Event): void {
@@ -428,12 +433,9 @@ export class AudioPlayer implements OnInit, OnDestroy {
 
 
   private get documentPiP(): any {
-  if (typeof window === 'undefined') {
-    return null;
+    console.log('Checking for documentPictureInPicture support:', (window as any).documentPictureInPicture);
+    return (window as any).documentPictureInPicture ?? null;
   }
-
-  return (window as any).documentPictureInPicture ?? null;
-}
 
   get canUsePictureInPicture(): boolean {
     return !!this.documentPiP;

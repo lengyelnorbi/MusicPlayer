@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Serilog;
 using Microsoft.AspNetCore.Mvc;
+using API.Messaging;
+using API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +37,12 @@ var jwtSettings = new JwtSettings
     UserRefreshTokenExpirationMinutes = int.Parse(builder.Configuration["Jwt:UserRefreshTokenExpirationMinutes"] ?? "480"), // Default to 480 minutes
     AdminRefreshTokenExpirationMinutes = int.Parse(builder.Configuration["Jwt:AdminRefreshTokenExpirationMinutes"] ?? "60") // Default to 600 minutes
 };
+
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection("RabbitMQ"));
+
 builder.Services.AddSingleton(jwtSettings);
+builder.Services.AddSingleton<RabbitMqPublisher>();
 
 // Configure PostgreSQL DbContext
 builder.Services.AddDbContext<MusicPlayerDbContext>(options =>  
@@ -50,6 +57,12 @@ builder.Services.AddScoped<IDeviceService, DeviceService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>();
 builder.Services.AddScoped<IAdvancedMsgQueueCommService, AdvancedMsgQueueCommService>();
+builder.Services.AddScoped<IMusicImportService, MusicImportService>();
+builder.Services.AddScoped<IImportSourceResolver, ImportSourceResolver>();
+
+builder.Services.AddHostedService<MusicWorkCompletedConsumer>();
+
+builder.Services.AddSignalR();
 
 
 
@@ -394,7 +407,7 @@ builder.Services.AddCors(options =>
         if (builder.Environment.IsDevelopment())
         {
             // Development: Allow localhost and local network IPs
-            policy.WithOrigins("http://192.168.1.2:4200", "http://localhost:4200", "http://127.0.0.1:4200")
+            policy.WithOrigins("http://192.168.1.2:4200", "https://localhost:4200", "https://127.0.0.1:4200")
                     .AllowAnyMethod()
                     .AllowCredentials()  // This is critical
                     .WithHeaders("Authorization", "Content-Type")
@@ -470,6 +483,9 @@ app.UseHttpsRedirection();
 
 // Use CORS
 app.UseCors("AllowFrontend");
+
+app.MapHub<MusicImportHub>(
+    "/hubs/music-import");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -10,5 +10,5 @@ services:
 
     volumes:
       - ./musicplayer-api-3abee89ba528.json:/app/var/secrets/google-drive/musicplayer-api-3abee89ba528.json:ro
-
+      - music-temp:/music-temp
     restart: unless-stopped

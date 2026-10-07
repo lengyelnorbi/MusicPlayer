@@ -9,6 +9,8 @@ import { PagedResult } from '../../../Shared/Utils/PagedResult';
 import * as Models from '../../Models/playlist';
 import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/internal/operators/map';
+import { AudioPlayerService } from '../../../Services/audio-player-service';
+import { Music } from '../../Models/music';
 
 
 @Component({
@@ -28,10 +30,11 @@ export class Playlist {
   maxPageCount: number = 0; // To keep track of the current page number for pagination
   limit: number = 10; // Number of items per page
   loggedIn: boolean = false; // Ez a változó jelzi, hogy a felhasználó be van-e jelentkezve
+  selectedPlaylist: Models.Playlist | null = null; // Track the currently selected playlist
 
   @ViewChildren('scrollable') scrollable!: QueryList<ElementRef>;
   
-  constructor(private playlistService: PlaylistService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private playlistService: PlaylistService, private route: ActivatedRoute, private router: Router, private audioPlayerService: AudioPlayerService) {}
 
   ngOnInit() {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
@@ -88,12 +91,40 @@ export class Playlist {
       }
     }
 
-  loadPlaylistByID(id: number): void {
-    this.playlistService.getPlaylistByID(1).then((playlist) => {
+    onEdit(id: number) {
+      console.log(`Navigating to edit page for playlist with ID ${id}`);
+      this.router.navigate(['/playlist/edit', id]);
+    }
+
+    async onPlayPlaylist(id: number) {
+      await this.loadPlaylistByID(id);
+      if(this.selectedPlaylist === null) {
+        console.error(`No playlist found with ID ${id}. Cannot play.`);
+        return;
+      }
+      console.log(`Playing playlist with ID ${this.selectedPlaylist?.id}`);
+      // Implement the logic to play the playlist
+      this.audioPlayerService.playTrack(this.selectedPlaylist?.musics[0] as Music, this.selectedPlaylist.musics, true);
+    }
+
+  async loadPlaylistByID(id: number): Promise<void> {
+    try {
+      const playlist = await this.playlistService.getPlaylistByID(id);
+      this.selectedPlaylist = playlist;
       console.log('Fetched playlist by ID:', playlist);
-    }).catch((error) => {
+    } catch (error) {
       console.error('Error fetching playlist by ID:', error);
-    });
+    }
+  }
+
+    formatTime(seconds: number): string {
+    if ( !seconds || !isFinite(seconds)) {
+      return '00:00';
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+
+    return ( String(minutes).padStart(2, '0') + ':' + String(remainingSeconds).padStart(2, '0'));
   }
 
   toggleMenu(id: number) {

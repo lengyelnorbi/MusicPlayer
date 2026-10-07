@@ -19,10 +19,14 @@ services:
     volumes:
       - ./logs:/app/logs
       - ./var/secrets/google-drive:/app/secrets:ro
+      - ./certs:/https:ro
+      - music-temp:/music-temp
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      # - ASPNETCORE_URLS=https://+:8080
+      # - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      # - ASPNETCORE_Kestrel__Certificates__Default__Password=your-password 
       - GOOGLE_APPLICATION_CREDENTIALS_PATH=/app/var/secrets/google-drive/musicplayer-api-3abee89ba528.json
-
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the

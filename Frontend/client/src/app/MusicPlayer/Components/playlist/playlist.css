@@ -1,0 +1,26 @@
+.playlist-info{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 0.5rem 1rem;
+}
+
+.playlist-name{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.playlist-music-count, .playlist-musics-time{
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    
+}
+
+.playlist-music-count-icon, .playlist-musics-time-icon, .edit-playlist-icon, .play-playlist-icon{
+    width: 18px;
+    height: 18px;
+}

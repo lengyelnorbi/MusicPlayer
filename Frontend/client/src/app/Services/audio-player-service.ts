@@ -12,9 +12,14 @@ export class AudioPlayerService {
   track$ = this.trackSubject.asObservable();
   queue$ = this.queue.asObservable();
 
-  playTrack(track: Music, queue: Music[]): void {
+  private isPlaylistSubject = new BehaviorSubject<boolean>(false);
+
+  isPlaylist$ = this.isPlaylistSubject.asObservable();
+
+  playTrack(track: Music, queue: Music[], isPlaylist: boolean = false): void {
     this.trackSubject.next(track);
     this.queue.next(queue);
+    this.isPlaylistSubject.next(isPlaylist);
     console.log('Playing track:', track);
   }
 

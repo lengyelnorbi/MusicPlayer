@@ -71,3 +71,25 @@ DOWNLOAD_DIRECTORY = os.getenv(
     "DOWNLOAD_DIRECTORY",
     "./tmp/youtube_downloads"
 )
+
+
+from pydantic_settings import BaseSettings
+
+
+class Settings(BaseSettings):
+    rabbitmq_host: str = "localhost"
+    rabbitmq_port: int = 5672
+    rabbitmq_username: str = "guest"
+    rabbitmq_password: str = "guest"
+    rabbitmq_vhost: str = "/"
+
+    work_queue: str = "music.work"
+    completed_queue: str = "music.work.completed"
+
+    max_concurrency: int = 10
+
+    class Config:
+        env_prefix = ""
+
+
+settings = Settings()

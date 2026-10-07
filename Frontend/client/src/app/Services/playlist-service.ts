@@ -26,7 +26,13 @@ export class PlaylistService {
 
   async getPlaylistByID(playlistID: number): Promise<any> {
     const endpoint = this.apiConfigService.getEndpoint(`/api/playlist/${playlistID}`);
-    const response = await fetch(endpoint);
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

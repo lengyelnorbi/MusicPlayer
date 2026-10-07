@@ -2,6 +2,7 @@ using API.Models;
 using API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using API.DTO;
+using API.Models.QueueModels;
 
 namespace API.Data;
 
@@ -18,10 +19,38 @@ public class MusicPlayerDbContext : DbContext
     public DbSet<PlaylistMusic> PlaylistMusics { get; set; } = null!;
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     public DbSet<AccessToken> AccessTokens { get; set; } = null!;
+    public DbSet<ImportJob> ImportJobs => Set<ImportJob>();
+
+    public DbSet<ImportWorkItem> ImportWorkItems => Set<ImportWorkItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ImportJob>()
+        .HasKey(x => x.Id);
+
+        modelBuilder.Entity<ImportJob>()
+            .HasMany(x => x.WorkItems)
+            .WithOne(x => x.Job)
+            .HasForeignKey(x => x.JobId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ImportWorkItem>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<ImportWorkItem>()
+            .Property(x => x.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<ImportJob>()
+            .Property(x => x.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<ImportJob>()
+            .Property(x => x.Type)
+            .HasConversion<string>();
+
 
         // Configure User entity
         modelBuilder.Entity<UserDTO>(entity =>

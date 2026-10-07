@@ -58,6 +58,10 @@ export const translations: Record<string, Record<string, any>> = {
       newPlaylistPlaceholder: 'Új lejátszási lista neve',
       cancelButton: 'Mégse',
       createButton: 'Létrehozás',
+      play: 'Lejátszás',
+      edit: 'Szerkesztés',
+      musicsTime: 'Zeneszámok időtartama',
+      musicsCountText: 'zene',
     },
 
     // Messages
@@ -130,6 +134,10 @@ export const translations: Record<string, Record<string, any>> = {
       newPlaylistPlaceholder: 'New playlist name',
       cancelButton: 'Cancel',
       createButton: 'Create',
+      play: 'Play',
+      edit: 'Edit',
+      musicsTime: 'Music Time',
+      musicsCountText: 'music',
     },
 
     // Messages
