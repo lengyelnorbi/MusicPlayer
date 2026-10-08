@@ -2,8 +2,8 @@ namespace API.Models.Enums;
 
 public enum WorkStatus
 {
-    Pending,
-    Processing,
-    Completed,
-    Failed
+    Pending = 0,
+    Processing = 1,
+    Completed = 2,
+    Failed = 3
 }

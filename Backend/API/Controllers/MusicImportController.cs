@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using API.Models.Enums;
 using API.Models.RequestModels;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -13,106 +14,98 @@ public class MusicImportController : ControllerBase
 {
     private readonly IMusicImportService _importService;
     private readonly ILogger<MusicImportController> _logger;
+    private readonly string _temporaryMusicPath;
 
     public MusicImportController(
         IMusicImportService importService,
-        ILogger<MusicImportController> logger)
+        ILogger<MusicImportController> logger,
+        IConfiguration configuration)
     {
         _importService = importService;
         _logger = logger;
+        _temporaryMusicPath = configuration["MusicStorage:TempPath"]
+            ?? throw new InvalidOperationException("MusicStorage:TempPath is not configured.");
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateImport(
-        [FromBody] CreateMusicImportRequest request,
+        [FromBody] CreateImportJobRequest request,
         CancellationToken cancellationToken)
     {
-        if (request == null ||
-            string.IsNullOrWhiteSpace(request.Url))
-        {
-            return BadRequest(
-                new
-                {
-                    message = "URL is required."
-                });
-        }
+        if (request is null || string.IsNullOrWhiteSpace(request.Url))
+            return BadRequest(new { message = "URL is required." });
 
         var userId = GetUserId();
-
-        if (userId == null)
-        {
-            return Unauthorized();
-        }
+        if (userId is null) return Unauthorized();
 
         try
         {
-            var result =
-                await _importService.CreateImportAsync(
-                    userId.Value,
-                    request.Url,
-                    cancellationToken);
-
+            var result = await _importService.CreateImportAsync(userId.Value, request.Url, cancellationToken);
             return Accepted(result);
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(
-                new
-                {
-                    message = ex.Message
-                });
+            return BadRequest(new { message = ex.Message });
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                ex,
-                "Failed to create music import.");
-
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new
-                {
-                    message =
-                        "Failed to create music import."
-                });
+            _logger.LogError(ex, "Failed to create music import.");
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { message = "Failed to create music import." });
         }
     }
 
     [HttpGet("{jobId:guid}")]
-    public async Task<IActionResult> GetJob(
-        Guid jobId,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetJob(Guid jobId, CancellationToken cancellationToken)
     {
         var userId = GetUserId();
+        if (userId is null) return Unauthorized();
 
-        if (userId == null)
-            return Unauthorized();
+        var result = await _importService.GetJobAsync(userId.Value, jobId, cancellationToken);
+        return result is null ? NotFound() : Ok(result);
+    }
 
-        var result =
-            await _importService.GetJobProgressAsync(
-                userId.Value,
-                jobId,
-                cancellationToken);
+    [HttpGet("{jobId:guid}/progress")]
+    public async Task<IActionResult> GetJobProgress(Guid jobId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
 
-        if (result == null)
-            return NotFound();
+        var result = await _importService.GetJobProgressAsync(userId.Value, jobId, cancellationToken);
+        return result is null ? NotFound() : Ok(result);
+    }
 
-        return Ok(result);
+    [HttpGet("work/{workItemId:guid}/download")]
+    public async Task<IActionResult> DownloadWorkItem(Guid workItemId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var workItem = await _importService.GetWorkItemByIdAsync(workItemId, userId.Value, cancellationToken);
+        if (workItem is null) return NotFound();
+        if (workItem.Status != WorkStatus.Completed) return BadRequest("The file is not ready.");
+        if (string.IsNullOrWhiteSpace(workItem.TemporaryFilePath))
+            return NotFound("No temporary file is registered.");
+
+        var root = Path.GetFullPath(_temporaryMusicPath);
+        var fullPath = Path.GetFullPath(Path.Combine(root, workItem.TemporaryFilePath));
+        var relativeToRoot = Path.GetRelativePath(root, fullPath);
+        if (Path.IsPathRooted(relativeToRoot) || relativeToRoot == ".." ||
+            relativeToRoot.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal) ||
+            relativeToRoot.StartsWith(".." + Path.AltDirectorySeparatorChar, StringComparison.Ordinal))
+            return BadRequest("Invalid file path.");
+
+        if (!System.IO.File.Exists(fullPath)) return NotFound("The temporary file no longer exists.");
+
+        var fileName = Path.GetFileName(workItem.TemporaryFileName ?? fullPath);
+        var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read,
+            bufferSize: 81920, useAsync: true);
+        return File(stream, "application/octet-stream", fileName, enableRangeProcessing: true);
     }
 
     private int? GetUserId()
     {
-        var claim =
-            User.FindFirst(
-                ClaimTypes.NameIdentifier);
-
-        if (claim == null)
-            return null;
-
-        return int.TryParse(
-            claim.Value,
-            out var userId)
-            ? userId
-            : null;
+        var claim = User.FindFirst(ClaimTypes.NameIdentifier);
+        return claim is not null && int.TryParse(claim.Value, out var userId) ? userId : null;
     }
 }

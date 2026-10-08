@@ -13,14 +13,12 @@ using RabbitMQ.Client.Events;
 
 namespace API.Messaging;
 
-public class MusicWorkCompletedConsumer
-    : BackgroundService
+public class MusicWorkCompletedConsumer : BackgroundService
 {
     private readonly RabbitMqSettings _settings;
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IHubContext<MusicImportHub> _hubContext;
     private readonly ILogger<MusicWorkCompletedConsumer> _logger;
-
     private IConnection? _connection;
     private IChannel? _channel;
 
@@ -36,8 +34,7 @@ public class MusicWorkCompletedConsumer
         _logger = logger;
     }
 
-    protected override async Task ExecuteAsync(
-        CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var factory = new ConnectionFactory
         {
@@ -48,250 +45,117 @@ public class MusicWorkCompletedConsumer
             VirtualHost = _settings.VirtualHost
         };
 
-        _connection =
-            await factory.CreateConnectionAsync(
-                cancellationToken: stoppingToken);
+        _connection = await factory.CreateConnectionAsync(stoppingToken);
+        _channel = await _connection.CreateChannelAsync(cancellationToken: stoppingToken);
+        await _channel.QueueDeclareAsync(_settings.CompletedQueue, durable: true, exclusive: false,
+            autoDelete: false, arguments: null, cancellationToken: stoppingToken);
+        await _channel.BasicQosAsync(0, 1, false, stoppingToken);
 
-        _channel =
-            await _connection.CreateChannelAsync(
-                cancellationToken: stoppingToken);
+        var consumer = new AsyncEventingBasicConsumer(_channel);
+        consumer.ReceivedAsync += (_, args) => ProcessMessageAsync(args, stoppingToken);
+        await _channel.BasicConsumeAsync(_settings.CompletedQueue, autoAck: false, consumer, stoppingToken);
+        _logger.LogInformation("Music completion consumer started.");
 
-        await _channel.QueueDeclareAsync(
-            queue: _settings.CompletedQueue,
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null,
-            cancellationToken: stoppingToken);
-
-        // Only process one completion message at a time.
-        await _channel.BasicQosAsync(
-            prefetchSize: 0,
-            prefetchCount: 1,
-            global: false,
-            cancellationToken: stoppingToken);
-
-        var consumer =
-            new AsyncEventingBasicConsumer(_channel);
-
-        consumer.ReceivedAsync += async (_, args) =>
-        {
-            await ProcessMessageAsync(
-                args,
-                stoppingToken);
-        };
-
-        await _channel.BasicConsumeAsync(
-            queue: _settings.CompletedQueue,
-            autoAck: false,
-            consumer: consumer,
-            cancellationToken: stoppingToken);
-
-        _logger.LogInformation(
-            "Music completion consumer started.");
-
-        try
-        {
-            await Task.Delay(
-                Timeout.Infinite,
-                stoppingToken);
-        }
-        catch (OperationCanceledException)
-        {
-        }
+        try { await Task.Delay(Timeout.Infinite, stoppingToken); }
+        catch (OperationCanceledException) { /* Normal shutdown. */ }
     }
 
-    private async Task ProcessMessageAsync(
-        BasicDeliverEventArgs args,
-        CancellationToken cancellationToken)
+    private async Task ProcessMessageAsync(BasicDeliverEventArgs args, CancellationToken cancellationToken)
     {
         try
         {
-            var json = Encoding.UTF8.GetString(
-                args.Body.ToArray());
-
-            var message =
-                JsonSerializer.Deserialize<MusicWorkCompletedMessage>(
-                    json);
-
-            if (message == null)
+            var json = Encoding.UTF8.GetString(args.Body.ToArray());
+            var message = JsonSerializer.Deserialize<MusicWorkCompletedMessage>(json);
+            if (message is null)
             {
-                _logger.LogError(
-                    "Could not deserialize completion message.");
-
-                await _channel!.BasicNackAsync(
-                    args.DeliveryTag,
-                    multiple: false,
-                    requeue: false);
-
+                _logger.LogError("Could not deserialize completion message.");
+                await _channel!.BasicNackAsync(args.DeliveryTag, multiple: false, requeue: false);
                 return;
             }
 
-            using var scope =
-                _scopeFactory.CreateScope();
+            using var scope = _scopeFactory.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<MusicPlayerDbContext>();
+            var workItem = await db.ImportWorkItems.FirstOrDefaultAsync(
+                x => x.Id == message.WorkItemId && x.JobId == message.JobId, cancellationToken);
 
-            var db =
-                scope.ServiceProvider
-                    .GetRequiredService<MusicPlayerDbContext>();
-
-            var workItem =
-                await db.ImportWorkItems
-                    .FirstOrDefaultAsync(
-                        x => x.Id == message.WorkItemId,
-                        cancellationToken);
-
-            if (workItem == null)
+            if (workItem is null)
             {
-                _logger.LogWarning(
-                    "Work item {WorkItemId} not found.",
-                    message.WorkItemId);
-
-                await _channel!.BasicAckAsync(
-                    args.DeliveryTag,
-                    multiple: false);
-
+                _logger.LogWarning("Work item {WorkItemId} not found.", message.WorkItemId);
+                await _channel!.BasicAckAsync(args.DeliveryTag, multiple: false);
                 return;
             }
 
-            // Prevent duplicate completion messages
-            // from incrementing counters twice.
-            if (workItem.Status == WorkStatus.Completed ||
-                workItem.Status == WorkStatus.Failed)
+            if (workItem.Status is WorkStatus.Completed or WorkStatus.Failed)
             {
-                await _channel!.BasicAckAsync(
-                    args.DeliveryTag,
-                    multiple: false);
-
+                await _channel!.BasicAckAsync(args.DeliveryTag, multiple: false);
                 return;
             }
 
-            var job =
-                await db.ImportJobs
-                    .FirstOrDefaultAsync(
-                        x => x.Id == message.JobId,
-                        cancellationToken);
-
-            if (job == null)
+            var job = await db.ImportJobs.FirstOrDefaultAsync(
+                x => x.Id == message.JobId, cancellationToken);
+            if (job is null)
             {
-                _logger.LogWarning(
-                    "Job {JobId} not found.",
-                    message.JobId);
-
-                await _channel!.BasicAckAsync(
-                    args.DeliveryTag,
-                    multiple: false);
-
+                _logger.LogWarning("Job {JobId} not found.", message.JobId);
+                await _channel!.BasicAckAsync(args.DeliveryTag, multiple: false);
                 return;
             }
 
-            if (message.Success)
+            workItem.CompletedAt = DateTime.UtcNow;
+            if (message.Success && !string.IsNullOrWhiteSpace(message.FilePath) &&
+                !string.IsNullOrWhiteSpace(message.FileName))
             {
-                workItem.Status =
-                    WorkStatus.Completed;
-
-                workItem.CompletedAt =
-                    DateTime.UtcNow;
-
+                workItem.Status = WorkStatus.Completed;
+                workItem.TemporaryFilePath = message.FilePath;
+                workItem.TemporaryFileName = Path.GetFileName(message.FileName);
+                workItem.Title = message.Title;
+                workItem.Error = null;
                 job.CompletedItems++;
             }
             else
             {
-                workItem.Status =
-                    WorkStatus.Failed;
-
-                workItem.Error =
-                    message.Error;
-
-                workItem.CompletedAt =
-                    DateTime.UtcNow;
-
+                workItem.Status = WorkStatus.Failed;
+                workItem.Error = message.Success
+                    ? "Worker reported success without a file path or filename."
+                    : message.Error ?? "Download failed.";
                 job.FailedItems++;
             }
 
-            var finished =
-                job.CompletedItems +
-                job.FailedItems >=
-                job.TotalItems;
-
+            var finished = job.CompletedItems + job.FailedItems >= job.TotalItems;
             if (finished)
             {
-                if (job.FailedItems > 0)
-                {
-                    job.Status =
-                        JobStatus.CompletedWithErrors;
-                }
-                else
-                {
-                    job.Status =
-                        JobStatus.Completed;
-                }
-
-                job.CompletedAt =
-                    DateTime.UtcNow;
+                job.Status = job.FailedItems > 0 ? JobStatus.CompletedWithErrors : JobStatus.Completed;
+                job.CompletedAt = DateTime.UtcNow;
             }
             else
             {
-                job.Status =
-                    JobStatus.Processing;
+                job.Status = JobStatus.Processing;
             }
 
-            await db.SaveChangesAsync(
-                cancellationToken);
-
-            var progress =
-                new ImportJobProgress
-                {
-                    JobId = job.Id,
-                    Status = job.Status,
-                    TotalItems = job.TotalItems,
-                    CompletedItems =
-                        job.CompletedItems,
-                    FailedItems =
-                        job.FailedItems
-                };
-
-            await _hubContext.Clients
-                .Group($"job:{job.Id}")
-                .SendAsync(
-                    "JobProgress",
-                    progress,
-                    cancellationToken);
-
-            await _channel!.BasicAckAsync(
-                args.DeliveryTag,
-                multiple: false);
-
-            _logger.LogInformation(
-                "Processed work item {WorkItemId}. Job {JobId}: {Completed}/{Total}",
-                workItem.Id,
-                job.Id,
-                job.CompletedItems,
-                job.TotalItems);
+            await db.SaveChangesAsync(cancellationToken);
+            var progress = new ImportJobProgress
+            {
+                JobId = job.Id,
+                Status = job.Status,
+                TotalItems = job.TotalItems,
+                CompletedItems = job.CompletedItems,
+                FailedItems = job.FailedItems
+            };
+            await _hubContext.Clients.Group($"job:{job.Id}")
+                .SendAsync("JobProgress", progress, cancellationToken);
+            await _channel!.BasicAckAsync(args.DeliveryTag, multiple: false);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                ex,
-                "Error processing music completion message.");
-
-            // Requeue so the message isn't lost.
-            await _channel!.BasicNackAsync(
-                args.DeliveryTag,
-                multiple: false,
-                requeue: true);
+            _logger.LogError(ex, "Error processing music completion message.");
+            if (_channel is not null)
+                await _channel.BasicNackAsync(args.DeliveryTag, multiple: false, requeue: true);
         }
     }
 
-    public override async Task StopAsync(
-        CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        if (_channel != null)
-            await _channel.DisposeAsync();
-
-        if (_connection != null)
-            await _connection.DisposeAsync();
-
-        await base.StopAsync(
-            cancellationToken);
+        if (_channel is not null) await _channel.DisposeAsync();
+        if (_connection is not null) await _connection.DisposeAsync();
+        await base.StopAsync(cancellationToken);
     }
 }

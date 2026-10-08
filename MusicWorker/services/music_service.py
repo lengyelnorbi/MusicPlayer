@@ -1,218 +1,75 @@
-# services/music_service.py
-
-import os
+import re
+import shutil
 from pathlib import Path
+from urllib.parse import urlparse
 
-import google.auth
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from pytubefix import YouTube
+from yt_dlp import YoutubeDL
 
-from config import (
-    DOWNLOAD_DIRECTORY,
-    GOOGLE_DRIVE_FOLDER_ID
-)
+from config import ALLOWED_SOURCE_DOMAINS, MUSIC_TEMP_PATH
 
 
-SCOPES = [
-    "https://www.googleapis.com/auth/drive"
-]
+def validate_url(url: str) -> None:
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https") or not parsed.hostname:
+        raise ValueError("URL must be a valid HTTP or HTTPS URL.")
 
+    host = parsed.hostname.lower().rstrip(".")
+    if host in {"localhost", "127.0.0.1", "::1"}:
+        raise ValueError("Local URLs are not allowed.")
 
-class MusicService:
-
-    def __init__(self):
-        os.makedirs(
-            DOWNLOAD_DIRECTORY,
-            exist_ok=True
-        )
-
-        self.drive_service = self._create_drive_service()
-
-    # --------------------------------------------------
-    # Google Drive
-    # --------------------------------------------------
-
-    def _create_drive_service(self):
-        credentials, _ = google.auth.default(
-            scopes=SCOPES
-        )
-
-        return build(
-            "drive",
-            "v3",
-            credentials=credentials
-        )
-
-    # --------------------------------------------------
-    # Main operation
-    # --------------------------------------------------
-
-    def process_music(
-        self,
-        file_url: str
+    if ALLOWED_SOURCE_DOMAINS and not any(
+        host == domain or host.endswith("." + domain)
+        for domain in ALLOWED_SOURCE_DOMAINS
     ):
-        file_path = None
+        raise ValueError("This source domain is not allowed.")
 
-        try:
-            # 1. Download
-            file_path = self.download_music(
-                file_url
-            )
 
-            file_name = Path(file_path).name
+def safe_title(value: str) -> str:
+    value = re.sub(r'[\\/:*?"<>|\x00-\x1f]', "_", value).strip(" .")
+    return value[:180] or "song"
 
-            # 2. Check duplicate
-            if self.check_duplicate(file_name):
-                return {
-                    "status": "duplicate",
-                    "fileName": file_name
-                }
 
-            # 3. Upload
-            result = self.upload_to_google_drive(
-                file_path
-            )
+def download_audio(url: str, work_item_id: str) -> tuple[Path, str]:
+    validate_url(url)
 
-            return {
-                "status": "success",
-                "fileName": file_name,
-                "fileId": result["id"]
+    # Resolve and validate the directory to prevent path traversal from the queue message.
+    work_dir = (MUSIC_TEMP_PATH / work_item_id).resolve()
+    if MUSIC_TEMP_PATH not in work_dir.parents:
+        raise ValueError("Invalid work item path.")
+
+    work_dir.mkdir(parents=True, exist_ok=True)
+
+    # Remove stale files from a previous attempt for this work item.
+    for item in work_dir.iterdir():
+        if item.is_dir():
+            shutil.rmtree(item)
+        else:
+            item.unlink()
+
+    options = {
+        "format": "bestaudio/best",
+        "outtmpl": str(work_dir / "song.%(ext)s"),
+        "noplaylist": True,
+        "quiet": True,
+        "no_warnings": True,
+        "restrictfilenames": True,
+        "windowsfilenames": True,
+        "overwrites": True,
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "m4a",
+                "preferredquality": "0",
             }
+        ],
+    }
 
-        finally:
-            # Delete temporary file
-            if (
-                file_path
-                and os.path.exists(file_path)
-            ):
-                os.remove(file_path)
+    with YoutubeDL(options) as downloader:
+        info = downloader.extract_info(url, download=True)
 
-    # --------------------------------------------------
-    # YouTube
-    # --------------------------------------------------
+    output_path = work_dir / "song.m4a"
+    if not output_path.is_file() or output_path.stat().st_size == 0:
+        raise RuntimeError("Download finished but song.m4a was not created.")
 
-    def download_music(
-        self,
-        url: str
-    ) -> str:
-
-        print(f"Downloading: {url}")
-
-        yt = YouTube(url)
-
-        print(f"Title: {yt.title}")
-
-        stream = (
-            yt.streams
-            .filter(only_audio=True)
-            .order_by("abr")
-            .desc()
-            .first()
-        )
-
-        if stream is None:
-            raise RuntimeError(
-                "No audio stream found."
-            )
-
-        file_path = stream.download(
-            output_path=DOWNLOAD_DIRECTORY
-        )
-
-        print(
-            f"Downloaded: {file_path}"
-        )
-
-        return file_path
-
-    # --------------------------------------------------
-    # Duplicate check
-    # --------------------------------------------------
-
-    def check_duplicate(
-        self,
-        file_name: str
-    ) -> bool:
-
-        escaped_name = (
-            file_name
-            .replace("'", "\\'")
-        )
-
-        query = (
-            f"name = '{escaped_name}' "
-            f"and trashed = false"
-        )
-
-        if GOOGLE_DRIVE_FOLDER_ID:
-            query += (
-                f" and "
-                f"'{GOOGLE_DRIVE_FOLDER_ID}' "
-                f"in parents"
-            )
-
-        response = (
-            self.drive_service
-            .files()
-            .list(
-                q=query,
-                spaces="drive",
-                fields="files(id,name)",
-                pageSize=1
-            )
-            .execute()
-        )
-
-        files = response.get(
-            "files",
-            []
-        )
-
-        return len(files) > 0
-
-    # --------------------------------------------------
-    # Google Drive upload
-    # --------------------------------------------------
-
-    def upload_to_google_drive(
-        self,
-        file_path: str
-    ):
-
-        file_name = Path(
-            file_path
-        ).name
-
-        metadata = {
-            "name": file_name
-        }
-
-        if GOOGLE_DRIVE_FOLDER_ID:
-            metadata["parents"] = [
-                GOOGLE_DRIVE_FOLDER_ID
-            ]
-
-        media = MediaFileUpload(
-            file_path,
-            resumable=True
-        )
-
-        uploaded_file = (
-            self.drive_service
-            .files()
-            .create(
-                body=metadata,
-                media_body=media,
-                fields="id,name"
-            )
-            .execute()
-        )
-
-        print(
-            f"Uploaded: "
-            f"{uploaded_file['name']} "
-            f"({uploaded_file['id']})"
-        )
-
-        return uploaded_file
+    title = safe_title(str(info.get("title") or "song"))
+    return output_path, title

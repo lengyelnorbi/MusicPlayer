@@ -1,11 +1,12 @@
 using API.Data;
 using API.Messaging;
 using API.Messaging.Messages;
-using API.Models.QueueModels;
+using API.Models.DTO;
 using API.Models.Enums;
+using API.Models.QueueModels;
 using API.Models.ResponseModels;
-using Microsoft.EntityFrameworkCore;
 using API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
@@ -29,33 +30,22 @@ public class MusicImportService : IMusicImportService
     }
 
     public async Task<CreateMusicImportResponse> CreateImportAsync(
-        int userId,
-        string url,
-        CancellationToken cancellationToken = default)
+        int userId, string url, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(url))
-            throw new ArgumentException(
-                "URL is required.");
+            throw new ArgumentException("URL is required.", nameof(url));
 
-        // Resolve playlist/single video.
-        var source = await _sourceResolver.ResolveAsync(
-            url,
-            cancellationToken);
-
+        var source = await _sourceResolver.ResolveAsync(url, cancellationToken);
         if (source.Urls.Count == 0)
-            throw new InvalidOperationException(
-                "No videos were found.");
+            throw new InvalidOperationException("No videos were found.");
 
         var job = new ImportJob
         {
-            Id = Guid.NewGuid(),
             UserId = userId,
             SourceUrl = url,
             Type = source.Type,
             Status = JobStatus.Pending,
             TotalItems = source.Urls.Count,
-            CompletedItems = 0,
-            FailedItems = 0,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -63,46 +53,41 @@ public class MusicImportService : IMusicImportService
         {
             job.WorkItems.Add(new ImportWorkItem
             {
-                Id = Guid.NewGuid(),
+                JobId = job.Id,
                 Url = videoUrl,
                 Status = WorkStatus.Pending,
-                AttemptCount = 0,
                 CreatedAt = DateTime.UtcNow
             });
         }
 
         _dbContext.ImportJobs.Add(job);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        await _dbContext.SaveChangesAsync(
-            cancellationToken);
-
-        // Mark job as processing.
-        job.Status = JobStatus.Processing;
-
-        await _dbContext.SaveChangesAsync(
-            cancellationToken);
-
-        // Publish all work.
-        foreach (var workItem in job.WorkItems)
+        try
         {
-            var message = new MusicWorkMessage
+            job.Status = JobStatus.Processing;
+            job.StartedAt = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            foreach (var item in job.WorkItems)
             {
-                JobId = job.Id,
-                WorkItemId = workItem.Id,
-                UserId = userId,
-                Url = workItem.Url,
-                Attempt = workItem.AttemptCount
-            };
-
-            await _rabbitMq.PublishWorkAsync(
-                message,
-                cancellationToken);
+                await _rabbitMq.PublishWorkAsync(new MusicWorkMessage
+                {
+                    JobId = job.Id,
+                    WorkItemId = item.Id,
+                    UserId = userId,
+                    Url = item.Url,
+                    Attempt = item.AttemptCount
+                }, cancellationToken);
+            }
         }
-
-        _logger.LogInformation(
-            "Created import job {JobId} with {Count} items",
-            job.Id,
-            job.WorkItems.Count);
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to enqueue import job {JobId}", job.Id);
+            // Keep the persisted job visible; a production system should use an Outbox
+            // to avoid partial publishing if RabbitMQ fails partway through a playlist.
+            throw;
+        }
 
         return new CreateMusicImportResponse
         {
@@ -113,29 +98,69 @@ public class MusicImportService : IMusicImportService
         };
     }
 
-    public async Task<ImportJobProgress?> GetJobProgressAsync(
-        int userId,
-        Guid jobId,
-        CancellationToken cancellationToken = default)
+    public async Task<ImportWorkItem?> GetWorkItemByIdAsync(
+        Guid workItemId, int userId, CancellationToken cancellationToken = default)
     {
-        var job = await _dbContext.ImportJobs
+        return await _dbContext.ImportWorkItems
+            .Include(x => x.Job)
             .AsNoTracking()
             .FirstOrDefaultAsync(
-                x =>
-                    x.Id == jobId &&
-                    x.UserId == userId,
+                x => x.Id == workItemId && x.Job.UserId == userId,
                 cancellationToken);
+    }
 
-        if (job == null)
-            return null;
+    public async Task<ImportJobProgressDTO?> GetJobProgressAsync(
+        int userId, Guid jobId, CancellationToken cancellationToken = default)
+    {
+        var job = await _dbContext.ImportJobs.AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == jobId && x.UserId == userId, cancellationToken);
+        if (job is null) return null;
 
-        return new ImportJobProgress
+        return new ImportJobProgressDTO
         {
             JobId = job.Id,
             Status = job.Status,
             TotalItems = job.TotalItems,
             CompletedItems = job.CompletedItems,
             FailedItems = job.FailedItems
+        };
+    }
+
+    public async Task<ImportJobDTO?> GetJobAsync(
+        int userId, Guid jobId, CancellationToken cancellationToken = default)
+    {
+        var job = await _dbContext.ImportJobs.AsNoTracking()
+            .Include(x => x.WorkItems)
+            .FirstOrDefaultAsync(x => x.Id == jobId && x.UserId == userId, cancellationToken);
+        if (job is null) return null;
+
+        return new ImportJobDTO
+        {
+            Id = job.Id,
+            SourceUrl = job.SourceUrl,
+            Type = job.Type,
+            Status = job.Status,
+            TotalItems = job.TotalItems,
+            CompletedItems = job.CompletedItems,
+            FailedItems = job.FailedItems,
+            CreatedAt = job.CreatedAt,
+            StartedAt = job.StartedAt,
+            CompletedAt = job.CompletedAt,
+            WorkItems = job.WorkItems.Select(item => new ImportWorkItemDTO
+            {
+                Id = item.Id,
+                JobId = item.JobId,
+                Url = item.Url,
+                Title = item.Title,
+                Status = item.Status,
+                AttemptCount = item.AttemptCount,
+                Error = item.Error,
+                CreatedAt = item.CreatedAt,
+                StartedAt = item.StartedAt,
+                CompletedAt = item.CompletedAt,
+                CanDownload = item.Status == WorkStatus.Completed &&
+                              !string.IsNullOrWhiteSpace(item.TemporaryFilePath)
+            }).ToList()
         };
     }
 }

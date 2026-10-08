@@ -47,12 +47,16 @@ musicplayer-api-3abee89ba528.json
 
 .env
 .venv
+venv/
 .github
 .vs
 .angular
 *.log
 bin/
 obj/
+__pycache__/
+*.py[cod]
+music-temp/
 
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 

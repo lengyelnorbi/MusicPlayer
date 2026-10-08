@@ -20,36 +20,32 @@ public class MusicPlayerDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     public DbSet<AccessToken> AccessTokens { get; set; } = null!;
     public DbSet<ImportJob> ImportJobs => Set<ImportJob>();
-
     public DbSet<ImportWorkItem> ImportWorkItems => Set<ImportWorkItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<ImportJob>()
-        .HasKey(x => x.Id);
+        modelBuilder.Entity<ImportJob>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.SourceUrl).IsRequired().HasMaxLength(2048);
+            entity.Property(x => x.Type).HasConversion<string>();
+            entity.Property(x => x.Status).HasConversion<string>();
+            entity.HasMany(x => x.WorkItems).WithOne(x => x.Job)
+                .HasForeignKey(x => x.JobId).OnDelete(DeleteBehavior.Cascade);
+        });
 
-        modelBuilder.Entity<ImportJob>()
-            .HasMany(x => x.WorkItems)
-            .WithOne(x => x.Job)
-            .HasForeignKey(x => x.JobId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<ImportWorkItem>()
-            .HasKey(x => x.Id);
-
-        modelBuilder.Entity<ImportWorkItem>()
-            .Property(x => x.Status)
-            .HasConversion<string>();
-
-        modelBuilder.Entity<ImportJob>()
-            .Property(x => x.Status)
-            .HasConversion<string>();
-
-        modelBuilder.Entity<ImportJob>()
-            .Property(x => x.Type)
-            .HasConversion<string>();
+        modelBuilder.Entity<ImportWorkItem>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Url).IsRequired().HasMaxLength(2048);
+            entity.Property(x => x.Status).HasConversion<string>();
+            entity.Property(x => x.TemporaryFilePath).HasMaxLength(1024);
+            entity.Property(x => x.TemporaryFileName).HasMaxLength(255);
+            entity.Property(x => x.Title).HasMaxLength(512);
+            entity.HasIndex(x => x.JobId);
+        });
 
 
         // Configure User entity

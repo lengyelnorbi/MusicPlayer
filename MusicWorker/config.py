@@ -1,95 +1,30 @@
-# config.py
-
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-# -------------------------
-# RabbitMQ
-# -------------------------
+def _csv_env(name: str) -> set[str]:
+    return {
+        value.strip().lower().lstrip(".")
+        for value in os.getenv(name, "").split(",")
+        if value.strip()
+    }
 
-RABBITMQ_HOST = os.getenv(
-    "RABBITMQ_HOST",
-    "localhost"
+
+RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", "localhost")
+RABBITMQ_PORT = int(os.getenv("RABBITMQ_PORT", "5672"))
+RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME", "guest")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", "guest")
+RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", "/")
+
+WORK_QUEUE = os.getenv("RABBITMQ_WORK_QUEUE", "music.work")
+COMPLETED_QUEUE = os.getenv(
+    "RABBITMQ_COMPLETED_QUEUE", "music.work.completed"
 )
 
-RABBITMQ_PORT = int(
-    os.getenv("RABBITMQ_PORT", "5672")
-)
-
-RABBITMQ_USER = os.getenv(
-    "RABBITMQ_USER",
-    "guest"
-)
-
-RABBITMQ_PASSWORD = os.getenv(
-    "RABBITMQ_PASSWORD",
-    "guest"
-)
-
-RABBITMQ_QUEUE = os.getenv(
-    "RABBITMQ_QUEUE",
-    "music-upload"
-)
-
-
-# -------------------------
-# .NET API
-# -------------------------
-
-API_BASE_URL = os.getenv(
-    "API_BASE_URL",
-    "http://localhost:5000"
-)
-
-API_INTERNAL_KEY = os.getenv(
-    "API_INTERNAL_KEY",
-    ""
-)
-
-
-# -------------------------
-# Google Drive
-# -------------------------
-
-GOOGLE_APPLICATION_CREDENTIALS = os.getenv(
-    "GOOGLE_APPLICATION_CREDENTIALS"
-)
-
-GOOGLE_DRIVE_FOLDER_ID = os.getenv(
-    "GOOGLE_DRIVE_FOLDER_ID"
-)
-
-
-# -------------------------
-# Music processing
-# -------------------------
-
-DOWNLOAD_DIRECTORY = os.getenv(
-    "DOWNLOAD_DIRECTORY",
-    "./tmp/youtube_downloads"
-)
-
-
-from pydantic_settings import BaseSettings
-
-
-class Settings(BaseSettings):
-    rabbitmq_host: str = "localhost"
-    rabbitmq_port: int = 5672
-    rabbitmq_username: str = "guest"
-    rabbitmq_password: str = "guest"
-    rabbitmq_vhost: str = "/"
-
-    work_queue: str = "music.work"
-    completed_queue: str = "music.work.completed"
-
-    max_concurrency: int = 10
-
-    class Config:
-        env_prefix = ""
-
-
-settings = Settings()
+MUSIC_TEMP_PATH = Path(os.getenv("MUSIC_TEMP_PATH", "/music-temp")).resolve()
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+ALLOWED_SOURCE_DOMAINS = _csv_env("ALLOWED_SOURCE_DOMAINS")

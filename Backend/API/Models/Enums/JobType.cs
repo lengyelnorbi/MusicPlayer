@@ -1,6 +1,7 @@
 namespace API.Models.Enums;
+
 public enum JobType
 {
-    SingleVideo,
-    Playlist
+    SingleVideo = 0,
+    Playlist = 1
 }
