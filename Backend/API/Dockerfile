@@ -52,6 +52,8 @@ RUN mkdir -p /app/logs && chmod 777 /app/logs
 
 RUN mkdir -p /app/var/secrets/google-drive
 
+RUN mkdir -p /app/music-temp
+
 RUN cp ./musicplayer-api-3abee89ba528.json /app/var/secrets/google-drive/
 
 # Switch to a non-privileged user (defined in the base image) that the app will run under.

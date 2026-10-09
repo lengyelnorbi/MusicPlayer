@@ -410,7 +410,7 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://192.168.1.2:4200", "https://localhost:4200", "https://127.0.0.1:4200")
                     .AllowAnyMethod()
                     .AllowCredentials()  // This is critical
-                    .WithHeaders("Authorization", "Content-Type")
+                    .AllowAnyHeader()
                     .WithExposedHeaders("Content-Disposition");
         }
         else
@@ -481,15 +481,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Use CORS
-app.UseCors("AllowFrontend");
+app.UseRouting();
 
-app.MapHub<MusicImportHub>(
-    "/hubs/music-import");
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<MusicImportHub>("/hubs/music-import");
 
 app.Run();

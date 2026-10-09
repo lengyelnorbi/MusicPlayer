@@ -27,7 +27,7 @@ public class MusicImportController : ControllerBase
             ?? throw new InvalidOperationException("MusicStorage:TempPath is not configured.");
     }
 
-    [HttpPost]
+    [HttpPost("", Name = "CreateImportJob")]
     public async Task<IActionResult> CreateImport(
         [FromBody] CreateImportJobRequest request,
         CancellationToken cancellationToken)
@@ -88,8 +88,11 @@ public class MusicImportController : ControllerBase
             return NotFound("No temporary file is registered.");
 
         var root = Path.GetFullPath(_temporaryMusicPath);
+        _logger.LogInformation("Temporary music root path: {Root}", root);
         var fullPath = Path.GetFullPath(Path.Combine(root, workItem.TemporaryFilePath));
+        _logger.LogInformation("Attempting to download file from path: {FullPath}", fullPath);
         var relativeToRoot = Path.GetRelativePath(root, fullPath);
+        _logger.LogInformation("Relative path to root: {RelativePath}", relativeToRoot);
         if (Path.IsPathRooted(relativeToRoot) || relativeToRoot == ".." ||
             relativeToRoot.StartsWith(".." + Path.DirectorySeparatorChar, StringComparison.Ordinal) ||
             relativeToRoot.StartsWith(".." + Path.AltDirectorySeparatorChar, StringComparison.Ordinal))

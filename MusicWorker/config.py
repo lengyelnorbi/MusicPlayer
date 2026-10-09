@@ -25,6 +25,6 @@ COMPLETED_QUEUE = os.getenv(
     "RABBITMQ_COMPLETED_QUEUE", "music.work.completed"
 )
 
-MUSIC_TEMP_PATH = Path(os.getenv("MUSIC_TEMP_PATH", "/music-temp")).resolve()
+MUSIC_TEMP_PATH = Path(os.getenv("MUSIC_TEMP_PATH", "/app/music-temp")).resolve()
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 ALLOWED_SOURCE_DOMAINS = _csv_env("ALLOWED_SOURCE_DOMAINS")

@@ -1,0 +1,82 @@
+
+<section class="music-import">
+  <h1>Import music</h1>
+  <p>Paste a supported music URL to start downloading.</p>
+
+  <form (ngSubmit)="createImport()">
+    <label for="music-url">Music URL</label>
+
+    <input
+      id="music-url"
+      name="url"
+      type="url"
+      [(ngModel)]="url"
+      placeholder="https://www.youtube.com/watch?v=..."
+      required
+    />
+
+    <button type="submit" [disabled]="loading || !url.trim()">
+      {{ loading ? 'Starting...' : 'Import music' }}
+    </button>
+  </form>
+
+  <p *ngIf="error" role="alert" class="error">
+    {{ error }}
+  </p>
+
+  <section *ngIf="job as currentJob">
+    <h2>Import progress</h2>
+
+    <p>Status: <strong>{{ currentJob.status }}</strong></p>
+
+    <p>
+      Completed: {{ currentJob.completedItems }} /
+      {{ currentJob.totalItems }}
+    </p>
+
+    <p>Failed: {{ currentJob.failedItems }}</p>
+
+    <progress
+      [value]="currentJob.completedItems + currentJob.failedItems"
+      [max]="currentJob.totalItems || 1"
+    ></progress>
+
+    <h2>Tracks</h2>
+
+    <p *ngIf="!currentJob.workItems?.length">
+      No tracks are available yet.
+    </p>
+
+    <ul>
+      <li *ngFor="let item of currentJob.workItems">
+        <strong>{{ item.title || 'Untitled track' }}</strong>
+        <span> — {{ item.status }}</span>
+
+        <button
+          *ngIf="item.status === WorkStatus.Completed"
+          type="button"
+          (click)="download(item)"
+        >
+          Download
+        </button>
+        <button
+            type="button"
+            *ngIf="job && job.completedItems > 0"
+            (click)="downloadAll()">
+            Download all completed tracks
+            </button>
+        <p *ngIf="item.status === WorkStatus.Failed && item.error">
+          {{ item.error }}
+        </p>
+      </li>
+    </ul>
+
+    <button
+      type="button"
+      (click)="refreshJob()"
+      [disabled]="loading"
+    >
+      Refresh status
+    </button>
+  </section>
+</section>

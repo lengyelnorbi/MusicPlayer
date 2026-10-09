@@ -20,7 +20,7 @@ services:
       - ./logs:/app/logs
       - ./var/secrets/google-drive:/app/secrets:ro
       - ./certs:/https:ro
-      - music-temp:/music-temp
+      - ../../music-temp:/app/music-temp
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # - ASPNETCORE_URLS=https://+:8080

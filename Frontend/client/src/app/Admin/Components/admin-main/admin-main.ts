@@ -6,11 +6,12 @@ import { AdminMusic } from '../admin-music/admin-music';
 import { AdminUser } from '../admin-user/admin-user';
 import { Dashboard } from '../dashboard/dashboard';
 import { Token } from '../token/token';
+import { MusicImport } from '../music-import/music-import';
 
 @Component({
   selector: 'app-admin-main',
   standalone: true,
-  imports: [CommonModule, AdminNavigation, AdminMusic, AdminUser, Dashboard, Token],
+  imports: [CommonModule, AdminNavigation, AdminMusic, AdminUser, Dashboard, Token, MusicImport],
   templateUrl: './admin-main.html',
   styleUrl: './admin-main.css',
 })
