@@ -18,5 +18,6 @@ public class ImportJobDTO
     public DateTime CreatedAt { get; set; }
     public DateTime? StartedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
+    public string? Error { get; set; }
     public List<ImportWorkItemDTO> WorkItems { get; set; } = new();
 }

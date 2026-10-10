@@ -4,7 +4,7 @@
   <app-admin-navigation (activeTabChange)="onActiveTabChange($event)" (navExpandedChange)="onNavExpandedChange($event)"></app-admin-navigation>
 
   <!-- Content Area -->
-  <main class="flex-1 h-full transition-all duration-300 ease-in-out overflow-hidden" [style.marginLeft.px]="isNavExpanded ? 256 : 80 ">
+  <main class="flex-1 h-full overflow-y-auto overflow-x-hidden transition-all duration-300 ease-in-out" [style.marginLeft.px]="isNavExpanded ? 256 : 80 ">
     <!-- Mobile top padding for header -->
 
     <app-dashboard *ngIf="activeTab === 'dashboard'"></app-dashboard>

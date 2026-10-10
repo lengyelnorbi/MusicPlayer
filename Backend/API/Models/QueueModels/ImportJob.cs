@@ -15,6 +15,7 @@ public class ImportJob
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? StartedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
+    public string? Error { get; set; }
 
     public ICollection<ImportWorkItem> WorkItems { get; set; } = new List<ImportWorkItem>();
 }

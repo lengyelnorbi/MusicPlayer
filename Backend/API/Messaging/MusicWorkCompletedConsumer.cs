@@ -85,13 +85,13 @@ public class MusicWorkCompletedConsumer : BackgroundService
                 return;
             }
 
-            if (workItem.Status is WorkStatus.Completed or WorkStatus.Failed)
+            if (workItem.Status is WorkStatus.Completed or WorkStatus.Failed or WorkStatus.Downloaded)
             {
                 await _channel!.BasicAckAsync(args.DeliveryTag, multiple: false);
                 return;
             }
 
-            var job = await db.ImportJobs.FirstOrDefaultAsync(
+            var job = await db.ImportJobs.Include(x => x.WorkItems).FirstOrDefaultAsync(
                 x => x.Id == message.JobId, cancellationToken);
             if (job is null)
             {
@@ -101,7 +101,24 @@ public class MusicWorkCompletedConsumer : BackgroundService
             }
 
             workItem.CompletedAt = DateTime.UtcNow;
-            if (message.Success && !string.IsNullOrWhiteSpace(message.FilePath) &&
+            if (message.Forbidden)
+            {
+                foreach (var item in job.WorkItems)
+                {
+                    if (item.Status is WorkStatus.Completed or WorkStatus.Downloaded)
+                        continue;
+                    item.Status = WorkStatus.Pending;
+                    item.StartedAt = null;
+                    item.CompletedAt = null;
+                    item.Error = message.Error ?? "The download proxy was forbidden by YouTube.";
+                }
+
+                RecalculateCounters(job);
+                job.Status = JobStatus.Paused;
+                job.CompletedAt = null;
+                job.Error = message.Error ?? "The download was paused because the proxy returned HTTP 403 Forbidden.";
+            }
+            else if (message.Success && !string.IsNullOrWhiteSpace(message.FilePath) &&
                 !string.IsNullOrWhiteSpace(message.FileName))
             {
                 workItem.Status = WorkStatus.Completed;
@@ -109,7 +126,7 @@ public class MusicWorkCompletedConsumer : BackgroundService
                 workItem.TemporaryFileName = Path.GetFileName(message.FileName);
                 workItem.Title = message.Title;
                 workItem.Error = null;
-                job.CompletedItems++;
+                RecalculateCounters(job);
             }
             else
             {
@@ -117,16 +134,17 @@ public class MusicWorkCompletedConsumer : BackgroundService
                 workItem.Error = message.Success
                     ? "Worker reported success without a file path or filename."
                     : message.Error ?? "Download failed.";
-                job.FailedItems++;
+                RecalculateCounters(job);
             }
 
-            var finished = job.CompletedItems + job.FailedItems >= job.TotalItems;
+            var finished = job.Status != JobStatus.Paused &&
+                job.CompletedItems + job.FailedItems >= job.TotalItems;
             if (finished)
             {
                 job.Status = job.FailedItems > 0 ? JobStatus.CompletedWithErrors : JobStatus.Completed;
                 job.CompletedAt = DateTime.UtcNow;
             }
-            else
+            else if (job.Status != JobStatus.Paused)
             {
                 job.Status = JobStatus.Processing;
             }
@@ -150,6 +168,13 @@ public class MusicWorkCompletedConsumer : BackgroundService
             if (_channel is not null)
                 await _channel.BasicNackAsync(args.DeliveryTag, multiple: false, requeue: true);
         }
+    }
+
+    private static void RecalculateCounters(API.Models.QueueModels.ImportJob job)
+    {
+        job.CompletedItems = job.WorkItems.Count(item =>
+            item.Status is WorkStatus.Completed or WorkStatus.Downloaded);
+        job.FailedItems = job.WorkItems.Count(item => item.Status == WorkStatus.Failed);
     }
 
     public override async Task StopAsync(CancellationToken cancellationToken)

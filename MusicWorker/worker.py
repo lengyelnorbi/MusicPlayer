@@ -6,6 +6,7 @@ import aio_pika
 from aio_pika import DeliveryMode, Message
 
 from config import (
+    CONTROL_QUEUE,
     COMPLETED_QUEUE,
     LOG_LEVEL,
     MUSIC_TEMP_PATH,
@@ -14,15 +15,20 @@ from config import (
     RABBITMQ_PORT,
     RABBITMQ_USERNAME,
     RABBITMQ_VHOST,
+    SINGLE_WORK_QUEUE,
     WORK_QUEUE,
 )
-from music_service import download_audio
+from music_service import ProxyForbiddenError, download_audio
 
 logging.basicConfig(
     level=LOG_LEVEL,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
 )
 logger = logging.getLogger("music-worker")
+resume_event = asyncio.Event()
+single_resume_event = asyncio.Event()
+# Do not consume queued work automatically after a worker restart. The API
+# sends Resume only after the user explicitly starts or retries a job.
 
 
 def completion_payload(
@@ -35,6 +41,7 @@ def completion_payload(
     file_name: str | None = None,
     title: str | None = None,
     error: str | None = None,
+    forbidden: bool = False,
 ) -> dict:
     # Keep PascalCase to match the C# completion-message DTO.
     return {
@@ -46,6 +53,7 @@ def completion_payload(
         "FileName": file_name,
         "Title": title,
         "Error": error,
+        "Forbidden": forbidden,
     }
 
 
@@ -69,7 +77,9 @@ def get_message_value(payload: dict, *keys: str):
     raise KeyError(f"Missing required field: {keys[0]}")
 
 
-async def on_message(message: aio_pika.IncomingMessage, channel) -> None:
+async def on_message(message: aio_pika.IncomingMessage, channel, queue_name: str) -> None:
+    event = single_resume_event if queue_name == SINGLE_WORK_QUEUE else resume_event
+    await event.wait()
     try:
         payload = json.loads(message.body.decode("utf-8"))
         job_id = str(get_message_value(payload, "JobId", "jobId"))
@@ -98,6 +108,16 @@ async def on_message(message: aio_pika.IncomingMessage, channel) -> None:
                 file_name=output_path.name,
                 title=title,
             )
+        except ProxyForbiddenError as exc:
+            logger.error("Pausing worker after proxy rejection for work item %s", work_item_id)
+            result = completion_payload(
+                job_id,
+                work_item_id,
+                user_id,
+                success=False,
+                forbidden=True,
+                error=str(exc)[:1000],
+            )
         except Exception as exc:
             logger.exception("Download failed for work item %s", work_item_id)
             result = completion_payload(
@@ -111,11 +131,29 @@ async def on_message(message: aio_pika.IncomingMessage, channel) -> None:
         # Acknowledge the input only after its completion event is published.
         await publish_completion(channel, result)
         await message.ack()
+        if result.get("Forbidden"):
+            # A proxy rejection pauses every route, including work already
+            # queued for individual execution.
+            resume_event.clear()
+            single_resume_event.clear()
         logger.info("Published completion for work item %s", work_item_id)
     except Exception:
         logger.exception("Could not publish completion; requeueing work item %s", work_item_id)
         if not message.processed:
             await message.nack(requeue=True)
+
+
+async def on_control_message(message: aio_pika.IncomingMessage) -> None:
+    try:
+        payload = json.loads(message.body.decode("utf-8"))
+        if payload.get("Action") == "Resume":
+            resume_event.set()
+        elif payload.get("Action") == "ResumeSingle":
+            single_resume_event.set()
+        await message.ack()
+    except Exception:
+        logger.exception("Invalid worker control message")
+        await message.reject(requeue=False)
 
 
 async def main() -> None:
@@ -133,8 +171,11 @@ async def main() -> None:
         channel = await connection.channel()
         await channel.set_qos(prefetch_count=1)
         await channel.declare_queue(WORK_QUEUE, durable=True)
+        await channel.declare_queue(SINGLE_WORK_QUEUE, durable=True)
         await channel.declare_queue(COMPLETED_QUEUE, durable=True)
+        control_queue = await channel.declare_queue(CONTROL_QUEUE, durable=True)
         queue = await channel.get_queue(WORK_QUEUE)
+        single_queue = await channel.get_queue(SINGLE_WORK_QUEUE)
 
         logger.info(
             "Listening on queue '%s'; completion queue '%s'; temp path '%s'",
@@ -142,7 +183,13 @@ async def main() -> None:
             COMPLETED_QUEUE,
             MUSIC_TEMP_PATH,
         )
-        await queue.consume(lambda message: on_message(message, channel), no_ack=False)
+        await queue.consume(
+            lambda message: on_message(message, channel, WORK_QUEUE), no_ack=False
+        )
+        await single_queue.consume(
+            lambda message: on_message(message, channel, SINGLE_WORK_QUEUE), no_ack=False
+        )
+        await control_queue.consume(on_control_message, no_ack=False)
         await asyncio.Future()  # Keep the worker alive until the container stops.
 
 

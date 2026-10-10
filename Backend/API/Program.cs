@@ -473,6 +473,23 @@ builder.Host.UseSerilog();
 
 var app = builder.Build();
 
+// The development compose setup runs the API and completion consumer together.
+// Apply pending migrations before hosted services can query the import tables.
+if (app.Environment.IsDevelopment())
+{
+    try
+    {
+        using var migrationScope = app.Services.CreateScope();
+        var dbContext = migrationScope.ServiceProvider.GetRequiredService<MusicPlayerDbContext>();
+        await dbContext.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogCritical(ex, "Database migration failed during API startup.");
+        throw;
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

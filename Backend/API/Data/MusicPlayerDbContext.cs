@@ -32,6 +32,7 @@ public class MusicPlayerDbContext : DbContext
             entity.Property(x => x.SourceUrl).IsRequired().HasMaxLength(2048);
             entity.Property(x => x.Type).HasConversion<string>();
             entity.Property(x => x.Status).HasConversion<string>();
+            entity.Property(x => x.Error).HasMaxLength(1000);
             entity.HasMany(x => x.WorkItems).WithOne(x => x.Job)
                 .HasForeignKey(x => x.JobId).OnDelete(DeleteBehavior.Cascade);
         });

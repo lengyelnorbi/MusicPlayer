@@ -26,9 +26,28 @@ export class MusicImportService {
     );
   }
 
-  getProgress(jobId: string): Observable<ImportJobProgress> {
-    return this.http.get<ImportJobProgress>(
-      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/progress`
+  getJobs(): Observable<ImportJob[]> {
+    return this.http.get<ImportJob[]>(this.apiConfig.getEndpoint('api/music-import'));
+  }
+
+  retryJob(jobId: string): Observable<ImportJob> {
+    return this.http.post<ImportJob>(
+      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/retry`,
+      {}
+    );
+  }
+
+  startJob(jobId: string): Observable<ImportJob> {
+    return this.http.post<ImportJob>(
+      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/start`,
+      {}
+    );
+  }
+
+  startWorkItem(jobId: string, workItemId: string): Observable<ImportJob> {
+    return this.http.post<ImportJob>(
+      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/work/${encodeURIComponent(workItemId)}/start`,
+      {}
     );
   }
 

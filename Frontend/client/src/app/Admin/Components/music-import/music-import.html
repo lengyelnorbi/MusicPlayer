@@ -1,82 +1,53 @@
+<section class="min-h-full bg-[#020817] px-4 py-8 text-blue-50 sm:px-8 lg:px-10">
+  <div class="mx-auto max-w-7xl space-y-8">
+    <header class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.28em] text-pink-400">Library tools</p>
+        <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Import music</h1>
+        <p class="mt-2 max-w-2xl text-sm text-blue-300/70">Add a video or playlist, review the tracks, and choose exactly when each download should start.</p>
+      </div>
+      <div class="rounded-2xl border border-blue-900/50 bg-blue-950/30 px-4 py-3 text-sm text-blue-200/80 shadow-lg shadow-blue-950/20"><span class="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]"></span>Import service ready</div>
+    </header>
 
-<section class="music-import">
-  <h1>Import music</h1>
-  <p>Paste a supported music URL to start downloading.</p>
+    <section class="overflow-hidden rounded-2xl border border-blue-900/50 bg-gradient-to-br from-[#0b1b35] via-[#08152b] to-[#160d29] shadow-2xl shadow-blue-950/30">
+      <div class="grid gap-8 p-6 lg:grid-cols-[1fr_auto] lg:items-end lg:p-8">
+        <div>
+          <h2 class="text-lg font-bold text-white">New import</h2>
+          <p class="mt-1 text-sm text-blue-300/70">You can start the whole job immediately or launch tracks individually.</p>
+          <form class="mt-6 flex flex-col gap-3 sm:flex-row" (ngSubmit)="createImport()">
+            <label class="sr-only" for="music-url">Music URL</label>
+            <input id="music-url" name="url" type="url" [(ngModel)]="url" placeholder="https://www.youtube.com/watch?v=..." required class="min-w-0 flex-1 rounded-xl border border-blue-800/70 bg-[#030b1c]/80 px-4 py-3 text-sm text-white outline-none transition placeholder:text-blue-400/40 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20" />
+            <button type="submit" [disabled]="loading || !url.trim()" class="rounded-xl bg-gradient-to-r from-blue-500 to-pink-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-pink-950/30 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50">{{ loading ? 'Adding...' : 'Add import' }}</button>
+          </form>
+        </div>
+        <div class="hidden rounded-2xl border border-pink-500/20 bg-pink-500/5 p-5 lg:block"><svg class="h-12 w-12 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 1 1 6 0Z" /></svg></div>
+      </div>
+    </section>
 
-  <form (ngSubmit)="createImport()">
-    <label for="music-url">Music URL</label>
+    <p *ngIf="error" role="alert" class="rounded-xl border border-red-500/30 bg-red-950/30 px-4 py-3 text-sm text-red-300">{{ error }}</p>
 
-    <input
-      id="music-url"
-      name="url"
-      type="url"
-      [(ngModel)]="url"
-      placeholder="https://www.youtube.com/watch?v=..."
-      required
-    />
+    <div class="grid gap-8 xl:grid-cols-[minmax(0,0.85fr)_minmax(0,1.5fr)]">
+      <section class="rounded-2xl border border-blue-900/50 bg-[#071329]/80 p-5 shadow-xl shadow-blue-950/20 sm:p-6">
+        <div class="mb-5 flex items-center justify-between gap-3"><div><p class="text-xs font-bold uppercase tracking-[0.2em] text-blue-400">Queue</p><h2 class="mt-1 text-xl font-bold text-white">Import jobs</h2></div><span class="rounded-full bg-blue-900/50 px-3 py-1 text-xs font-semibold text-blue-200">{{ jobs.length }} jobs</span></div>
+        <p *ngIf="!jobs.length" class="rounded-xl border border-dashed border-blue-800/60 px-4 py-8 text-center text-sm text-blue-300/60">No import jobs yet.</p>
+        <div *ngIf="jobs.length" class="space-y-3">
+          <article *ngFor="let importJob of jobs" (click)="selectJob(importJob)" class="cursor-pointer rounded-xl border border-blue-900/50 bg-[#0a1a34]/70 p-4 transition hover:border-pink-500/50 hover:bg-blue-900/20" [ngClass]="job?.id === importJob.id ? 'border-pink-500/60 bg-gradient-to-r from-blue-900/30 to-pink-950/20' : ''">
+            <div class="flex items-start justify-between gap-3"><div class="min-w-0"><p class="truncate text-sm font-semibold text-blue-100" [title]="importJob.sourceUrl">{{ importJob.sourceUrl }}</p><div class="mt-3 flex items-center gap-2 text-xs text-blue-300/70"><span class="h-2 w-2 rounded-full" [ngClass]="importJob.status === JobStatus.Processing ? 'bg-amber-400' : importJob.status === JobStatus.Completed ? 'bg-emerald-400' : importJob.status === JobStatus.Paused ? 'bg-pink-400' : 'bg-blue-400'"></span>{{ statusLabel(importJob.status) }}<span>•</span>{{ importJob.completedItems }}/{{ importJob.totalItems }} complete</div></div><button *ngIf="pendingCount(importJob) > 0 && importJob.status !== JobStatus.Completed" type="button" (click)="$event.stopPropagation(); startAll(importJob)" [disabled]="actionLoading" class="shrink-0 rounded-lg border border-blue-700/70 px-3 py-1.5 text-xs font-bold text-blue-200 transition hover:border-pink-500 hover:text-pink-300 disabled:opacity-50">Start all</button></div>
+            <div class="mt-4 h-1.5 overflow-hidden rounded-full bg-blue-950"><div class="h-full rounded-full bg-gradient-to-r from-blue-500 to-pink-500 transition-all" [style.width.%]="progressPercent(importJob)"></div></div>
+          </article>
+        </div>
+      </section>
 
-    <button type="submit" [disabled]="loading || !url.trim()">
-      {{ loading ? 'Starting...' : 'Import music' }}
-    </button>
-  </form>
+      <section *ngIf="job as currentJob; else emptyDetail" class="rounded-2xl border border-blue-900/50 bg-[#071329]/80 p-5 shadow-xl shadow-blue-950/20 sm:p-6">
+        <div class="flex flex-col gap-5 border-b border-blue-900/50 pb-5 sm:flex-row sm:items-start sm:justify-between"><div class="min-w-0"><p class="text-xs font-bold uppercase tracking-[0.2em] text-pink-400">Selected import</p><h2 class="mt-1 truncate text-xl font-bold text-white" [title]="currentJob.sourceUrl">{{ currentJob.sourceUrl }}</h2><p class="mt-2 text-sm text-blue-300/70">{{ statusLabel(currentJob.status) }} · {{ currentJob.completedItems }} of {{ currentJob.totalItems }} tracks complete</p></div><div class="flex shrink-0 gap-2"><button *ngIf="pendingCount(currentJob) > 0 && currentJob.status !== JobStatus.Completed" type="button" (click)="startAll(currentJob)" [disabled]="actionLoading" class="rounded-lg bg-gradient-to-r from-blue-500 to-pink-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-pink-950/20 transition hover:brightness-110 disabled:opacity-50">Start all</button><button type="button" (click)="refreshJob()" [disabled]="loading || actionLoading" class="rounded-lg border border-blue-700/70 px-3 py-2 text-xs font-semibold text-blue-200 transition hover:border-blue-400 disabled:opacity-50">Refresh</button></div></div>
+        <div class="mt-5 grid grid-cols-3 gap-3"><div class="rounded-xl bg-blue-950/50 p-3"><p class="text-xs text-blue-300/60">Complete</p><p class="mt-1 text-xl font-bold text-emerald-400">{{ currentJob.completedItems }}</p></div><div class="rounded-xl bg-blue-950/50 p-3"><p class="text-xs text-blue-300/60">Pending</p><p class="mt-1 text-xl font-bold text-blue-200">{{ pendingCount(currentJob) }}</p></div><div class="rounded-xl bg-blue-950/50 p-3"><p class="text-xs text-blue-300/60">Failed</p><p class="mt-1 text-xl font-bold text-red-300">{{ currentJob.failedItems }}</p></div></div>
+        <div class="mt-5 h-2 overflow-hidden rounded-full bg-blue-950"><div class="h-full rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all" [style.width.%]="progressPercent(currentJob)"></div></div><p *ngIf="currentJob.error" class="mt-4 rounded-lg border border-pink-500/20 bg-pink-950/20 px-3 py-2 text-xs text-pink-200">{{ currentJob.error }}</p>
+        <div class="mt-6 flex items-center justify-between"><h3 class="font-bold text-white">Tracks</h3><button *ngIf="currentJob.status === JobStatus.Paused || currentJob.status === JobStatus.Failed || currentJob.status === JobStatus.CompletedWithErrors" type="button" (click)="retry(currentJob)" [disabled]="actionLoading || loading" class="text-xs font-bold text-pink-400 transition hover:text-pink-300 disabled:opacity-50">Retry unfinished</button></div>
+        <div class="mt-3 space-y-2"><article *ngFor="let item of currentJob.workItems; let index = index" class="flex items-center gap-3 rounded-xl border border-blue-900/40 bg-[#0a1a34]/60 px-3 py-3 sm:px-4"><span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-900/50 text-xs font-bold text-blue-300">{{ index + 1 }}</span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-blue-100">{{ item.title || 'Untitled track' }}</p><p class="mt-0.5 truncate text-xs text-blue-400/50">{{ workStatusLabel(item.status) }}</p><p *ngIf="item.error" class="mt-1 truncate text-xs text-red-300/80" [title]="item.error">{{ item.error }}</p></div><button *ngIf="item.status === WorkStatus.Pending" type="button" (click)="startItem(item)" [disabled]="actionLoading" class="shrink-0 rounded-lg border border-blue-700/70 px-3 py-1.5 text-xs font-bold text-blue-200 transition hover:border-pink-500 hover:text-pink-300 disabled:opacity-50">Start</button><button *ngIf="item.status === WorkStatus.Completed" type="button" (click)="download(item)" class="shrink-0 rounded-lg bg-emerald-500/15 px-3 py-1.5 text-xs font-bold text-emerald-300 transition hover:bg-emerald-500/25">Download</button><span *ngIf="item.status === WorkStatus.Downloaded" class="shrink-0 rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-300">Downloaded</span></article></div>
+        <button *ngIf="currentJob.completedItems > 0" type="button" (click)="downloadAll()" class="mt-5 w-full rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-bold text-emerald-300 transition hover:bg-emerald-500/20">Download all completed tracks</button>
+      </section>
 
-  <p *ngIf="error" role="alert" class="error">
-    {{ error }}
-  </p>
-
-  <section *ngIf="job as currentJob">
-    <h2>Import progress</h2>
-
-    <p>Status: <strong>{{ currentJob.status }}</strong></p>
-
-    <p>
-      Completed: {{ currentJob.completedItems }} /
-      {{ currentJob.totalItems }}
-    </p>
-
-    <p>Failed: {{ currentJob.failedItems }}</p>
-
-    <progress
-      [value]="currentJob.completedItems + currentJob.failedItems"
-      [max]="currentJob.totalItems || 1"
-    ></progress>
-
-    <h2>Tracks</h2>
-
-    <p *ngIf="!currentJob.workItems?.length">
-      No tracks are available yet.
-    </p>
-
-    <ul>
-      <li *ngFor="let item of currentJob.workItems">
-        <strong>{{ item.title || 'Untitled track' }}</strong>
-        <span> — {{ item.status }}</span>
-
-        <button
-          *ngIf="item.status === WorkStatus.Completed"
-          type="button"
-          (click)="download(item)"
-        >
-          Download
-        </button>
-        <button
-            type="button"
-            *ngIf="job && job.completedItems > 0"
-            (click)="downloadAll()">
-            Download all completed tracks
-            </button>
-        <p *ngIf="item.status === WorkStatus.Failed && item.error">
-          {{ item.error }}
-        </p>
-      </li>
-    </ul>
-
-    <button
-      type="button"
-      (click)="refreshJob()"
-      [disabled]="loading"
-    >
-      Refresh status
-    </button>
-  </section>
+      <ng-template #emptyDetail><section class="flex min-h-[420px] items-center justify-center rounded-2xl border border-dashed border-blue-900/60 bg-[#071329]/50 p-8 text-center"><div><div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-pink-500/20 text-pink-400"><svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" /></svg></div><h2 class="mt-5 text-lg font-bold text-white">Choose an import job</h2><p class="mt-2 text-sm text-blue-300/60">Your track controls and download progress will appear here.</p></div></section></ng-template>
+    </div>
+  </div>
 </section>

@@ -65,6 +65,47 @@ public class MusicImportController : ControllerBase
         return result is null ? NotFound() : Ok(result);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetJobs(CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        return Ok(await _importService.GetJobsAsync(userId.Value, cancellationToken));
+    }
+
+    [HttpPost("{jobId:guid}/retry")]
+    public async Task<IActionResult> RetryJob(Guid jobId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var result = await _importService.RetryJobAsync(userId.Value, jobId, cancellationToken);
+        return result is null ? NotFound() : Accepted(result);
+    }
+
+    [HttpPost("{jobId:guid}/start")]
+    public async Task<IActionResult> StartJob(Guid jobId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var result = await _importService.StartJobAsync(userId.Value, jobId, cancellationToken);
+        return result is null ? NotFound() : Accepted(result);
+    }
+
+    [HttpPost("{jobId:guid}/work/{workItemId:guid}/start")]
+    public async Task<IActionResult> StartWorkItem(
+        Guid jobId, Guid workItemId, CancellationToken cancellationToken)
+    {
+        var userId = GetUserId();
+        if (userId is null) return Unauthorized();
+
+        var result = await _importService.StartWorkItemAsync(
+            userId.Value, jobId, workItemId, cancellationToken);
+        return result is null ? NotFound() : Accepted(result);
+    }
+
     [HttpGet("{jobId:guid}/progress")]
     public async Task<IActionResult> GetJobProgress(Guid jobId, CancellationToken cancellationToken)
     {
@@ -101,7 +142,12 @@ public class MusicImportController : ControllerBase
         if (!System.IO.File.Exists(fullPath)) return NotFound("The temporary file no longer exists.");
 
         var fileName = Path.GetFileName(workItem.TemporaryFileName ?? fullPath);
-        var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read,
+        HttpContext.Response.OnCompleted(() =>
+            _importService.MarkWorkItemDownloadedAsync(
+                workItemId, userId.Value, fullPath));
+
+        var stream = new FileStream(fullPath, FileMode.Open, FileAccess.Read,
+            FileShare.ReadWrite | FileShare.Delete,
             bufferSize: 81920, useAsync: true);
         return File(stream, "application/octet-stream", fileName, enableRangeProcessing: true);
     }

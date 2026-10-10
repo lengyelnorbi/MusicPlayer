@@ -11,4 +11,5 @@ public class MusicWorkCompletedMessage
     public string? FileName { get; set; }
     public string? Title { get; set; }
     public string? Error { get; set; }
+    public bool Forbidden { get; set; }
 }

@@ -48,6 +48,13 @@ public sealed class RabbitMqPublisher : IAsyncDisposable
                 autoDelete: false,
                 arguments: null,
                 cancellationToken: cancellationToken);
+            await _channel.QueueDeclareAsync(
+                queue: _settings.SingleWorkQueue,
+                durable: true,
+                exclusive: false,
+                autoDelete: false,
+                arguments: null,
+                cancellationToken: cancellationToken);
 
             _logger.LogInformation("RabbitMQ publisher connected.");
             return _channel;
@@ -60,14 +67,38 @@ public sealed class RabbitMqPublisher : IAsyncDisposable
 
     public async Task PublishWorkAsync<T>(T message, CancellationToken cancellationToken = default)
     {
+        await PublishWorkAsync(message, _settings.WorkQueue, cancellationToken);
+    }
+
+    public async Task PublishSingleWorkAsync<T>(T message, CancellationToken cancellationToken = default)
+    {
+        await PublishWorkAsync(message, _settings.SingleWorkQueue, cancellationToken);
+    }
+
+    private async Task PublishWorkAsync<T>(
+        T message, string queue, CancellationToken cancellationToken)
+    {
         var channel = await GetChannelAsync(cancellationToken);
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
         await channel.BasicPublishAsync(
             exchange: string.Empty,
-            routingKey: _settings.WorkQueue,
+            routingKey: queue,
             body: body,
             cancellationToken: cancellationToken);
-        _logger.LogInformation("Published work message to {Queue}", _settings.WorkQueue);
+        _logger.LogInformation("Published work message to {Queue}", queue);
+    }
+
+    public async Task PublishControlAsync<T>(T message, CancellationToken cancellationToken = default)
+    {
+        var channel = await GetChannelAsync(cancellationToken);
+        await channel.QueueDeclareAsync(_settings.ControlQueue, durable: true, exclusive: false,
+            autoDelete: false, arguments: null, cancellationToken: cancellationToken);
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+        await channel.BasicPublishAsync(
+            exchange: string.Empty,
+            routingKey: _settings.ControlQueue,
+            body: body,
+            cancellationToken: cancellationToken);
     }
 
     public async ValueTask DisposeAsync()
