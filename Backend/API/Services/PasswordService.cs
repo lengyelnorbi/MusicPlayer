@@ -20,6 +20,11 @@ public class PasswordService : IPasswordService
     {
     }
 
+    /// <summary>
+    /// Hashes a password using BCrypt with a cost factor of 12.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns></returns>
     public Task<string> HashPasswordAsync(string password)
     {
         try
@@ -36,6 +41,12 @@ public class PasswordService : IPasswordService
         }
     }
 
+    /// <summary>
+    /// Verifies a password against a given hash using BCrypt.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="hash"></param>
+    /// <returns></returns>
     public Task<bool> VerifyPasswordAsync(string password, string hash)
     {
         try
@@ -59,30 +70,62 @@ public class PasswordService : IPasswordService
         }
     }
 
+    /// <summary>
+    /// Generates a password reset token for the specified user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Task<string> GeneratePasswordResetTokenAsync(User user)
     {
         // Implement token generation logic for password reset
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Validates a password reset token for the specified user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Task<bool> ValidatePasswordResetTokenAsync(User user, string token)
     {
         // Implement token validation logic for password reset
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Generates an email confirmation token for the specified user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Task<string> GenerateEmailConfirmationTokenAsync(User user)
     {
         // Implement token generation logic for email confirmation
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Validates an email confirmation token for the specified user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Task<bool> ValidateEmailConfirmationTokenAsync(User user, string token)
     {
         // Implement token validation logic for email confirmation
         throw new NotImplementedException();
     }
 
+
+    /// <summary>
+    /// Generates a random password that meets the specified requirements.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     async public Task<string> GeneratePasswordAsync()
     {
         try

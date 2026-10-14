@@ -18,6 +18,12 @@ public class TokenService : ITokenService
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of access tokens that are not revoked, along with associated user information.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     public async Task<PagedResult<AccessTokenUserDTO>> GetAccessTokensAsync(int page = 1, int limit = 10)
     {
        var query = _dbContext.AccessTokens
@@ -53,6 +59,12 @@ public class TokenService : ITokenService
         };
     }
 
+    /// <summary>
+    /// Revokes an access token by its ID. If the token is found, it is marked as revoked in the database.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     public async Task<PagedResult<RefreshTokenUserDTO>> GetRefreshTokensAsync(int page = 1, int limit = 10)
     {
          var query = _dbContext.RefreshTokens
@@ -88,6 +100,11 @@ public class TokenService : ITokenService
         };
     }
 
+    /// <summary>
+    /// Revokes an access token by its ID. If the token is found, it is marked as revoked in the database.
+    /// </summary>
+    /// <param name="tokenID"></param>
+    /// <returns></returns>
     public async Task<bool> RevokeAccessTokenAsync(int tokenID)
     {
         var accessToken = await _dbContext.AccessTokens.FirstOrDefaultAsync(at => at.ID == tokenID);
@@ -105,6 +122,11 @@ public class TokenService : ITokenService
         return true;
     }
 
+    /// <summary>
+    /// Revokes a refresh token by its ID. If the token is found, it is marked as revoked in the database.
+    /// </summary>
+    /// <param name="tokenID"></param>
+    /// <returns></returns>
     public async Task<bool> RevokeRefreshTokenAsync(int tokenID)
     {
         var refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.ID == tokenID);

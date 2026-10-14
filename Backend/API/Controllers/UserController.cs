@@ -23,13 +23,27 @@ public class UserController : ControllerBase
         _passwordService = passwordService;
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of users.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     [HttpGet("", Name = "GetUsers")]
-    // [Authorize(Policy = "AdminSource")]
+    [Authorize(Policy = "AdminSource")]
     public async Task<PagedResult<UserDTO>> Get(int page, int limit)
     {
+        // Fetch the paginated list of users using the user service
         return await _userService.GetUsersAsync(page, limit);
     }
 
+    /// <summary>
+    /// Creates a new user with the provided details.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     [HttpPost("", Name = "CreateUser")]
     [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequest user)
@@ -40,8 +54,10 @@ public class UserController : ControllerBase
             {
                 return BadRequest("Invalid user data");
             }
+            // Hash the password before creating the user
             user.UserDTO.PasswordHash = await _passwordService.HashPasswordAsync(user.UserDTO.PasswordHash);
             _logger.LogInformation(user.UserDTO.ToString());
+            // Create the new user using the user service
             bool success = await _userService.CreateUserAsync(user.UserDTO);
             if (!success)
             {
@@ -57,6 +73,12 @@ public class UserController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates an existing user with the provided details.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     [HttpPut("", Name = "UpdateUser")]
     [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest user)
@@ -72,7 +94,7 @@ public class UserController : ControllerBase
             {
                 return BadRequest("Invalid user data");
             }
-
+            // Hash the password if it's provided before updating the user
             bool success = await _userService.UpdateUserAsync(user.UserUpdateDTO);
             if (!success)
             {

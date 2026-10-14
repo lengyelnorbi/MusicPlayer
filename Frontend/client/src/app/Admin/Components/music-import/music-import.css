@@ -5,3 +5,39 @@ button:not(:disabled) {
 button:disabled {
   cursor: not-allowed;
 }
+
+/* Keep long source URLs and track titles inside the cards on narrow screens. */
+@media (max-width: 640px) {
+  :host {
+    display: block;
+    min-width: 0;
+  }
+
+  section,
+  article,
+  form,
+  input,
+  button {
+    min-width: 0;
+  }
+
+  h1,
+  h2,
+  p {
+    overflow-wrap: anywhere;
+  }
+
+  button {
+    min-height: 2.5rem;
+  }
+
+  /* Give the selected-job actions their own row instead of squeezing the URL. */
+  section > div.flex.flex-col.gap-5 > div:last-child {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  section > div.flex.flex-col.gap-5 > div:last-child button {
+    flex: 1 1 8rem;
+  }
+}

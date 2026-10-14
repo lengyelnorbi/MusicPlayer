@@ -23,44 +23,63 @@ public class MusicController : ControllerBase
         _googleDriveService = googleDriveService;
     }
 
-
+    /// <summary>
+    /// Retrieves a paginated list of musics, optionally filtered by search term and genres.
+    /// If the user is authenticated, their user ID is used to fetch their playlists for each music.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <param name="search"></param>
+    /// <param name="genres"></param>
+    /// <returns></returns>
     [HttpGet("", Name = "GetMusics")]
-    public async Task<MusicListResponseDTO> Get([FromQuery] int page, [FromQuery] int limit)
+    public async Task<MusicListResponseDTO> Get([FromQuery] int page, [FromQuery] int limit, [FromQuery] string? search, [FromQuery] string[]? genres)
     {
+        /* get the userID from the JWT token if the user is logged in, otherwise set it to null */
         int? userID = null;
-
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 
-        if (userIdClaim != null &&
-            int.TryParse(userIdClaim.Value, out var parsedUserID))
+        if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var parsedUserID))
         {
             userID = parsedUserID;
         }
+        /* userID extraction ends here */
 
-        _logger.LogInformation(
-    "Authenticated: {Authenticated}, AuthType: {AuthType}",
-    User.Identity?.IsAuthenticated,
-    User.Identity?.AuthenticationType
-);
-
-foreach (var claim in User.Claims)
-{
-    _logger.LogInformation(
-        "Claim: {Type} = {Value}",
-        claim.Type,
-        claim.Value
-    );
-}
-
+        //Development logging for debugging purposes
+        _logger.LogInformation( "Authenticated: {Authenticated}, AuthType: {AuthType}", User.Identity?.IsAuthenticated, User.Identity?.AuthenticationType);
+        foreach (var claim in User.Claims)
+        {
+            _logger.LogInformation("Claim: {Type} = {Value}", claim.Type, claim.Value);
+        }
         _logger.LogInformation("Fetching musics for userID: {UserID}, page: {Page}, limit: {Limit}", userID, page, limit);
 
-        if (!validateGetMusicsParameters(page, limit))
+        //If user is logged in then add the userID to the method for getting the user's playlists for each music
+        if(userID != null)
         {
-            return await _musicService.GetMusicsAsync();
+            if (!validateGetMusicsParameters(page, limit))
+            {
+                return await _musicService.GetMusicsAsync(userID : userID, search: search, genres: genres);
+            }
+            return await _musicService.GetMusicsAsync(page, limit, userID, search, genres);
+            }
+        //If user is not logged in then the user don't get the feature to add musics to their playlists, so the userID is not needed in the method for getting the user's playlists for each music
+        else
+        {
+            if (!validateGetMusicsParameters(page, limit))
+            {
+                return await _musicService.GetMusicsAsync(search: search, genres: genres);
+            }
+            return await _musicService.GetMusicsAsync(page, limit, null, search, genres);
         }
-        return await _musicService.GetMusicsAsync(page, limit, userID);
+       
     }
 
+
+    /// <summary>
+    /// Streams a music file from Google Drive by its ID.
+    /// </summary>
+    /// <param name="fileID">The ID of the music file to stream.</param>
+    /// <returns>The streamed music file.</returns>
     [HttpGet("{fileID}/stream")]
     public async Task<IActionResult> Stream(string fileID)
     {
@@ -74,21 +93,33 @@ foreach (var claim in User.Claims)
             return BadRequest("Invalid File ID.");
         }
 
+        // Get the Google Drive file ID associated with the music ID
         var googleDriveFileID = await _musicService.GetGoogleDriveFileIdByMusicIdAsync(parsedMusicID);
+
+        if(string.IsNullOrEmpty(googleDriveFileID))
+        {
+            return NotFound("Google Drive File ID not found for the given music ID.");
+        }
+
+        // Stream the music file from Google Drive
         var stream = await _googleDriveService.GetFileStreamAsync(googleDriveFileID);
 
-        return File(
-            stream,
-            "audio/mp4",
-            enableRangeProcessing: true);
+        return File(stream, "audio/mp4", enableRangeProcessing: true);
     }
 
+    /// <summary>
+    /// Downloads a music file by its ID.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <param name="musicID">The ID of the music file to download.</param>
+    /// <returns>The downloaded music file.</returns>
     [HttpGet("{musicID}/download")]
     [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> Download(string musicID)
     {
         if(string.IsNullOrEmpty(musicID))
         {
+            _logger.LogWarning("Music ID is required.");
             return BadRequest("File ID is required.");
         }
 
@@ -97,19 +128,27 @@ foreach (var claim in User.Claims)
             return BadRequest("Invalid File ID.");
         }
 
+        // Get the Google Drive file ID associated with the music ID
         var googleDriveFileID = await _musicService.GetGoogleDriveFileIdByMusicIdAsync(parsedMusicID);
-        var result = await _googleDriveService
-        .DownloadMusicFileAsync(googleDriveFileID);
+
+        if(string.IsNullOrEmpty(googleDriveFileID))
+        {
+            return NotFound("Google Drive File ID not found for the given music ID.");
+        }
+
+        // Download the music file from Google Drive
+        var result = await _googleDriveService.DownloadMusicFileAsync(googleDriveFileID);
 
         _logger.LogInformation("Downloading music with ID: {MusicID}, FileName: {FileName} and MimeType: {MimeType}", musicID, result.FileName, result.MimeType);
 
-        return File(
-            result.Content,
-            result.MimeType,
-            result.FileName
-        );
+        return File(result.Content, result.MimeType, result.FileName);
     }
 
+    /// <summary>
+    /// Downloads all music files from Google Drive.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("download-all")]
     [Authorize(Policy = "AdminSource")]
     public async Task<IEnumerable<int>> DownloadAllMusic()
@@ -118,6 +157,41 @@ foreach (var claim in User.Claims)
         return result;
     }
 
+    /// <summary>
+    /// Synchronizes music files from Google Drive to the local database.
+    /// This endpoint is protected and requires the "AdminSource" policy for access.
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("sync-from-drive")]
+    [Authorize(Policy = "AdminSource")]
+    public async Task<IActionResult> SyncFromGoogleDrive()
+    {
+        try
+        {
+            // Fetch music files from Google Drive
+            var driveMusics = await _googleDriveService.ListMusicFilesInFolder();
+
+            // Synchronize the fetched music files with the local database then return the status of the synchronization process's result
+            var result = await _musicService.AddMissingDriveMusicAsync(driveMusics);
+
+            _logger.LogInformation("Google Drive music sync completed. Drive files: {DriveFileCount}, added: {AddedCount}", result.DriveFileCount, result.AddedCount);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Google Drive music sync failed.");
+            return StatusCode(500, "Google Drive music sync failed.");
+        }
+    }
+
+
+    /// <summary>
+    /// Validates the pagination parameters for fetching musics.
+    /// </summary>
+    /// <param name="page">The page number.</param>
+    /// <param name="limit">The number of items per page.</param>
+    /// <returns>True if the parameters are valid; otherwise, false.</returns>
     private bool validateGetMusicsParameters(int page, int limit)
     {
         if(int.TryParse(page.ToString(), out int parsedPage) && int.TryParse(limit.ToString(), out int parsedLimit))
@@ -138,6 +212,12 @@ foreach (var claim in User.Claims)
         return true;
     }
 
+    /// <summary>
+    /// Adds a new music entry to the database.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <param name="music"></param>
+    /// <returns></returns>
     [HttpPost("", Name = "AddMusic")]
     [Authorize]
     public async Task<IActionResult> Post([FromBody] Music music)
@@ -157,6 +237,12 @@ foreach (var claim in User.Claims)
         }
     }
 
+    /// <summary>
+    /// Deletes a music entry from the database.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <param name="id">The ID of the music to delete.</param>
+    /// <returns></returns>
     [HttpDelete("musics/{id}", Name = "DeleteMusic")]
     [Authorize]
     public async Task<IActionResult> Delete(int id)
@@ -174,25 +260,32 @@ foreach (var claim in User.Claims)
         }
     }
 
-    [HttpPut("musics/{id}", Name = "UpdateMusic")]
-    [Authorize]
-    public async Task<IActionResult> Put(int id, [FromBody] Music music)
-    {
-        if (music == null || music.ID != id)
-        {
-            return BadRequest("Invalid music data.");
-        }
+    /// <summary>
+    /// Updates an existing music entry in the database.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="music"></param>
+    /// <returns></returns>
+    // [HttpPut("musics/{id}", Name = "UpdateMusic")]
+    // [Authorize]
+    // public async Task<IActionResult> Put(int id, [FromBody] Music music)
+    // {
+    //     if (music == null || music.ID != id)
+    //     {
+    //         return BadRequest("Invalid music data.");
+    //     }
 
-        _logger.LogInformation("Updating music with ID: {Id}", id);
-        var result = await _musicService.UpdateMusicAsync(music);
+    //     _logger.LogInformation("Updating music with ID: {Id}", id);
+    //     var result = await _musicService.UpdateMusicAsync(music);
 
-        if (result != null)
-        {
-            return Ok("Music updated successfully.");
-        }
-        else
-        {
-            return StatusCode(500, "An error occurred while updating the music.");
-        }
-    }
+    //     if (result != null)
+    //     {
+    //         return Ok("Music updated successfully.");
+    //     }
+    //     else
+    //     {
+    //         return StatusCode(500, "An error occurred while updating the music.");
+    //     }
+    // }
 }

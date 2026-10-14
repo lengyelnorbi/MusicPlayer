@@ -12,4 +12,6 @@ public interface IUserService
     Task<UserDTO> GetUserByEmailAsync(string email);
     Task<UserDTO> GetUserByIdAsync(int id);
     Task<bool> UpdateUserAsync(UserUpdateDTO user);
+    Task<bool> DeleteUserAsync(int userId);
+    // Task<bool> BanUserAsync(int userId);
 }

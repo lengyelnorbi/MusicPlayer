@@ -18,10 +18,12 @@ export class MusicService {
   }
 
   // Example method to fetch music data
-  getMusicList(page?: number, limit?: number): Observable<MusicListResponse> {
+  getMusicList(page?: number, limit?: number, search?: string, genres: string[] = []): Observable<MusicListResponse> {
     const params = new URLSearchParams();
     if (page !== undefined) params.append('page', page.toString());
     if (limit !== undefined) params.append('limit', limit.toString());
+    if (search?.trim()) params.append('search', search.trim());
+    genres.forEach(genre => params.append('genres', genre));
     
     const queryString = params.toString() ? `?${params.toString()}` : '';
     const endpoint = this.apiConfig.getEndpoint(`/api/music${queryString}`);
@@ -30,7 +32,7 @@ export class MusicService {
     }).pipe(
       catchError((error) => {
         console.error('Fetch error:', error);
-        return of({ totalItemCount: 0, totalPages: 0, items: [], userPlaylists: [] } as MusicListResponse);
+        return of({ totalItemCount: 0, totalPages: 0, items: [], userPlaylists: [], availableGenres: [] } as MusicListResponse);
       }),
       shareReplay(1)
     );

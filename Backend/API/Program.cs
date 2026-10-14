@@ -58,6 +58,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>();
 builder.Services.AddScoped<IAdvancedMsgQueueCommService, AdvancedMsgQueueCommService>();
 builder.Services.AddScoped<IMusicImportService, MusicImportService>();
+builder.Services.AddScoped<IMusicUploadRequestService, MusicUploadRequestService>();
 builder.Services.AddScoped<IImportSourceResolver, ImportSourceResolver>();
 
 builder.Services.AddHostedService<MusicWorkCompletedConsumer>();
@@ -480,8 +481,14 @@ if (app.Environment.IsDevelopment())
     try
     {
         using var migrationScope = app.Services.CreateScope();
+        
         var dbContext = migrationScope.ServiceProvider.GetRequiredService<MusicPlayerDbContext>();
-        await dbContext.Database.MigrateAsync();
+        var pendingChanges = dbContext.Database.HasPendingModelChanges();
+
+        app.Logger.LogInformation(
+            "Runtime model has pending changes: {PendingChanges}",
+            pendingChanges);
+                await dbContext.Database.MigrateAsync();
     }
     catch (Exception ex)
     {

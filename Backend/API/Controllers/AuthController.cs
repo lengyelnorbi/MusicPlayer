@@ -29,6 +29,11 @@ public class AuthController : ControllerBase
         _environment = environment;
     }
 
+    /// <summary>
+    /// Retrieves the cookie options for setting cookies, including HttpOnly, Secure, SameSite, and expiration settings.
+    /// </summary>
+    /// <param name="expires"></param>
+    /// <returns></returns>
     private CookieOptions GetCookieOptions(DateTime? expires = null)
     {
         // For development, allow non-secure cookies over HTTP
@@ -42,6 +47,11 @@ public class AuthController : ControllerBase
         };
     }
 
+    /// <summary>
+    /// Authenticates a user based on their email and password, generating access and refresh tokens upon successful authentication.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("", Name = "Authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
     {
@@ -55,13 +65,7 @@ public class AuthController : ControllerBase
             return Unauthorized(new { error = "Invalid credentials" });
         }
 
-        // if(user.Role == "Admin" && request.Source != "admin")
-        // {
-        //     _logger.LogWarning("Authentication failed for email: {Email} - admin trying to log in from user panel", request.Email);
-        //     return Unauthorized(new { error = "Invalid credentials" });
-        // }
-
-        // Authenticate user and generate access token        
+        /* Authenticate user by unique device fingerprint and generate access token on successful authentication*/    
         var deviceFingerprint = GetDeviceFingerprint();
         var clientIp = GetClientIp();
         var (accessToken, refreshToken, accessTokenExpiresAt) = await _authService.AuthenticateAsync(request.Email, request.Password, deviceFingerprint, clientIp, request.Source);
@@ -72,6 +76,9 @@ public class AuthController : ControllerBase
             return Unauthorized(new { error = "Invalid credentials" });
         }
 
+        /* token generation and device auth done */
+
+        /* Set cookie names and expiration based on source (admin or user) */
         int expiresIn = 0;
         string tokenCookieName;
         string refreshTokenCookieName;
@@ -106,6 +113,10 @@ public class AuthController : ControllerBase
         // Set Refresh Token as httpOnly cookie
         Response.Cookies.Append(refreshTokenCookieName.ToString(), refreshToken.TokenHash, GetCookieOptions(refreshToken.ExpiresAt));
 
+        /* Cookies setting end here */
+
+
+        // Log the authentication details for debugging purposes
         _logger.LogInformation("--------------------------------------------------------------------");
         _logger.LogInformation(accessToken);
         _logger.LogInformation(refreshToken.TokenHash);
@@ -127,6 +138,12 @@ public class AuthController : ControllerBase
         });
     }
 
+    /// <summary>
+    /// Refreshes the access token and refresh token for an authenticated user based on the provided refresh token in cookies.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpPost("refresh")]
     [Authorize]  // Require valid authentication to refresh token
     public async Task<IActionResult> RefreshToken([FromBody] RefreshRequest request)
@@ -156,7 +173,7 @@ public class AuthController : ControllerBase
             string tokenCookieName = "";
             string refreshTokenCookieName = "";
 
-
+            // Check for admin or user refresh token in cookies
             if (Request.Cookies.TryGetValue("adminRefreshToken", out var adminRefreshTokenHash))
             {
                 refreshTokenHash = adminRefreshTokenHash;
@@ -164,6 +181,7 @@ public class AuthController : ControllerBase
                 refreshTokenCookieName = "adminRefreshToken";
                 _logger.LogInformation("Refreshing admin token at {Timestamp}", DateTime.UtcNow);
             }
+            // Check for user refresh token in cookies
             else if (Request.Cookies.TryGetValue("userRefreshToken", out var userRefreshTokenHash))
             {
                 refreshTokenHash = userRefreshTokenHash;
@@ -195,6 +213,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { error = "Device fingerprint mismatch" });
             }
 
+            // Get the JTI (JWT ID) from the current access token claims for logging and validation
             var jti = HttpContext.User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value ?? "UnknownJTI";
 
             // Generate new access token and refresh token with the same expiration as the original
@@ -230,6 +249,11 @@ public class AuthController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Logs out the authenticated user by invalidating their refresh token and deleting the associated cookies.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("logout")]
     [Authorize]  // Require valid authentication
     public async Task<IActionResult> Logout()
@@ -243,6 +267,7 @@ public class AuthController : ControllerBase
             string tokenCookieName = "";
             string refreshTokenCookieName = "";
             
+            // Check for admin or user refresh token in cookies
             if (Request.Cookies.TryGetValue("adminRefreshToken", out var adminRefreshTokenHash))
             {
                 refreshTokenHash = adminRefreshTokenHash;
@@ -250,6 +275,7 @@ public class AuthController : ControllerBase
                 refreshTokenCookieName = "adminRefreshToken";
                 _logger.LogInformation("Admin logout at {Timestamp}", DateTime.UtcNow);
             }
+            // Check for user refresh token in cookies
             else if (Request.Cookies.TryGetValue("userRefreshToken", out var userRefreshTokenHash))
             {
                 refreshTokenHash = userRefreshTokenHash;
@@ -274,7 +300,7 @@ public class AuthController : ControllerBase
                 _logger.LogWarning("Missing claims for logout - UserId: {UserId}, JTI: {Jti}, DeviceId: {DeviceId}, IPAddress: {IpAddress}", userId, jti, deviceId, ipAddress);
                 return Unauthorized(new { error = "Invalid token claims" });
             }
-
+            
             await _authService.LogoutAsync(userId, deviceId, ipAddress, jti, refreshTokenHash);
 
             _logger.LogInformation("User {UserId} logged out successfully at {Timestamp}", userId, DateTime.UtcNow);
@@ -292,22 +318,24 @@ public class AuthController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Generates a unique fingerprint for the client's device based on its user agent, accept, and accept-encoding headers.
+    /// </summary>
+    /// <returns>A string representing the device's fingerprint.</returns>
     private string GetDeviceFingerprint()
     {
         if (Request?.HttpContext == null)
             return string.Empty;
 
-        _logger.LogInformation(Request.Headers["User-Agent"].ToString(),
-            Request.Headers["Accept"].ToString(),
-            Request.Headers["Accept-Encoding"].ToString());
+        _logger.LogInformation(Request.Headers["User-Agent"].ToString(), Request.Headers["Accept"].ToString(), Request.Headers["Accept-Encoding"].ToString());
 
-        return _deviceService.GenerateFingerprint(
-            Request.Headers["User-Agent"].ToString(),
-            Request.Headers["Accept"].ToString(),
-            Request.Headers["Accept-Encoding"].ToString()
-        );
+        return _deviceService.GenerateFingerprint(Request.Headers["User-Agent"].ToString(), Request.Headers["Accept"].ToString(), Request.Headers["Accept-Encoding"].ToString());
     }
 
+    /// <summary>
+    /// Retrieves the client's IP address from the request headers or connection information.
+    /// </summary>
+    /// <returns>A string representing the client's IP address.</returns>
     private string GetClientIp()
     {
         if (Request?.HttpContext == null)
@@ -316,8 +344,6 @@ public class AuthController : ControllerBase
         }
 
         var xForwardedFor = Request.Headers["X-Forwarded-For"].ToString();
-        return !string.IsNullOrEmpty(xForwardedFor) 
-            ? xForwardedFor.Split(',').First().Trim() 
-            : HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+        return !string.IsNullOrEmpty(xForwardedFor) ? xForwardedFor.Split(',').First().Trim() : HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
     }
 }

@@ -1,7 +1,9 @@
 ﻿import { Component, OnInit, HostListener, ElementRef, QueryList, ViewChildren, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { OnDestroy } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { Observable, BehaviorSubject, map, of } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, Subscription, map, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Music } from '../../Models/music';
 import { MusicService } from '../../../Services/music-service';
 import { Router } from '@angular/router';
@@ -12,17 +14,20 @@ import { Playlist } from '../../Models/playlist';
 import { FormsModule } from '@angular/forms';
 import { PlaylistService } from '../../../Services/playlist-service';
 import { AudioPlayerService } from '../../../Services/audio-player-service';
+import { MusicUploadRequestService } from '../../../Services/music-upload-request-service';
+import { firstValueFrom } from 'rxjs';
+import { MusicTitlePipe } from '../../../Shared/Pipes/music-title-pipe';
 
 @Component({
   selector: 'app-music-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, TranslatePipe, PaginationCountPipe, FormsModule],
+  imports: [CommonModule, MatTableModule, TranslatePipe, PaginationCountPipe, FormsModule, MusicTitlePipe],
   providers: [MusicService, ApiConfigService, PlaylistService],
   templateUrl: './music-list.html',
   styleUrl: './music-list.css',
 })
 
-export class MusicList implements OnInit {
+export class MusicList implements OnDestroy, OnInit {
   loggedIn: boolean = false; // Ez a vÃ¡ltozÃ³ jelzi, hogy a felhasznÃ¡lÃ³ be van-e jelentkezve
   musics$!: Observable<Music[]>;
   displayedColumns = ['title', 'addedAt'];
@@ -31,7 +36,12 @@ export class MusicList implements OnInit {
   maxItemCount: number = 0; // Default items per page, can be updated based on API response
   currentPage: number = 1; // To keep track of the current page number for pagination
   maxPageCount: number = 0; // To keep track of the current page number for pagination
+  paginationItems: Array<number | 'ellipsis'> = [];
   limit: number = 10; // Number of items per page
+  readonly limitOptions = [10, 25, 50, 75, 100];
+  searchTerm = '';
+  availableGenres: string[] = [];
+  selectedGenres: string[] = [];
   showPlaylistOverlay: boolean = false;
   musicIDs: number[] = []; // TÃ¡rolja az Ã¶sszes zene ID-jÃ©t a listÃ¡ban
   userPlaylists: Playlist[] = [];
@@ -39,6 +49,11 @@ export class MusicList implements OnInit {
   newPlaylistName: string = '';
   selectedMusicPlaylistIds: number[] = []; // TÃ¡rolja az Ã¶sszes lejÃ¡tszÃ¡si listÃ¡t a felhasznÃ¡lÃ³hoz
   musicList: Music[] = []; // TÃ¡rolja az Ã¶sszes zenÃ©t a listÃ¡ban
+  requestUrl = '';
+  requestLoading = false;
+  requestMessage = '';
+  private readonly searchSubject = new Subject<string>();
+  private searchSubscription?: Subscription;
 
  @ViewChildren('scrollable') scrollable!: QueryList<ElementRef>;
 
@@ -49,8 +64,25 @@ export class MusicList implements OnInit {
     private ngZone: NgZone,
     private changeDetectorRef: ChangeDetectorRef,
     private playlistService: PlaylistService,
-    private audioPlayerService: AudioPlayerService
+    private audioPlayerService: AudioPlayerService,
+    private musicUploadRequestService: MusicUploadRequestService
   ) {}
+
+  async requestMusic(): Promise<void> {
+    if (!this.loggedIn || !this.requestUrl.trim() || this.requestLoading) return;
+    this.requestLoading = true;
+    this.requestMessage = '';
+    try {
+      await firstValueFrom(this.musicUploadRequestService.create(this.requestUrl.trim()));
+      this.requestUrl = '';
+      this.requestMessage = 'Music request sent to the administrator.';
+    } catch (error) {
+      console.error('Could not send music request', error);
+      this.requestMessage = 'Could not send the music request.';
+    } finally {
+      this.requestLoading = false;
+    }
+  }
 
   ngOnInit() {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
@@ -58,7 +90,19 @@ export class MusicList implements OnInit {
         this.loggedIn = true;
       }
     }
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(2000),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.currentPage = 1;
+      this.setMusicList();
+    });
     this.setMusicList();
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
+    this.searchSubject.complete();
   }
 
   setMusicList(): void {
@@ -66,10 +110,17 @@ export class MusicList implements OnInit {
     if (typeof window === 'undefined') { this.musics$ = of([]); return; }
     console.log('Initializing Music List component');
     console.trace('Music List component initialized, fetching Music');
-    this.musics$ = this.musicService.getMusicList(this.currentPage, this.limit).pipe(
+    this.musics$ = this.musicService.getMusicList(
+      this.currentPage,
+      this.limit,
+      this.searchTerm,
+      this.selectedGenres
+    ).pipe(
       map(result => {
         this.maxItemCount = result.totalItemCount;
         this.maxPageCount = result.totalPages;
+        this.availableGenres = result.availableGenres ?? [];
+        this.updatePaginationItems();
         this.userPlaylists = result.userPlaylists ?? [];
         this.musicList = result.items ?? [];
         result.items?.forEach(music => {
@@ -79,6 +130,36 @@ export class MusicList implements OnInit {
       })
     );
   } 
+
+  onSearchChanged(search: string): void {
+    this.searchTerm = search;
+    this.searchSubject.next(search);
+  }
+
+  toggleGenre(genre: string, checked: boolean): void {
+    this.selectedGenres = checked
+      ? [...new Set([...this.selectedGenres, genre])]
+      : this.selectedGenres.filter(selectedGenre => selectedGenre !== genre);
+    this.currentPage = 1;
+    this.setMusicList();
+  }
+
+  onLimitChanged(value: string): void {
+    const nextLimit = Number(value);
+    if (!this.limitOptions.includes(nextLimit)) return;
+
+    this.limit = nextLimit;
+    this.currentPage = 1;
+    this.setMusicList();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.selectedGenres = [];
+    this.currentPage = 1;
+    this.searchSubject.next('');
+    this.setMusicList();
+  }
 
   refreshMusicList(response: any): void {
     console.log('BEFORE refresh:', this.userPlaylists);
@@ -97,8 +178,54 @@ export class MusicList implements OnInit {
       return;
     }
     this.currentPage = page;
+    this.updatePaginationItems();
     console.log(`Navigating to page ${page} of Playlists`);
     this.setMusicList();
+  }
+
+  goToPaginationItem(page: number | 'ellipsis'): void {
+    if (page !== 'ellipsis') {
+      this.goToPage(page);
+    }
+  }
+
+  private updatePaginationItems(): void {
+    const totalPages = this.maxPageCount;
+    const currentPage = this.currentPage;
+
+    if (totalPages <= 7) {
+      this.paginationItems = Array.from({ length: totalPages }, (_, index) => index + 1);
+      return;
+    }
+
+    const pages = new Set<number>([1, totalPages - 2, totalPages - 1, totalPages]);
+
+    if (currentPage <= 5) {
+      pages.add(2);
+      pages.add(3);
+      pages.add(4);
+      pages.add(5);
+    } else if (currentPage < totalPages - 4) {
+      pages.add(currentPage - 1);
+      pages.add(currentPage);
+      pages.add(currentPage + 1);
+    } else if (currentPage >= totalPages - 4) {
+      pages.add(totalPages - 5);
+      pages.add(totalPages - 4);
+      pages.add(totalPages - 3);
+    }
+
+    const sortedPages = [...pages].sort((a, b) => a - b);
+    const items: Array<number | 'ellipsis'> = [];
+
+    sortedPages.forEach((page, index) => {
+      if (index > 0 && page - sortedPages[index - 1] > 1) {
+        items.push('ellipsis');
+      }
+      items.push(page);
+    });
+
+    this.paginationItems = items;
   }
 
   createNewPlaylist(): void {

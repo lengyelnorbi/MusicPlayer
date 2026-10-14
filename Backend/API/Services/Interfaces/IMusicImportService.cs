@@ -15,4 +15,6 @@ public interface IMusicImportService
     Task<ImportJobDTO?> RetryJobAsync(int userId, Guid jobId, CancellationToken cancellationToken = default);
     Task<ImportWorkItem?> GetWorkItemByIdAsync(Guid workItemId, int userId, CancellationToken cancellationToken = default);
     Task MarkWorkItemDownloadedAsync(Guid workItemId, int userId, string fullPath, CancellationToken cancellationToken = default);
+    Task<bool> DeleteJobAsync(int userId, Guid jobId, CancellationToken cancellationToken = default);
+    Task<bool> DeleteWorkItemAsync(int userId, Guid jobId, Guid workItemId, CancellationToken cancellationToken = default);
 }

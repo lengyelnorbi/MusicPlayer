@@ -17,6 +17,13 @@ public class PlaylistService : IPlaylistService
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of playlists.
+    /// This method fetches playlists from the database, calculates the total number of items and pages, and returns a PagedResult containing the playlists for the specified page and limit.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     public async Task<PagedResult<Playlist>> GetPlaylistsAsync(int page, int limit)
     {
         try
@@ -50,6 +57,12 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    /// <summary>
+    /// Adds a music to a playlist.
+    /// </summary>
+    /// <param name="playlistID"></param>
+    /// <param name="musicID"></param>
+    /// <returns></returns>
     public async Task AddMusicToPlaylistAsync(int playlistID, int musicID)
     {
         try
@@ -78,6 +91,12 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    /// <summary>
+    /// Removes a music from a playlist.
+    /// </summary>
+    /// <param name="playlistID"></param>
+    /// <param name="musicID"></param>
+    /// <returns></returns>
     public async Task RemoveMusicFromPlaylistAsync(int playlistID, int musicID)
     {
         try
@@ -106,6 +125,13 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    /// <summary>
+    /// Creates a new playlist.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="userID"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public async Task<Playlist> CreatePlaylistAsync(string name, int userID)
     {
         try
@@ -167,6 +193,11 @@ public class PlaylistService : IPlaylistService
     //     }
     // }
 
+    /// <summary>
+    /// Retrieves a specific playlist by its ID.
+    /// </summary>
+    /// <param name="playlistID"></param>
+    /// <returns></returns>
     public async Task<Playlist> GetPlaylistByIDAsync(int playlistID)
     {
         try
@@ -181,8 +212,7 @@ public class PlaylistService : IPlaylistService
                     .Select(pm => pm.Music)
                     .ToListAsync();
 
-                _logger.LogInformation(
-                    "Fetched playlist with ID {PlaylistID}: {PlaylistName}, Music count: {Count}",
+                _logger.LogInformation("Fetched playlist with ID {PlaylistID}: {PlaylistName}, Music count: {Count}",
                     playlistID,
                     playlist.Name,
                     playlist.Musics.Count);
@@ -202,6 +232,11 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    /// <summary>
+    /// Deletes a playlist by its ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<bool> DeletePlaylistAsync(int id)
     {
         try
@@ -226,16 +261,44 @@ public class PlaylistService : IPlaylistService
         }
     }
 
+    /// <summary>
+    /// Retrieves a list of user's favorite playlists.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <returns></returns>
     public async Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userID)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Retrieves a list of playlists that a user is following.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <returns></returns>
     public async Task<List<Playlist>> GetUserFollowedPlaylistsAsync(int userID)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Updates an existing playlist.
+    /// </summary>
+    /// <param name="playlist"></param>
+    /// <returns></returns>
+    public async Task<Playlist> UpdatePlaylistAsync(Playlist playlist)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// Retrieves a paginated list of playlists for a specific user.
+    /// This method fetches playlists associated with a user from the database, calculates the total number of items and pages, and returns a PagedResult containing the playlists for the specified page and limit.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     public async Task<PagedResult<Playlist>> GetUserPlaylistsAsync(int userID, int page, int limit)
     {
         try
@@ -277,10 +340,5 @@ public class PlaylistService : IPlaylistService
             _logger.LogError(ex, "An error occurred while fetching playlists for page: {Page}, limit: {Limit}", page, limit);
             return new PagedResult<Playlist>();
         }
-    }
-
-    public async Task<Playlist> UpdatePlaylistAsync(Playlist playlist)
-    {
-        throw new NotImplementedException();
     }
 }

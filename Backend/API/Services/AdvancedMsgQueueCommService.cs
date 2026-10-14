@@ -12,30 +12,38 @@ public class AdvancedMsgQueueCommService : IAdvancedMsgQueueCommService
     private readonly ILogger<AdvancedMsgQueueCommService> _logger;
     private readonly IConfiguration _configuration;
 
-    public AdvancedMsgQueueCommService(
-        ILogger<AdvancedMsgQueueCommService> logger,
-        IConfiguration configuration)
+    public AdvancedMsgQueueCommService(ILogger<AdvancedMsgQueueCommService> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
     }
 
+    /// <summary>
+    /// Creates a new music upload message with a unique job ID and the provided file URL. This message is intended to be sent to the advanced message queue for processing. 
+    /// The method logs the creation of the message for tracking purposes.
+    /// </summary>
+    /// <param name="link"></param>
+    /// <returns></returns>
     public MusicUploadMessage CreateMusicUploadMessage(string link)
     {
-        
         var message = new MusicUploadMessage
         {
             JobId = Guid.NewGuid(),
             FileUrl = link
         };
 
-        _logger.LogInformation(
-            "Created music upload message {JobId}",
-            message.JobId);
+        _logger.LogInformation("Created music upload message {JobId}", message.JobId);
 
         return message;
     }
 
+    /// <summary>
+    /// Sends the provided music upload message to the RabbitMQ queue for processing. 
+    /// The method establishes a connection to the RabbitMQ server, declares the queue, serializes the message to JSON, and publishes it to the queue. 
+    /// It also logs the publishing of the message for tracking purposes.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
     public async Task SendMessageAsync(MusicUploadMessage message)
     {
         var host = _configuration["RabbitMQ:Host"] ?? "localhost";
@@ -51,9 +59,12 @@ public class AdvancedMsgQueueCommService : IAdvancedMsgQueueCommService
             Password = password
         };
 
+        // Establish a connection to RabbitMQ and create a channel for publishing messages
         await using var connection = await factory.CreateConnectionAsync();
+        // Create a channel for publishing messages to the RabbitMQ queue
         await using var channel = await connection.CreateChannelAsync();
 
+        // Declare the music upload queue with durable, non-exclusive, and non-auto-delete settings
         await channel.QueueDeclareAsync(
             queue: "music-upload",
             durable: true,
@@ -61,25 +72,22 @@ public class AdvancedMsgQueueCommService : IAdvancedMsgQueueCommService
             autoDelete: false,
             arguments: null);
 
-        var json = JsonSerializer.Serialize(
-            message,
-            new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+        // Serialize the music upload message to JSON and publish it to the queue
+        var json = JsonSerializer.Serialize(message, new JsonSerializerOptions{ PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-        _logger.LogInformation(
-            "Publishing RabbitMQ message: {Message}",
-            json);
+        _logger.LogInformation("Publishing RabbitMQ message: {Message}", json);
 
+        // Convert the serialized JSON message to a byte array for publishing
         var body = Encoding.UTF8.GetBytes(json);
 
+        // Set the message properties to make it persistent and specify the content type as JSON
         var properties = new BasicProperties
         {
             Persistent = true,
             ContentType = "application/json"
         };
 
+        // Publish the music upload message to the RabbitMQ queue with the specified properties and serialized JSON body
         await channel.BasicPublishAsync(
             exchange: string.Empty,
             routingKey: "music-upload",
@@ -87,8 +95,6 @@ public class AdvancedMsgQueueCommService : IAdvancedMsgQueueCommService
             basicProperties: properties,
             body: body);
 
-        _logger.LogInformation(
-            "Published music upload job {JobId} to RabbitMQ",
-            message.JobId);
+        _logger.LogInformation("Published music upload job {JobId} to RabbitMQ", message.JobId);
     }
 }

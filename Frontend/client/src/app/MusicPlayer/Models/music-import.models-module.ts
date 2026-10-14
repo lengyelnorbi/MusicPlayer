@@ -15,6 +15,12 @@ export enum WorkStatus {
   Downloaded = 4
 }
 
+export enum MusicRequestStatus {
+  Pending = 0,
+  Imported = 1,
+  Rejected = 2
+}
+
 export interface CreateImportJobRequest {
 url: string;
 }
@@ -26,6 +32,7 @@ status: JobStatus;
 
 export interface ImportWorkItem {
 id: string;
+url: string;
 title?: string | null;
 status: WorkStatus;
 fileName?: string | null;
@@ -49,4 +56,16 @@ status: JobStatus;
 totalItems: number;
 completedItems: number;
 failedItems: number;
+}
+
+export interface MusicUploadRequest {
+  id: string;
+  userId: number;
+  username?: string | null;
+  url: string;
+  status: MusicRequestStatus;
+  createdAt: string;
+  processedAt?: string | null;
+  importJobId?: string | null;
+  adminNote?: string | null;
 }

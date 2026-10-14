@@ -62,7 +62,7 @@ namespace API.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.AccessToken", b =>
@@ -111,7 +111,7 @@ namespace API.Migrations
                     b.HasIndex("jti")
                         .IsUnique();
 
-                    b.ToTable("AccessTokens");
+                    b.ToTable("AccessTokens", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Music", b =>
@@ -131,13 +131,57 @@ namespace API.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<string>("Genre")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("Title")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Musics");
+                    b.ToTable("Musics", (string)null);
+                });
+
+            modelBuilder.Entity("API.Models.MusicUploadRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AdminNote")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ImportJobId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ProcessedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(2048)
+                        .HasColumnType("character varying(2048)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("MusicUploadRequests", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.Playlist", b =>
@@ -160,7 +204,7 @@ namespace API.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Playlists");
+                    b.ToTable("Playlists", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.PlaylistMusic", b =>
@@ -175,7 +219,7 @@ namespace API.Migrations
 
                     b.HasIndex("MusicID");
 
-                    b.ToTable("PlaylistMusics");
+                    b.ToTable("PlaylistMusics", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.QueueModels.ImportJob", b =>
@@ -224,7 +268,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ImportJobs");
+                    b.ToTable("ImportJobs", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.QueueModels.ImportWorkItem", b =>
@@ -276,7 +320,7 @@ namespace API.Migrations
 
                     b.HasIndex("JobId");
 
-                    b.ToTable("ImportWorkItems");
+                    b.ToTable("ImportWorkItems", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.RefreshToken", b =>
@@ -322,7 +366,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.UserPlaylist", b =>
@@ -337,7 +381,7 @@ namespace API.Migrations
 
                     b.HasIndex("PlaylistID");
 
-                    b.ToTable("UserPlaylists");
+                    b.ToTable("UserPlaylists", (string)null);
                 });
 
             modelBuilder.Entity("API.Models.AccessToken", b =>

@@ -21,7 +21,7 @@
                 </svg>
             </button>
             <div class="track-info">
-                <p (click)="togglePlayerExtension()" class="current-track-title text-lg font-semibold">{{ currentTrack?.title || 'No Track Playing' }}</p>
+                <p (click)="togglePlayerExtension()" class="current-track-title text-lg font-semibold">{{ (currentTrack?.title | musicTitlePipe) || 'No Track Playing' }}</p>
             </div>
             <button *ngIf="!isPlayerExtended" (click)="togglePlayPause()" class="collapse-play-pause-btn p-1.5 hover:bg-blue-900/40 rounded-lg transition-colors text-blue-300 hover:text-pink-400 cursor-pointer">
                 <svg *ngIf="isPlaying" viewBox="0 0 24 24" fill="currentColor">
@@ -143,7 +143,7 @@
             <p class="ap-playlist-title text-sm">{{ playlistName }} Tracks:</p>
             <ul class="ap-playlist-tracks">
                 <li *ngFor="let track of trackQueue; let i = index" (click)="selectTrack(i)" [ngClass]="{'bg-blue-900/40': currentTrackIndex === i}" class="py-2 rounded cursor-pointer hover:bg-blue-900/30 transition-colors">
-                    <p>{{ track.title }}</p>
+                    <p>{{ track.title | musicTitlePipe }}</p>
                 </li>
             </ul>
         </div>

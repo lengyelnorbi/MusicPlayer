@@ -6,4 +6,5 @@ export class MusicListResponse {
     totalPages: number = 0;
     items: Music[] = [];
     userPlaylists: Playlist[] = [];
+    availableGenres: string[] = [];
 }

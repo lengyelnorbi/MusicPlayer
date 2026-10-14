@@ -6,4 +6,5 @@ public class MusicListResponseDTO
     public int TotalPages { get; set; }
     public List<MusicDTO> Items { get; set; } = [];
     public List<PlaylistRefDTO> UserPlaylists { get; set; } = [];
+    public List<string> AvailableGenres { get; set; } = [];
 }

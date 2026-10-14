@@ -19,6 +19,12 @@ public class UserService : IUserService
         _dbContext = dbContext;
     }
 
+    /// <summary>
+    /// Retrieves a paginated list of users, excluding those with the "Admin" role.
+    /// </summary>
+    /// <param name="page"></param>
+    /// <param name="limit"></param>
+    /// <returns></returns>
     public async Task<PagedResult<UserDTO>> GetUsersAsync(int page, int limit)
     {
         var query = _dbContext.Users
@@ -49,6 +55,11 @@ public class UserService : IUserService
         };
     }
 
+    /// <summary>
+    /// Updates an existing user's information in the database.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public async Task<bool> UpdateUserAsync(UserUpdateDTO user)
     {
         _logger.LogWarning("Updating user with ID: {UserID}, Email: {Email}, Username: {Username}", user.ID, user.Email, user.Username);
@@ -83,6 +94,11 @@ public class UserService : IUserService
         }
     }
 
+    /// <summary>
+    /// Deletes a user from the database by their ID.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public async Task<bool> CreateUserAsync(UserDTO user)
     {
         _logger.LogInformation(user.ToString());
@@ -101,15 +117,67 @@ public class UserService : IUserService
         }
     }
 
+    /// <summary>
+    /// Deletes a user from the database by their ID.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     public async Task<UserDTO> GetUserByEmailAsync(string email)
     {
         _logger.LogInformation("Fetching user by email from database...");
         return await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("User not found");
     }
 
+    /// <summary>
+    /// Retrieves a user from the database by their ID.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public async Task<UserDTO> GetUserByIdAsync(int id)
     {
         _logger.LogInformation("Fetching user by ID from database...");
         return await _dbContext.Users.FirstOrDefaultAsync(u => u.ID == id) ?? throw new Exception("User not found");
     }
+
+    /// <summary>
+    /// Deletes a user from the database by their ID.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public async Task<bool> DeleteUserAsync(int userId)
+    {
+        _logger.LogInformation("Deleting user from database...");
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.ID == userId);
+        if (user == null)
+        {
+            _logger.LogWarning($"User with ID {userId} not found");
+            return false;
+        }
+
+        _dbContext.Users.Remove(user);
+        await _dbContext.SaveChangesAsync();
+        _logger.LogInformation("User deleted successfully");
+        return true;
+    }
+
+    /// <summary>
+    /// Bans a user from the database by their ID.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    // public async Task<bool> BanUserAsync(int userId)
+    // {
+    //     _logger.LogInformation("Banning user...");
+    //     var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.ID == userId);
+    //     if (user == null)
+    //     {
+    //         _logger.LogWarning($"User with ID {userId} not found");
+    //         return false;
+    //     }
+
+    //     user.IsBanned = true;
+    //     await _dbContext.SaveChangesAsync();
+    //     _logger.LogInformation("User banned successfully");
+    //     return true;
+    // }
 }

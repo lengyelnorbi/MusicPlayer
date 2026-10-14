@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiConfigService } from './api-config-service';
-import { response } from 'express';
-import { Music } from '../MusicPlayer/Models/music';
 
 @Injectable({
   providedIn: 'root',
@@ -98,6 +96,23 @@ export class AdminService {
       console.error('Error downloading all music:', error);
       console.error('Failed to download all music. Please try again.');
     }
+  }
+
+  async syncMusicFromGoogleDrive(): Promise<{ driveFileCount: number; addedCount: number; added: Array<{ title: string; fileId: string }> }> {
+    const endpoint = this.apiConfigService.getEndpoint('/api/music/sync-from-drive');
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Google Drive sync failed: ${response.status}`);
+    }
+
+    return response.json();
   }
 
   async downloadMusic(musicID: number): Promise<void> {

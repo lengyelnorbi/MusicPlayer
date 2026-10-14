@@ -14,21 +14,89 @@
 
 <!-- Fő háttér polírozott Ford kék és mély magenta színátmenettel -->
 <div class="pt-20 px-6 min-h-screen bg-gradient-to-b from-[#0b3c5d] via-[#000a21] to-[#1d001d] text-white">
-  <div class="max-w-2xl mx-auto">
+  <div class="music-layout">
+  <aside class="complex-search-container order-1 rounded-2xl border border-blue-900/50 bg-[#071329]/80 p-4 shadow-lg lg:col-start-1 lg:row-start-1">
+    <div class="flex items-center justify-between gap-3">
+      <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-pink-300">Complex search</h2>
+      <button *ngIf="searchTerm || selectedGenres.length" type="button" (click)="clearFilters()" class="text-xs font-semibold text-blue-300 hover:text-white">Clear</button>
+    </div>
+    <label for="music-search" class="mt-4 block text-xs font-semibold text-blue-300/80">Title</label>
+    <input id="music-search" name="musicSearch" type="search" [ngModel]="searchTerm" (ngModelChange)="onSearchChanged($event)"
+            placeholder="Search music titles..."
+            class="mt-2 w-full rounded-xl border border-blue-800/70 bg-[#030b1c]/80 px-3 py-2.5 text-sm text-white outline-none placeholder:text-blue-400/40 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20" />
+    <p class="mt-2 text-xs text-blue-300/50">Search starts 2 seconds after typing stops.</p>
+
+    <fieldset class="mt-5" *ngIf="availableGenres.length; else noGenres">
+      <legend class="text-xs font-semibold text-blue-300/80">Genre</legend>
+      <div class="mt-2 max-h-56 space-y-2 overflow-y-auto pr-1">
+        <label *ngFor="let genre of availableGenres" class="flex cursor-pointer items-center gap-2 text-sm text-blue-100 hover:text-white">
+          <input type="checkbox" [checked]="selectedGenres.includes(genre)" (change)="toggleGenre(genre, $any($event.target).checked)"
+                  class="h-4 w-4 rounded border-blue-700 bg-blue-950 text-pink-500 focus:ring-pink-500" />
+          <span class="truncate">{{ genre }}</span>
+        </label>
+      </div>
+    </fieldset>
+    <ng-template #noGenres>
+      <p class="mt-5 text-xs text-blue-300/50">No genres have been assigned yet.</p>
+    </ng-template>
+  </aside>
+  <main class="music-main min-w-0">
+
+  <div class="max-w-6xl mx-auto">
     <!-- CÃ­m selymes magenta-kÃ©k Ã¡tmenettel
     <h1 class="text-3xl font-extrabold mb-8 tracking-tight bg-gradient-to-r from-blue-400 via-purple-400 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
       ZenÃ©k
     </h1> -->
     <div class="shrink-0 pt-10 px-6">
-      <div class="text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
-            {{ maxItemCount | paginationCount: currentPage: limit }}
-      </div>
-      <div  class="flex justify-center flex-row gap-2 text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
-        <button *ngFor="let page of [].constructor(maxPageCount); let i = index;" (click)="goToPage(i + 1)"
-                [ngClass]="currentPage === i + 1 ? 'text-pink-300 hover:text-pink-100 hover:bg-pink-900/30' : 'text-blue- 300 hover:text-blue-100 hover:bg-blue-900/40'"
-                class="px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer w-content">
-          {{ i + 1 }}
+      <section *ngIf="loggedIn" class="mb-8 rounded-2xl border border-pink-500/25 bg-[#0a1a34]/70 p-5 shadow-lg">
+        <h2 class="text-lg font-bold text-white">Request a music upload</h2>
+        <p class="mt-1 text-sm text-blue-300/70">Send a YouTube URL and the administrator can add it to the library.</p>
+        <form class="mt-4 flex flex-col gap-3 sm:flex-row" (ngSubmit)="requestMusic()">
+          <input name="requestUrl" type="url" [(ngModel)]="requestUrl" required
+                 placeholder="https://www.youtube.com/watch?v=..."
+                 class="min-w-0 flex-1 rounded-xl border border-blue-800/70 bg-[#030b1c]/80 px-4 py-3 text-sm text-white outline-none placeholder:text-blue-400/40 focus:border-pink-500" />
+          <button type="submit" [disabled]="requestLoading || !requestUrl.trim()"
+                  class="rounded-xl bg-gradient-to-r from-blue-500 to-pink-500 px-5 py-3 text-sm font-bold disabled:opacity-50">
+            {{ requestLoading ? 'Sending...' : 'Send request' }}
+          </button>
+        </form>
+        <p *ngIf="requestMessage" class="mt-3 text-sm text-pink-300">{{ requestMessage }}</p>
+      </section>
+      <div class="grid gap-5 lg:items-start">
+        <section class="order-2 min-w-0 lg:row-start-1">
+          <div class="text-sm text-blue-300/70 font-bold mb-4 text-color-white/80">
+                {{ maxItemCount | paginationCount: currentPage: limit }}
+          </div>
+          <div class="flex w-full max-w-full justify-center flex-row flex-nowrap gap-1 overflow-x-auto px-2 pb-1 text-sm text-blue-300/70 font-bold mb-3 text-color-white/80">
+        <button type="button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+                class="shrink-0 px-2.5 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 hover:text-blue-100 hover:bg-blue-900/40">
+          Previous
         </button>
+
+        <ng-container *ngFor="let pageItem of paginationItems">
+          <button *ngIf="pageItem !== 'ellipsis'; else pageEllipsis" type="button" (click)="goToPaginationItem(pageItem)"
+                  [ngClass]="currentPage === pageItem ? 'text-pink-300 hover:text-pink-100 hover:bg-pink-900/30' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/40'"
+                  class="min-w-8 shrink-0 px-2 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer">
+            {{ pageItem }}
+          </button>
+          <ng-template #pageEllipsis>
+            <span class="shrink-0 px-1.5 py-2 text-blue-400/60" aria-hidden="true">...</span>
+          </ng-template>
+        </ng-container>
+
+        <button type="button" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === maxPageCount"
+                class="shrink-0 px-2.5 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 hover:text-blue-100 hover:bg-blue-900/40">
+          Next
+        </button>
+          </div>
+          <label for="music-limit" class="mt-2 flex items-center justify-center gap-2 text-xs font-semibold text-blue-300/70">
+            <span>Music per page</span>
+            <select id="music-limit" [value]="limit" (change)="onLimitChanged($any($event.target).value)"
+                    class="rounded-lg border border-blue-800/70 bg-[#071329] px-2 py-1.5 text-xs text-blue-100 outline-none focus:border-pink-500">
+              <option *ngFor="let option of limitOptions" [value]="option">{{ option }}</option>
+            </select>
+          </label>
+        </section>
       </div>
     </div>
     <div class="space-y-4 pb-12">
@@ -52,11 +120,12 @@
           </div>
           <div>
             <p [ngClass]="activeMusicId === music.id ? 'text-white' : 'text-blue-100'" class="font-bold text-base transition-colors">
-              {{ music.title }}
+              {{ music.title | musicTitlePipe }}
             </p>
             <p [ngClass]="activeMusicId === music.id ? 'text-pink-200' : 'text-blue-300/70'" class="text-xs mt-0.5 transition-colors">
               {{ music.addedAt }}
             </p>
+            <p *ngIf="music.genre" class="text-xs mt-0.5 text-purple-300/70">{{ music.genre }}</p>
           </div>
         </div>
 
@@ -100,7 +169,11 @@
 
     </div>
   </div>
+  </main>
 
+<!-- Balancing column keeps the music list centered -->
+    <div class="music-layout-spacer" aria-hidden="true"></div>
+    </div>
 </div>
 
 <div class="playlist-overlay fixed inset-0 bg-black/50 z-40" *ngIf="showPlaylistOverlay">

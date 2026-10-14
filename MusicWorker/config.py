@@ -38,3 +38,8 @@ ALLOWED_SOURCE_DOMAINS = _csv_env("ALLOWED_SOURCE_DOMAINS")
 # PROXY_URLS=http://proxy-a:8080,http://user:password@proxy-b:8080
 PROXY_URLS = _list_env("PROXY_URLS")
 PROXY_ATTEMPTS = max(1, int(os.getenv("PROXY_ATTEMPTS", str(len(PROXY_URLS) or 1))))
+# Keep downloader concurrency low to avoid triggering source-side IP throttling.
+DOWNLOAD_CONCURRENCY = max(1, int(os.getenv("DOWNLOAD_CONCURRENCY", "1")))
+# Optional Netscape-format YouTube cookies file mounted into the worker.
+# Keep this outside the repository; cookies are authentication credentials.
+YTDLP_COOKIES_FILE = os.getenv("YTDLP_COOKIES_FILE", "").strip()

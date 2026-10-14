@@ -21,6 +21,7 @@ public class MusicPlayerDbContext : DbContext
     public DbSet<AccessToken> AccessTokens { get; set; } = null!;
     public DbSet<ImportJob> ImportJobs => Set<ImportJob>();
     public DbSet<ImportWorkItem> ImportWorkItems => Set<ImportWorkItem>();
+    public DbSet<MusicUploadRequest> MusicUploadRequests => Set<MusicUploadRequest>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -48,6 +49,16 @@ public class MusicPlayerDbContext : DbContext
             entity.HasIndex(x => x.JobId);
         });
 
+        modelBuilder.Entity<MusicUploadRequest>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+            entity.Property(x => x.Url).IsRequired().HasMaxLength(2048);
+            entity.Property(x => x.Status).HasConversion<string>();
+            entity.Property(x => x.AdminNote).HasMaxLength(1000);
+            entity.HasIndex(x => x.Status);
+            entity.HasIndex(x => x.CreatedAt);
+        });
+
 
         // Configure User entity
         modelBuilder.Entity<UserDTO>(entity =>
@@ -71,6 +82,7 @@ public class MusicPlayerDbContext : DbContext
             entity.HasKey(e => e.ID);
             entity.Property(e => e.ID).ValueGeneratedOnAdd();
             entity.Property(e => e.Title).HasMaxLength(255);
+            entity.Property(e => e.Genre).HasMaxLength(100);
             entity.Property(e => e.File_id).HasMaxLength(255);
             entity.Property(e => e.AddedAt).HasDefaultValueSql("CURRENT_DATE");
             entity.Ignore(e => e.Playlists); // Ignore the Playlists property for database mapping

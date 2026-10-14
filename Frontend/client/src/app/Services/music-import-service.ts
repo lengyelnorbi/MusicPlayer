@@ -30,6 +30,18 @@ export class MusicImportService {
     return this.http.get<ImportJob[]>(this.apiConfig.getEndpoint('api/music-import'));
   }
 
+  deleteJob(jobId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}`
+    );
+  }
+
+  deleteWorkItem(jobId: string, workItemId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/work/${encodeURIComponent(workItemId)}`
+    );
+  }
+
   retryJob(jobId: string): Observable<ImportJob> {
     return this.http.post<ImportJob>(
       `${this.apiConfig.getEndpoint('api/music-import')}/${encodeURIComponent(jobId)}/retry`,

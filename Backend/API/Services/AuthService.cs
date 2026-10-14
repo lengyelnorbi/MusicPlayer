@@ -26,6 +26,17 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Authenticates a user based on the provided email and password. 
+    /// If authentication is successful, it generates an access token (JWT) and a refresh token, 
+    /// which are returned along with the access token's expiration time. The method also logs relevant information for tracking purposes.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="password"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public async Task<(string?, RefreshToken?, DateTime?)> AuthenticateAsync(string email, string password, string deviceFingerprint = "UnknownDevice", string ipAddress = "UnknownIP", string source = "user")
     {
         var user = await _userService.GetUserByEmailAsync(email);
@@ -48,9 +59,25 @@ public class AuthService : IAuthService
         return (accessToken, refreshToken, accessTokenExpiresAt);
     }
 
+    /// <summary>
+    /// Generates a new access token (JWT) for the specified user with the provided details.
+    /// The method creates a unique token identifier (JTI), sets the token's expiration based on the user's role and source, and saves the access token in the database. 
+    /// It returns the generated access token and its expiration time.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="email"></param>
+    /// <param name="username"></param>
+    /// <param name="role"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="rfExpiresAt"></param>
+    /// <param name="source"></param>
+    /// <returns></returns>
     private async Task<(string, DateTime)> GenerateAccessToken(int userId, string email, string username, string role = "User", string deviceFingerprint = "UnknownDevice", string ipAddress = "UnknownIP", DateTime? rfExpiresAt = null, string source = "user")
     {
+        // Create a symmetric security key using the secret key from the JWT settings
         var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+        // Create signing credentials using the security key and the HMAC SHA256 algorithm
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var jti = Guid.NewGuid().ToString(); // Unique identifier for the token
         var createdAt = DateTime.UtcNow;
@@ -97,6 +124,19 @@ public class AuthService : IAuthService
 
         return (new JwtSecurityTokenHandler().WriteToken(token), accessToken.ExpiresAt);
     }
+    
+    /// <summary>
+    /// Generates a new refresh token for the specified user with the provided details.
+    /// The method creates a unique refresh token, sets its expiration based on the user's role and source, and saves the refresh token in the database.
+    /// It returns the generated refresh token.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="role"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="expiresAt"></param>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public async Task<RefreshToken> GenerateRefreshTokenAsync(int userId, string role, string deviceFingerprint = "UnknownDevice", string ipAddress = "UnknownIP", DateTime? expiresAt = null, string source = "user")
     {
         var refreshTokenString = Guid.NewGuid().ToString();
@@ -126,6 +166,12 @@ public class AuthService : IAuthService
     }
     
 
+    /// <summary>
+    /// Retrieves a refresh token from the database based on its hashed value.
+    /// The method checks if the refresh token is valid, not revoked, and not expired.
+    /// </summary>
+    /// <param name="tokenHash"></param>
+    /// <returns></returns>
     public async Task<RefreshToken?> GetRefreshTokenByHashAsync(string tokenHash)
     {
         return await _dbContext.RefreshTokens
@@ -134,6 +180,18 @@ public class AuthService : IAuthService
             .FirstOrDefaultAsync();
     }
 
+    /// <summary>
+    /// Refreshes the access token and refresh token for a user based on the provided refresh token, user ID, device fingerprint, IP address, and JTI.
+    /// The method generates new tokens, revokes the old tokens, and returns the new access token, refresh token, and access token expiration time.
+    /// It also logs relevant information for tracking purposes.
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <param name="userId"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="jti"></param>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public async Task<(string?, RefreshToken?, DateTime?)?> RefreshAccessTokenAndRefreshTokenAsync(RefreshToken refreshToken, int userId, string deviceFingerprint, string ipAddress, string jti, string source = "user")
     {
         // Get user data for generating new access token
@@ -160,6 +218,15 @@ public class AuthService : IAuthService
         return (newAccessToken, newRefreshToken, accessTokenExpiresAt);
     }
 
+    /// <summary>
+    /// Revokes a specific refresh token by its hashed value, user ID, device fingerprint, and IP address.
+    /// The method checks if the refresh token exists and is not already revoked, then marks it as revoked in the database. It returns a boolean indicating whether the revocation was successful.
+    /// </summary>
+    /// <param name="tokenHash"></param>
+    /// <param name="userId"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <returns></returns>
     public async Task<bool> RevokeRefreshTokenAsync(string tokenHash, int userId, string deviceFingerprint = "UnknownDevice", string ipAddress = "UnknownIP")
     {
         var refreshToken = await _dbContext.RefreshTokens
@@ -180,6 +247,15 @@ public class AuthService : IAuthService
         return true;
     }
 
+    /// <summary>
+    /// Revokes a specific access token by its JTI, user ID, device fingerprint, and IP address.
+    /// The method checks if the access token exists and is not already revoked, then marks it as revoked in the database. It returns a boolean indicating whether the revocation was successful.
+    /// </summary>
+    /// <param name="jti"></param>
+    /// <param name="userID"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <returns></returns>
     public async Task<bool> RevokeAccessTokenAsync(string jti, int userID, string deviceFingerprint = "UnknownDevice", string ipAddress = "UnknownIP")
     {
         var accessToken = await _dbContext.AccessTokens
@@ -202,6 +278,12 @@ public class AuthService : IAuthService
         return true;
     }
 
+    /// <summary>
+    /// Checks if a refresh token exists in the database based on its hashed value and whether it is not revoked and expired.
+    /// The method returns a boolean indicating whether the refresh token is valid and exists in the database.
+    /// </summary>
+    /// <param name="tokenHash"></param>
+    /// <returns></returns>
     public async Task<bool> GetUserRefreshTokenByTokenHashAsync(string tokenHash)
     {
         var refreshToken = await _dbContext.RefreshTokens
@@ -212,16 +294,33 @@ public class AuthService : IAuthService
         return refreshToken != null;
     }   
     
+    /// <summary>
+    /// Hashes a given token using the SHA256 algorithm and returns the hashed value as a Base64-encoded string.
+    /// This method is used to securely store and compare tokens in the database without exposing the original token value.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private string HashToken(string token)
     {
         using (var sha256 = System.Security.Cryptography.SHA256.Create())
         {
+            // Hash the token using SHA256 and return the Base64-encoded string representation of the hashed value
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(token));
+            // Return the Base64-encoded string representation of the hashed value
             return Convert.ToBase64String(hashedBytes);
         }
     }
 
-    
+    /// <summary>
+    /// Logs out a user by revoking all access and refresh tokens associated with the specified user ID, device fingerprint, IP address, JTI, and refresh token hash.
+    /// The method ensures that all tokens are invalidated, preventing further access to protected resources.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="jti"></param>
+    /// <param name="refreshTokenHash"></param>
+    /// <returns></returns>
     public async Task LogoutAsync(int userId, string deviceFingerprint, string ipAddress, string jti, string refreshTokenHash)
     {
         try
@@ -238,6 +337,12 @@ public class AuthService : IAuthService
         }
      }
 
+    /// <summary>
+    /// Saves a refresh token in the database with the associated user ID, device fingerprint, and IP address. 
+    /// This method is used to securely store refresh tokens for later validation and revocation.
+    /// </summary>
+    /// <param name="refreshToken"></param>
+    /// <returns></returns>
     public async Task SaveRefreshTokenAsync(RefreshToken refreshToken)
     {
         // Implement logic to save refresh token hash in the database with associated user ID, device fingerprint, and IP address
@@ -245,18 +350,39 @@ public class AuthService : IAuthService
         await _dbContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Retrieves the JTI (unique identifier) of the access token associated with a specific user ID from the database.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <returns></returns>
     public async Task<string?> GetUserJtiAsync(int userID)
     {
         var user = await _userService.GetUserByIdAsync(userID);
         return user?.Jti;
     }
 
+    /// <summary>
+    /// Saves an access token in the database with the associated user ID, device fingerprint, and IP address. 
+    /// This method is used to securely store access tokens for later validation and revocation.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private async Task SaveUserAccessTokenAsync(AccessToken token)
     {
         _dbContext.AccessTokens.Update(token);
         await _dbContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Revokes all access and refresh tokens associated with a specific user ID, device fingerprint, IP address, JTI, and refresh token hash.
+    /// This method is used to log out a user and invalidate all their tokens, preventing further access to protected resources.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <param name="deviceFingerprint"></param>
+    /// <param name="ipAddress"></param>
+    /// <param name="jti"></param>
+    /// <param name="refreshTokenHash"></param>
+    /// <returns></returns>
     public async Task RevokeTokensForUserAsync(int userID, string deviceFingerprint, string ipAddress, string jti, string refreshTokenHash)
     {
         try
@@ -271,6 +397,11 @@ public class AuthService : IAuthService
         }
     }
 
+    /// <summary>
+    /// Retrieves the JTI (unique identifier) of the access token associated with a specific user ID from the database.
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <returns></returns>
     public async Task<string?> GetUserAccessTokenAsync(int userID)
     {
         var accessToken = await _dbContext.AccessTokens
@@ -281,6 +412,14 @@ public class AuthService : IAuthService
         return accessToken?.jti;
     }
 
+    /// <summary>
+    /// Validates an access token based on its JTI, user ID, and role.
+    /// The method checks if the access token exists in the database, is not revoked, and has not expired.
+    /// </summary>
+    /// <param name="jti"></param>
+    /// <param name="userId"></param>
+    /// <param name="role"></param>
+    /// <returns></returns>
     public async Task<bool> ValidateAccessTokenAsync(string jti, int userId, string role)
     {
         // For "User" role: only check expiration (handled by JWT middleware)

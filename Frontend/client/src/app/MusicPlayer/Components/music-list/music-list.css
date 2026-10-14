@@ -53,3 +53,61 @@
 .create-playlist-input:focus{
     outline: none;
 }
+
+.complex-search-container{
+    width: 400px;
+}
+
+.music-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1152px) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+.complex-search-container {
+  grid-column: 1;
+  grid-row: 1;
+  width: 100%;
+  max-width: 400px;
+  min-width: 0;
+  justify-self: end;
+}
+
+.music-main {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  max-width: 1152px;
+  min-width: 0;
+}
+
+.music-layout-spacer {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+@media (max-width: 1900px) {
+  .music-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .complex-search-container {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .music-main {
+    grid-column: 1;
+    grid-row: 2;
+    max-width: 100%;
+  }
+
+  .music-layout-spacer {
+    display: none;
+  }
+}

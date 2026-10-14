@@ -25,7 +25,11 @@ public class PasswordController : ControllerBase
         _passwordService = passwordService;
     }
 
-
+    /// <summary>
+    /// Generates a new password for the authenticated user.
+    /// This endpoint is protected and requires the user to be authenticated.
+    /// </summary>
+    /// <returns></returns>
     [Authorize]
     [HttpPost("generate-password", Name = "GeneratePassword")]
     public async Task<IActionResult> GeneratePassword()

@@ -5,11 +5,12 @@ import { MusicService } from '../../../Services/music-service';
 import { Music } from '../../Models/music';
 import { AudioPlayerService } from '../../../Services/audio-player-service';
 import { AudioPlayerPipComponent } from './SubComponents/audio-player-pip/audio-player-pip';
+import { MusicTitlePipe } from '../../../Shared/Pipes/music-title-pipe';
 
 
 @Component({
   selector: 'app-audio-player',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, MusicTitlePipe],
   providers: [MusicService],
   templateUrl: './audio-player.html',
   styleUrl: './audio-player.css',
