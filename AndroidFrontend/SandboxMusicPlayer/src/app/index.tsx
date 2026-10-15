@@ -22,7 +22,7 @@ import {
 } from '@/constants/theme';
 import { MusicListResponse } from '@/types/music-list-response';
 import { Music } from '@/types/music';
-import { getMusicList } from '@/services/music-api-service'; // Adjust to the file where you define getMusicList
+import { getMusicList } from '@/services/musicService'; // Adjust to the file where you define getMusicList
 
 const PAGE_SIZE = 10;
 
@@ -154,15 +154,7 @@ export default function HomeScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to Expo2
-          </ThemedText>
-        </ThemedView>
-
         <ThemedText type="title">Music Library</ThemedText>
-
         {error && (
           <ThemedView style={styles.message}>
             <ThemedText>{error}</ThemedText>
@@ -259,29 +251,6 @@ export default function HomeScreen() {
             )}
           </>
         )}
-
-        <ThemedView
-          type="backgroundElement"
-          style={styles.stepContainer}
-        >
-          <HintRow
-            title="Try editing"
-            hint={
-              <ThemedText type="code">
-                src/app/index.tsx
-              </ThemedText>
-            }
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={
-              <ThemedText type="code">
-                npm run reset-project
-              </ThemedText>
-            }
-          />
-        </ThemedView>
 
         {Platform.OS === 'web' && <WebBadge />}
       </SafeAreaView>
