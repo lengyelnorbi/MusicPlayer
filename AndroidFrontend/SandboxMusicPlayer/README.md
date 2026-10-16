@@ -1,56 +1,60 @@
-# Welcome to your Expo app 👋
+# My Music — Expo / React Native
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A native music catalogue client with email/password authentication, playlists, online streaming, offline audio downloads, and a local SQLite snapshot export.
 
-## Get started
+## Requirements
 
-1. Install dependencies
+- Node.js supported by the Expo SDK listed in `package.json`
+- Android Studio emulator, physical Android device, or iOS simulator
+- The ASP.NET API running at a URL reachable from the device
+
+## Setup
+
+1. Install dependencies:
 
    ```bash
-   npm install
+   npm ci
    ```
 
-2. Start the app
+2. Copy `.env.example` to `.env` and set `EXPO_PUBLIC_API_BASE_URL`.
+
+   - Android emulator: `http://10.0.2.2:8080`
+   - Physical device: `http://YOUR_COMPUTER_LAN_IP:8080`
+   - Production: use your HTTPS API URL.
+
+3. Start the app:
 
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+4. Run the TypeScript check:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+   ```bash
+   npm run typecheck
+   ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Implemented frontend features
 
-## Get a fresh project
+- Login through `POST /api/auth/mobile`; access token is stored with Expo SecureStore
+- Bearer-authenticated API calls through `src/services/apiClient.ts`
+- Music catalogue, search, genre filtering, and pagination
+- Playback using `expo-audio` and `GET /api/music/{id}/stream`
+- Offline downloads stored under the app's persistent document directory
+- Offline metadata in `offline-music.db`
+- Optional database snapshot import from `GET /api/mobile/sqlite-export`
+- Account playlists and playlist membership operations
 
-When you're ready, run:
+## Backend integration notes
 
-```bash
-npm run reset-project
-```
+The included backend folder in the companion project ZIP contains the supplied controller/service files, not the complete ASP.NET solution. Merge the updated `.cs` files into your API project and run that project's own build and tests.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+The SQLite export endpoint is now authenticated and derives the user ID from the validated token; the client no longer supplies a `userId` query parameter. Password hashes are excluded from the local export. Playlist listing and membership mutation validate ownership server-side.
 
-### Other setup steps
+The mobile login endpoint currently accepts an email address, not a username. The API's stream endpoint is public in the supplied backend; the app uses it for playback and offline download. If you deploy the API outside a trusted development network, configure HTTPS and review the stream endpoint's access policy.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Network troubleshooting
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `localhost` on a physical phone refers to the phone, not the development computer.
+- Make sure the API listens on an address reachable from the device and the firewall allows the configured port.
+- Never commit `.env` or production credentials. `.env.example` contains only a placeholder URL.

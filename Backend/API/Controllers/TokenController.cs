@@ -28,6 +28,7 @@ public class TokenController : ControllerBase
     /// <param name="limit"></param>
     /// <returns></returns>
     [HttpGet("access-token", Name = "GetAccessTokens")]
+    [Authorize(Policy = "AdminSource")]
     public async Task<PagedResult<AccessTokenUserDTO>> GetAccessTokens([FromQuery] int page = 1, [FromQuery] int limit = 10)
     {
         _logger.LogInformation("Received request to fetch access tokens with pagination: page={Page}, limit={Limit}", page, limit);
@@ -42,6 +43,7 @@ public class TokenController : ControllerBase
     /// <param name="limit"></param>
     /// <returns></returns>
     [HttpGet("refresh-token", Name = "GetRefreshTokens")]
+    [Authorize(Policy = "AdminSource")]
     public async Task<PagedResult<RefreshTokenUserDTO>> GetRefreshTokens([FromQuery] int page = 1, [FromQuery] int limit = 10)
     {
         _logger.LogInformation("Received request to fetch refresh tokens with pagination: page={Page}, limit={Limit}", page, limit);

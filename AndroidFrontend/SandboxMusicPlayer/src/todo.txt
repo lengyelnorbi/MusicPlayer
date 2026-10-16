@@ -1,2 +1,0 @@
-npx expo install expo-file-system expo-secure-store
-npx expo install expo-sqlite

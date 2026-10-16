@@ -24,20 +24,7 @@ public class MusicService : IMusicService
     /// </summary>
     /// <param name="music"></param>
     /// <returns></returns>
-    public async Task<Music>? AddMusicAsync(Music music)
-    {
-        var result = await _dbContext.Musics.AddAsync(music);
-        if (result != null)
-        {
-            await _dbContext.SaveChangesAsync();
-            return result.Entity;
-        }
-        else
-        {
-            _logger.LogError("Failed to add music: {Title}", music.Title);
-            return null;
-        }
-    }
+    public Task<Music>? AddMusicAsync(Music music) => CreateMusicAsync(music);
 
     /// <summary>
     /// Retrieves a paginated list of musics associated with the specified playlist IDs.
@@ -48,8 +35,18 @@ public class MusicService : IMusicService
     /// <returns></returns>
     public async Task<List<Music>> GetPlaylistMusics(List<int> playlistIDs, int page, int limit)
     {
-        var musics = await _dbContext.Musics.Where(music => playlistIDs.Contains(music.ID)).Skip((page - 1) * limit).Take(limit).ToListAsync();
-        return musics;
+        if (page < 1 || limit < 1) throw new ArgumentOutOfRangeException(nameof(page), "Page and limit must be positive.");
+        if (playlistIDs is null || playlistIDs.Count == 0) return new List<Music>();
+
+        return await _dbContext.PlaylistMusics
+            .AsNoTracking()
+            .Where(membership => playlistIDs.Contains(membership.PlaylistID))
+            .Select(membership => membership.Music)
+            .Distinct()
+            .OrderBy(music => music.Title)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
     }
 
     /// <summary>
@@ -57,9 +54,15 @@ public class MusicService : IMusicService
     /// </summary>
     /// <param name="music"></param>
     /// <returns></returns>
-    public Task<Music> CreateMusicAsync(Music music)
+    public async Task<Music> CreateMusicAsync(Music music)
     {
-        throw new NotImplementedException();
+         if (music is null) throw new ArgumentNullException(nameof(music));
+        if (string.IsNullOrWhiteSpace(music.Title)) throw new ArgumentException("Music title is required.", nameof(music));
+
+        music.Title = music.Title.Trim();
+        await _dbContext.Musics.AddAsync(music);
+        await _dbContext.SaveChangesAsync();
+        return music;
     }
 
     /// <summary>
@@ -67,9 +70,30 @@ public class MusicService : IMusicService
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public Task<bool> DeleteMusicAsync(int id)
+    public async Task<bool> DeleteMusicAsync(int id)
     {
-        throw new NotImplementedException();
+        if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+        var music = await _dbContext.Musics.FirstOrDefaultAsync(item => item.ID == id);
+        if (music is null) return false;
+
+        var memberships = await _dbContext.PlaylistMusics
+            .Where(membership => membership.MusicID == id)
+            .ToListAsync();
+        var affectedPlaylistIds = memberships.Select(membership => membership.PlaylistID).Distinct().ToList();
+        var playlists = await _dbContext.Playlists
+            .Where(playlist => affectedPlaylistIds.Contains(playlist.ID))
+            .ToListAsync();
+
+        foreach (var playlist in playlists)
+        {
+            var removedCount = memberships.Count(membership => membership.PlaylistID == playlist.ID);
+            playlist.MusicCount = Math.Max(0, playlist.MusicCount - removedCount);
+        }
+
+        _dbContext.PlaylistMusics.RemoveRange(memberships);
+        _dbContext.Musics.Remove(music);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
     /// <summary>
@@ -81,7 +105,8 @@ public class MusicService : IMusicService
     /// <exception cref="NotImplementedException"></exception>
     public Task<List<Music>> GetFavoriteMusicsByUserIdAsync(int userId)
     {
-        throw new NotImplementedException();
+       // The supplied database schema has no user-favorites relation.
+        return Task.FromResult(new List<Music>());
     }
 
     /// <summary>
@@ -91,18 +116,11 @@ public class MusicService : IMusicService
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task<Music> GetMusicByIDAsync(int id)
+    public async Task<Music> GetMusicByIDAsync(int id)
     {
-        var music = _dbContext.Musics.FirstOrDefault(m => m.ID == id);
-        if (music != null)
-        {
-            return Task.FromResult(music);
-        }
-        else
-        {
-            _logger.LogWarning("Music with ID {MusicId} not found.", id);
-            return Task.FromResult<Music>(null);
-        }
+        if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+        var music = await _dbContext.Musics.AsNoTracking().FirstOrDefaultAsync(item => item.ID == id);
+        return music!;
     }
 
     /// <summary>

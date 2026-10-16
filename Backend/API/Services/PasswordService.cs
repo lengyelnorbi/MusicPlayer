@@ -1,8 +1,5 @@
 using API.Services.Interfaces;
 using API.Models;
-using BCrypt.Net;
-using Microsoft.CodeAnalysis;
-
 namespace API.Services;
 
 public class PasswordService : IPasswordService

@@ -45,14 +45,12 @@ public class MusicController : ControllerBase
         }
         /* userID extraction ends here */
 
-        //Development logging for debugging purposes
-        _logger.LogInformation( "Authenticated: {Authenticated}, AuthType: {AuthType}", User.Identity?.IsAuthenticated, User.Identity?.AuthenticationType);
-        foreach (var claim in User.Claims)
-        {
-            _logger.LogInformation("Claim: {Type} = {Value}", claim.Type, claim.Value);
-        }
-        _logger.LogInformation("Fetching musics for userID: {UserID}, page: {Page}, limit: {Limit}", userID, page, limit);
-
+        _logger.LogDebug("Fetching music catalogue. Authenticated: {Authenticated}, UserID: {UserID}, Page: {Page}, Limit: {Limit}",
+            User.Identity?.IsAuthenticated,
+            userID,
+            page,
+            limit);
+        
         //If user is logged in then add the userID to the method for getting the user's playlists for each music
         if(userID != null)
         {
@@ -88,9 +86,9 @@ public class MusicController : ControllerBase
             return BadRequest("File ID is required.");
         }
 
-        if(Int32.TryParse(fileID, out int parsedMusicID) && parsedMusicID <= 0)
+        if (!int.TryParse(fileID, out var parsedMusicID) || parsedMusicID <= 0)
         {
-            return BadRequest("Invalid File ID.");
+            return BadRequest("A positive numeric music ID is required.");
         }
 
         // Get the Google Drive file ID associated with the music ID
@@ -219,7 +217,7 @@ public class MusicController : ControllerBase
     /// <param name="music"></param>
     /// <returns></returns>
     [HttpPost("", Name = "AddMusic")]
-    [Authorize]
+    [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> Post([FromBody] Music music)
     {
         if (music == null)
@@ -244,48 +242,19 @@ public class MusicController : ControllerBase
     /// <param name="id">The ID of the music to delete.</param>
     /// <returns></returns>
     [HttpDelete("musics/{id}", Name = "DeleteMusic")]
-    [Authorize]
+    [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> Delete(int id)
     {
-        _logger.LogInformation("Deleting music with ID: {Id}", id);
-        var result = await _musicService.DeleteMusicAsync(id);
-
-        if (result)
+        if (id <= 0) return BadRequest("A valid music ID is required.");
+        try
         {
-            return Ok("Music deleted successfully.");
+            var deleted = await _musicService.DeleteMusicAsync(id);
+            return deleted ? NoContent() : NotFound("Music was not found.");
         }
-        else
+        catch (Exception ex)
         {
-            return StatusCode(500, "An error occurred while deleting the music.");
+            _logger.LogError(ex, "Could not delete music with ID {MusicID}.", id);
+            return Problem("Could not delete music entry.");
         }
     }
-
-    /// <summary>
-    /// Updates an existing music entry in the database.
-    /// This endpoint is protected and requires the user to be authenticated.
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="music"></param>
-    /// <returns></returns>
-    // [HttpPut("musics/{id}", Name = "UpdateMusic")]
-    // [Authorize]
-    // public async Task<IActionResult> Put(int id, [FromBody] Music music)
-    // {
-    //     if (music == null || music.ID != id)
-    //     {
-    //         return BadRequest("Invalid music data.");
-    //     }
-
-    //     _logger.LogInformation("Updating music with ID: {Id}", id);
-    //     var result = await _musicService.UpdateMusicAsync(music);
-
-    //     if (result != null)
-    //     {
-    //         return Ok("Music updated successfully.");
-    //     }
-    //     else
-    //     {
-    //         return StatusCode(500, "An error occurred while updating the music.");
-    //     }
-    // }
 }

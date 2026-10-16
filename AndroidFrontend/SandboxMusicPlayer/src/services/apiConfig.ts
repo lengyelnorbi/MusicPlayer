@@ -1,15 +1,29 @@
-// Set EXPO_PUBLIC_API_BASE_URL in your .env.
-// Example Android emulator: http://10.0.2.2:8080
-// Example physical phone:   http://192.168.1.6:8080 (your computer's LAN IP)
-// Production:                https://your-api.example.com
 import { environment } from "@/environment";
-const API_BASE_URL = `${environment.urlBase}${environment.apiBaseUrl}:${environment.apiPort}`;
+
+const configuredUrl = process.env.EXPO_PUBLIC_API_BASE_URL?.trim();
+const fallbackUrl = `${environment.urlBase}${environment.apiBaseUrl}:${environment.apiPort}`;
+const API_BASE_URL = (configuredUrl || fallbackUrl).replace(/\/+$/, "");
 
 export function getEndpoint(path: string): string {
-  if (!API_BASE_URL) {
+  if (!API_BASE_URL || API_BASE_URL.includes("undefined")) {
     throw new Error(
-      "Missing EXPO_PUBLIC_API_BASE_URL. Set it in your Expo .env file."
+      "API base URL is not configured. Set EXPO_PUBLIC_API_BASE_URL in your .env file.",
     );
   }
-  return API_BASE_URL + path;
+
+  let parsed: URL;
+  try {
+    parsed = new URL(API_BASE_URL);
+  } catch {
+    throw new Error(
+      `Invalid API base URL: "${API_BASE_URL}". Use a full URL such as http://10.0.2.2:8080.`,
+    );
+  }
+
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    throw new Error("The API base URL must use HTTP or HTTPS.");
+  }
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
 }

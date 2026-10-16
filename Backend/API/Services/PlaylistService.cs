@@ -26,35 +26,31 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task<PagedResult<Playlist>> GetPlaylistsAsync(int page, int limit)
     {
-        try
-        {
-            var query = _dbContext.Playlists
-            .Select(at => new Playlist
+        if (page < 1 || limit < 1) throw new ArgumentOutOfRangeException(nameof(page), "Page and limit must be positive.");
+
+        var query = _dbContext.Playlists
+            .AsNoTracking()
+            .Select(playlist => new Playlist
             {
-                ID = at.ID,
-                Name = at.Name,
-                MusicCount = _dbContext.PlaylistMusics.Count(pm => pm.PlaylistID == at.ID)
+                ID = playlist.ID,
+                Name = playlist.Name,
+                MusicCount = _dbContext.PlaylistMusics.Count(membership => membership.PlaylistID == playlist.ID)
             });
 
-            var totalItemCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+        var totalItemCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+        var items = await query
+            .OrderBy(playlist => playlist.Name)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
 
-            var items = await query
-                .Skip((page - 1) * limit)
-                .Take(limit)
-                .ToListAsync(); 
-
-            return new PagedResult<Playlist>{
-                Items = items,
-                TotalItemCount = totalItemCount,
-                TotalPages = totalPages,
-            };
-        }
-        catch (Exception ex)
+        return new PagedResult<Playlist>
         {
-            _logger.LogError(ex, "An error occurred while fetching playlists for page: {Page}, limit: {Limit}", page, limit);
-            return new PagedResult<Playlist>();
-        }
+            Items = items,
+            TotalItemCount = totalItemCount,
+            TotalPages = totalPages,
+        };
     }
 
     /// <summary>
@@ -65,30 +61,25 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task AddMusicToPlaylistAsync(int playlistID, int musicID)
     {
-        try
-        {
-            var playlistMusic = new PlaylistMusic
-            {
-                PlaylistID = playlistID,
-                MusicID = musicID
-            };
+        if (playlistID <= 0 || musicID <= 0)
+            throw new ArgumentOutOfRangeException(nameof(playlistID), "Playlist and music IDs must be positive.");
 
-            await _dbContext.PlaylistMusics.AddAsync(playlistMusic);
-            await _dbContext.SaveChangesAsync();
+        var playlist = await _dbContext.Playlists.FirstOrDefaultAsync(p => p.ID == playlistID)
+            ?? throw new KeyNotFoundException("Playlist was not found.");
+        var musicExists = await _dbContext.Musics.AnyAsync(m => m.ID == musicID);
+        if (!musicExists) throw new KeyNotFoundException("Music was not found.");
 
-            var updatedPlaylist = await _dbContext.Playlists
-                .FirstOrDefaultAsync(p => p.ID == playlistID);
-            
-            if(updatedPlaylist != null)
-            {
-                updatedPlaylist.MusicCount += 1;
-                await _dbContext.SaveChangesAsync();
-            }
-        }
-        catch (Exception ex)
+        var alreadyAdded = await _dbContext.PlaylistMusics
+            .AnyAsync(pm => pm.PlaylistID == playlistID && pm.MusicID == musicID);
+        if (alreadyAdded) return;
+
+        _dbContext.PlaylistMusics.Add(new PlaylistMusic
         {
-            _logger.LogError(ex, "An error occurred while adding music ID {MusicID} to playlist ID {PlaylistID}", musicID, playlistID);
-        }
+            PlaylistID = playlistID,
+            MusicID = musicID
+        });
+        playlist.MusicCount += 1;
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -99,30 +90,18 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task RemoveMusicFromPlaylistAsync(int playlistID, int musicID)
     {
-        try
-        {
-            var playlistMusic = await _dbContext.PlaylistMusics
-                .FirstOrDefaultAsync(pm => pm.PlaylistID == playlistID && pm.MusicID == musicID);
+       if (playlistID <= 0 || musicID <= 0)
+            throw new ArgumentOutOfRangeException(nameof(playlistID), "Playlist and music IDs must be positive.");
 
-            if (playlistMusic != null)
-            {
-                _dbContext.PlaylistMusics.Remove(playlistMusic);
-                await _dbContext.SaveChangesAsync();
+        var playlist = await _dbContext.Playlists.FirstOrDefaultAsync(p => p.ID == playlistID)
+            ?? throw new KeyNotFoundException("Playlist was not found.");
+        var membership = await _dbContext.PlaylistMusics
+            .FirstOrDefaultAsync(pm => pm.PlaylistID == playlistID && pm.MusicID == musicID);
+        if (membership is null) return;
 
-                var updatedPlaylist = await _dbContext.Playlists
-                    .FirstOrDefaultAsync(p => p.ID == playlistID);
-                
-                if(updatedPlaylist != null && updatedPlaylist.MusicCount > 0)
-                {
-                    updatedPlaylist.MusicCount -= 1;
-                    await _dbContext.SaveChangesAsync();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while removing music ID {MusicID} from playlist ID {PlaylistID}", musicID, playlistID);
-        }
+        _dbContext.PlaylistMusics.Remove(membership);
+        if (playlist.MusicCount > 0) playlist.MusicCount -= 1;
+        await _dbContext.SaveChangesAsync();
     }
 
     /// <summary>
@@ -134,64 +113,36 @@ public class PlaylistService : IPlaylistService
     /// <exception cref="ArgumentNullException"></exception>
     public async Task<Playlist> CreatePlaylistAsync(string name, int userID)
     {
+       if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Playlist name is required.", nameof(name));
+        if (userID <= 0) throw new ArgumentOutOfRangeException(nameof(userID));
+
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
         try
         {
-            Playlist playlist = new Playlist
+            var playlist = new Playlist
             {
-                Name = name,
+                Name = name.Trim(),
                 MusicCount = 0
             };
-            var result = await _dbContext.Playlists.AddAsync(playlist);
-            if (result != null)
+            await _dbContext.Playlists.AddAsync(playlist);
+            await _dbContext.SaveChangesAsync();
+
+            await _dbContext.UserPlaylists.AddAsync(new UserPlaylist
             {
-                await _dbContext.SaveChangesAsync();
-
-                var userPlaylist = new UserPlaylist
-                {
-                    UserID = userID,
-                    PlaylistID = result.Entity.ID
-                };
-
-                await _dbContext.UserPlaylists.AddAsync(userPlaylist);
-                await _dbContext.SaveChangesAsync();
-
-                return result.Entity;
-            }
-            else
-            {
-                _logger.LogError("Failed to add playlist: {Name}", playlist.Name);
-                return null!;
-            }
+                UserID = userID,
+                PlaylistID = playlist.ID
+            });
+            await _dbContext.SaveChangesAsync();
+            await transaction.CommitAsync();
+            return playlist;
         }
         catch (Exception ex)
         {
+            await transaction.RollbackAsync();
             _logger.LogError(ex, "An error occurred while adding a playlist: {Name}", name);
             return null!;
         }
     }
-
-    // public async Task<Playlist> CreatePlaylistAsync(Playlist playlist)
-    // {
-    //     try
-    //     {
-    //         var result = await _dbContext.Playlists.AddAsync(playlist);
-    //         if (result != null)
-    //         {
-    //             await _dbContext.SaveChangesAsync();
-    //             return result.Entity;
-    //         }
-    //         else
-    //         {
-    //             _logger.LogError("Failed to create playlist: {Name}", playlist.Name);
-    //             return null!;
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         _logger.LogError(ex, "An error occurred while creating a playlist: {Name}", playlist.Name);
-    //         return null!;
-    //     }
-    // }
 
     /// <summary>
     /// Retrieves a specific playlist by its ID.
@@ -200,36 +151,19 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task<Playlist> GetPlaylistByIDAsync(int playlistID)
     {
-        try
-        {
-            var playlist = await _dbContext.Playlists
-                .FirstOrDefaultAsync(p => p.ID == playlistID);
+        if (playlistID <= 0) throw new ArgumentOutOfRangeException(nameof(playlistID));
 
-            if (playlist != null)
-            {
-                playlist.Musics = await _dbContext.PlaylistMusics
-                    .Where(pm => pm.PlaylistID == playlistID)
-                    .Select(pm => pm.Music)
-                    .ToListAsync();
+        var playlist = await _dbContext.Playlists
+            .AsNoTracking()
+            .FirstOrDefaultAsync(item => item.ID == playlistID);
+        if (playlist is null) return null!;
 
-                _logger.LogInformation("Fetched playlist with ID {PlaylistID}: {PlaylistName}, Music count: {Count}",
-                    playlistID,
-                    playlist.Name,
-                    playlist.Musics.Count);
-
-                return playlist;
-            }
-            else
-            {
-                _logger.LogWarning("Playlist with ID {PlaylistID} not found.", playlistID);
-                return null!;
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while fetching playlist with ID: {PlaylistID}", playlistID);
-            return null!;
-        }
+        playlist.Musics = await _dbContext.PlaylistMusics
+            .AsNoTracking()
+            .Where(membership => membership.PlaylistID == playlistID)
+            .Select(membership => membership.Music)
+            .ToListAsync();
+        return playlist;
     }
 
     /// <summary>
@@ -239,26 +173,13 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task<bool> DeletePlaylistAsync(int id)
     {
-        try
-        {
-            var playlist = await _dbContext.Playlists.FindAsync(id);
-            if (playlist != null)
-            {
-                _dbContext.Playlists.Remove(playlist);
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                _logger.LogWarning("Playlist with ID {Id} not found for deletion.", id);
-                return false;
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An error occurred while deleting playlist with ID: {Id}", id);
-            return false;
-        }
+        if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
+        var playlist = await _dbContext.Playlists.FirstOrDefaultAsync(item => item.ID == id);
+        if (playlist is null) return false;
+
+        _dbContext.Playlists.Remove(playlist);
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
     /// <summary>
@@ -266,29 +187,48 @@ public class PlaylistService : IPlaylistService
     /// </summary>
     /// <param name="userID"></param>
     /// <returns></returns>
-    public async Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userID)
+    public Task<List<Playlist>> GetUserFavoritePlaylistsAsync(int userID)
     {
-        throw new NotImplementedException();
+        // The supplied schema has no favorites relation/table. Return an empty
+        // collection until favorites are modeled explicitly rather than crashing callers.
+        return Task.FromResult(new List<Playlist>());
     }
 
-    /// <summary>
+     /// <summary>
     /// Retrieves a list of playlists that a user is following.
     /// </summary>
     /// <param name="userID"></param>
     /// <returns></returns>
     public async Task<List<Playlist>> GetUserFollowedPlaylistsAsync(int userID)
     {
-        throw new NotImplementedException();
+        return await _dbContext.UserPlaylists
+            .AsNoTracking()
+            .Where(userPlaylist => userPlaylist.UserID == userID)
+            .Select(userPlaylist => new Playlist
+            {
+                ID = userPlaylist.Playlist.ID,
+                Name = userPlaylist.Playlist.Name,
+                MusicCount = _dbContext.PlaylistMusics.Count(music => music.PlaylistID == userPlaylist.PlaylistID)
+            })
+            .ToListAsync();
     }
 
-    /// <summary>
+     /// <summary>
     /// Updates an existing playlist.
     /// </summary>
     /// <param name="playlist"></param>
     /// <returns></returns>
     public async Task<Playlist> UpdatePlaylistAsync(Playlist playlist)
     {
-        throw new NotImplementedException();
+        if (playlist is null || playlist.ID <= 0 || string.IsNullOrWhiteSpace(playlist.Name))
+            throw new ArgumentException("A valid playlist ID and name are required.", nameof(playlist));
+
+        var existing = await _dbContext.Playlists.FirstOrDefaultAsync(item => item.ID == playlist.ID);
+        if (existing is null) return null!;
+
+        existing.Name = playlist.Name.Trim();
+        await _dbContext.SaveChangesAsync();
+        return existing;
     }
 
     /// <summary>
@@ -301,44 +241,37 @@ public class PlaylistService : IPlaylistService
     /// <returns></returns>
     public async Task<PagedResult<Playlist>> GetUserPlaylistsAsync(int userID, int page, int limit)
     {
-        try
-        {
-            var userPlaylistIDs = _dbContext.UserPlaylists
-            .Where(p => p.UserID == userID)
-            .Select(at => new Playlist
+       if (userID <= 0 || page < 1 || limit < 1)
+            throw new ArgumentOutOfRangeException(nameof(userID), "User ID, page, and limit must be positive.");
+
+        var userPlaylistIds = _dbContext.UserPlaylists
+            .AsNoTracking()
+            .Where(userPlaylist => userPlaylist.UserID == userID)
+            .Select(userPlaylist => userPlaylist.PlaylistID);
+
+        var query = _dbContext.Playlists
+            .AsNoTracking()
+            .Where(playlist => userPlaylistIds.Contains(playlist.ID))
+            .Select(playlist => new Playlist
             {
-                ID = at.Playlist.ID,
+                ID = playlist.ID,
+                Name = playlist.Name,
+                MusicCount = _dbContext.PlaylistMusics.Count(membership => membership.PlaylistID == playlist.ID)
             });
 
-            _logger.LogInformation("userPLaylistIDs: {UserPlaylistIDs}", userPlaylistIDs); ;
+        var totalItemCount = await query.CountAsync();
+        var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
+        var items = await query
+            .OrderBy(playlist => playlist.Name)
+            .Skip((page - 1) * limit)
+            .Take(limit)
+            .ToListAsync();
 
-            var query = _dbContext.Playlists
-            .Where(p => userPlaylistIDs.Any(up => up.ID == p.ID))
-            .Select(at => new Playlist
-            {
-                ID = at.ID,
-                Name = at.Name,
-                MusicCount = _dbContext.PlaylistMusics.Count(pm => pm.PlaylistID == at.ID)
-            });
-
-            var totalItemCount = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling(totalItemCount / (double)limit);
-
-            var items = await query
-                .Skip((page - 1) * limit)
-                .Take(limit)
-                .ToListAsync(); 
-
-            return new PagedResult<Playlist>{
-                Items = items,
-                TotalItemCount = totalItemCount,
-                TotalPages = totalPages,
-            };
-        }
-        catch (Exception ex)
+        return new PagedResult<Playlist>
         {
-            _logger.LogError(ex, "An error occurred while fetching playlists for page: {Page}, limit: {Limit}", page, limit);
-            return new PagedResult<Playlist>();
-        }
+            Items = items,
+            TotalItemCount = totalItemCount,
+            TotalPages = totalPages,
+        };
     }
 }

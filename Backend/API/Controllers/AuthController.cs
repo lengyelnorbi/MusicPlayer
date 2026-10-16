@@ -55,10 +55,23 @@ public class AuthController : ControllerBase
     [HttpPost("", Name = "Authenticate")]
     public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
     {
-        _logger.LogInformation("Authentication attempt for email: {Email}", request.Email);
-        //Check if user exists
-        var user = await _userService.GetUserByEmailAsync(request.Email);
-        
+        if (request == null || string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+            return BadRequest(new { error = "Email and password are required." });
+
+        _logger.LogInformation("Authentication attempt received.");
+        // UserService currently throws when an email is not found; keep the public
+        // response generic so unknown accounts do not cause a 500 or reveal account state.
+        API.DTO.UserDTO? user;
+        try
+        {
+            user = await _userService.GetUserByEmailAsync(request.Email.Trim());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "No user was found during authentication lookup.");
+            return Unauthorized(new { error = "Invalid credentials" });
+        }
+
         if (user == null)
         {
             _logger.LogWarning("Authentication failed for email: {Email}", request.Email);
@@ -68,7 +81,7 @@ public class AuthController : ControllerBase
         /* Authenticate user by unique device fingerprint and generate access token on successful authentication*/    
         var deviceFingerprint = GetDeviceFingerprint();
         var clientIp = GetClientIp();
-        var (accessToken, refreshToken, accessTokenExpiresAt) = await _authService.AuthenticateAsync(request.Email, request.Password, deviceFingerprint, clientIp, request.Source);
+        var (accessToken, refreshToken, accessTokenExpiresAt) = await _authService.AuthenticateAsync(request.Email.Trim(), request.Password, deviceFingerprint, clientIp, request.Source);
 
         if (accessToken == null || refreshToken == null)
         {
@@ -118,14 +131,11 @@ public class AuthController : ControllerBase
 
         // Log the authentication details for debugging purposes
         _logger.LogInformation("--------------------------------------------------------------------");
-        _logger.LogInformation(accessToken);
-        _logger.LogInformation(refreshToken.TokenHash);
         _logger.LogInformation("Source: {Source}", request.Source);
         _logger.LogInformation("Access Token expires at: {AccessTokenExpiresAt}", accessTokenExpiresAt);
         _logger.LogInformation("Refresh Token expires at: {RefreshTokenExpiresAt}", refreshToken.ExpiresAt);
         _logger.LogInformation("tokenCookieName: {TokenCookieName}", tokenCookieName);
         _logger.LogInformation("refreshTokenCookieName: {RefreshTokenCookieName}", refreshTokenCookieName);
-        _logger.LogInformation("Refresh token hash stored in cookie: {RefreshTokenHash}", refreshToken.TokenHash);
         _logger.LogInformation("--------------------------------------------------------------------");
 
         // Return metadata only
@@ -319,6 +329,108 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
+    /// Rotates a native client's refresh token without relying on browser cookies or an unexpired access token.
+    /// The refresh-token hash is a credential and must only be sent over HTTPS in production.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("mobile/refresh")]
+    public async Task<IActionResult> MobileRefresh([FromBody] MobileRefreshRequest? request)
+    {
+        var refreshTokenHash = request?.RefreshToken?.Trim();
+        if (string.IsNullOrWhiteSpace(refreshTokenHash))
+            return Unauthorized(new { error = "Refresh token is required." });
+
+        try
+        {
+            var refreshToken = await _authService.GetRefreshTokenByHashAsync(refreshTokenHash);
+            if (refreshToken is null)
+                return Unauthorized(new { error = "Invalid or expired refresh token." });
+
+            var currentFingerprint = GetDeviceFingerprint();
+            if (!string.Equals(refreshToken.DeviceFingerprint, currentFingerprint, StringComparison.Ordinal))
+                return Unauthorized(new { error = "Device fingerprint mismatch." });
+
+            // The old access token may already be expired, so its JTI is not available here.
+            // The refresh token is rotated, which invalidates the submitted refresh credential.
+            var result = await _authService.RefreshAccessTokenAndRefreshTokenAsync(
+                refreshToken,
+                refreshToken.UserID,
+                refreshToken.DeviceFingerprint,
+                refreshToken.IpAddress,
+                "UnknownJTI",
+                "user");
+
+            if (result is null) return Unauthorized(new { error = "Could not refresh this session." });
+            var (accessToken, rotatedRefreshToken, expiresAt) = result.Value;
+            if (string.IsNullOrWhiteSpace(accessToken) || rotatedRefreshToken is null || expiresAt is null)
+                return Unauthorized(new { error = "Could not refresh this session." });
+
+            return Ok(new
+            {
+                success = true,
+                accessToken,
+                refreshToken = rotatedRefreshToken.TokenHash,
+                expiresAt
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Mobile token refresh failed.");
+            return Problem("Could not refresh the session.");
+        }
+    }
+
+    /// <summary>
+    /// Native logout uses the refresh-token hash returned by MobileLogin instead of browser cookies.
+    /// </summary>
+    [AllowAnonymous]
+    [HttpPost("mobile/logout")]
+    public async Task<IActionResult> MobileLogout([FromBody] MobileLogoutRequest? request)
+    {
+        var refreshTokenHash = request?.RefreshToken?.Trim();
+        if (string.IsNullOrWhiteSpace(refreshTokenHash))
+            return NoContent();
+
+        try
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var jti = User.FindFirst(JwtRegisteredClaimNames.Jti)?.Value;
+            var deviceId = User.FindFirst("DeviceId")?.Value;
+            var ipAddress = User.FindFirst("IPAddress")?.Value;
+            var refreshToken = await _authService.GetRefreshTokenByHashAsync(refreshTokenHash);
+
+            if (int.TryParse(userIdClaim, out var userId) && userId > 0 &&
+                !string.IsNullOrWhiteSpace(jti) && !string.IsNullOrWhiteSpace(deviceId) &&
+                !string.IsNullOrWhiteSpace(ipAddress) &&
+                (refreshToken is null || (userId == refreshToken.UserID &&
+                    string.Equals(deviceId, refreshToken.DeviceFingerprint, StringComparison.Ordinal) &&
+                    string.Equals(ipAddress, refreshToken.IpAddress, StringComparison.Ordinal))))
+            {
+                // Revoke the access token as well when its bearer token is still valid.
+                // The service also attempts to revoke the refresh hash, including expired records.
+                await _authService.LogoutAsync(userId, deviceId, ipAddress, jti, refreshTokenHash);
+            }
+            else if (refreshToken is not null)
+            {
+                // An expired access token can still present a valid refresh credential.
+                await _authService.RevokeRefreshTokenAsync(
+                    refreshTokenHash,
+                    refreshToken.UserID,
+                    refreshToken.DeviceFingerprint,
+                    refreshToken.IpAddress);
+            }
+
+            // Idempotent logout: a token may already be revoked or expired.
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Mobile logout failed.");
+            return Problem("Could not complete logout.");
+        }
+    }
+
+    /// <summary>
     /// Generates a unique fingerprint for the client's device based on its user agent, accept, and accept-encoding headers.
     /// </summary>
     /// <returns>A string representing the device's fingerprint.</returns>
@@ -346,4 +458,72 @@ public class AuthController : ControllerBase
         var xForwardedFor = Request.Headers["X-Forwarded-For"].ToString();
         return !string.IsNullOrEmpty(xForwardedFor) ? xForwardedFor.Split(',').First().Trim() : HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
     }
+
+    /// <summary>
+    /// Mobile login endpoint for authenticating users from mobile devices. This endpoint accepts email and password, generates access and refresh tokens, and returns them in the response.
+    /// This endpoint is accessible without authentication.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    [AllowAnonymous]
+    [HttpPost("mobile")]
+    public async Task<IActionResult> MobileLogin([FromBody] LoginRequest request)
+    {
+        if (request == null || string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
+        {
+            return BadRequest(new { error = "Email and password are required." });
+        }
+
+        API.DTO.UserDTO? user;
+        try
+        {
+            user = await _userService.GetUserByEmailAsync(request.Email.Trim());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "No user was found during mobile authentication lookup.");
+            return Unauthorized(new { error = "Invalid credentials" });
+        }
+
+        if (user == null)
+            return Unauthorized(new { error = "Invalid credentials" });
+
+        var deviceFingerprint = GetDeviceFingerprint();
+        var clientIp = GetClientIp();
+
+        // Always use the user role for this mobile endpoint.
+        var (accessToken, refreshToken, expiresAt) =
+            await _authService.AuthenticateAsync(request.Email.Trim(), request.Password, deviceFingerprint, clientIp, "user");
+
+        if (accessToken == null || refreshToken == null || expiresAt == null)
+        {
+            return Unauthorized(new { error = "Invalid credentials" });
+        }
+
+        return Ok(new
+        {
+            success = true,
+            accessToken,
+            // Your current AuthService stores and uses this hash
+            // as the refresh-token cookie value.
+            refreshToken = refreshToken.TokenHash,
+            expiresAt,
+            user = new
+            {
+                user.ID,
+                user.Username,
+                user.Role
+            }
+        });
+    }
+}
+
+public sealed class MobileLogoutRequest
+{
+    public string? RefreshToken { get; set; }
+}
+
+public sealed class MobileRefreshRequest
+{
+    public string? RefreshToken { get; set; }
 }

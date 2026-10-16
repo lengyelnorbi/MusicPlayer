@@ -1,18 +1,33 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useColorScheme } from "react-native";
+import { useEffect } from "react";
+import { MusicAppProvider, useMusicApp } from "@/context/MusicAppContext";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+void SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
-SplashScreen.preventAutoHideAsync();
+function RootNavigator() {
+  const { initializing } = useMusicApp();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    if (!initializing) void SplashScreen.hideAsync().catch(() => undefined);
+  }, [initializing]);
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: "#0b0b12" } }}>
+      <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="login" options={{ presentation: "modal" }} />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  const scheme = useColorScheme();
+  return (
+    <ThemeProvider value={scheme === "dark" ? DarkTheme : DefaultTheme}>
+      <MusicAppProvider>
+        <RootNavigator />
+      </MusicAppProvider>
     </ThemeProvider>
   );
 }

@@ -56,7 +56,6 @@ public class UserController : ControllerBase
             }
             // Hash the password before creating the user
             user.UserDTO.PasswordHash = await _passwordService.HashPasswordAsync(user.UserDTO.PasswordHash);
-            _logger.LogInformation(user.UserDTO.ToString());
             // Create the new user using the user service
             bool success = await _userService.CreateUserAsync(user.UserDTO);
             if (!success)
@@ -83,13 +82,13 @@ public class UserController : ControllerBase
     [Authorize(Policy = "AdminSource")]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest user)
     {
-        try
+         try
         {
-            _logger.LogWarning("Updating user with ID: {UserID}, Email: {Email}, Username: {Username}", user.UserUpdateDTO.ID, user.UserUpdateDTO.Email, user.UserUpdateDTO.Username);
-            if(user.UserUpdateDTO == null)
+            if (user?.UserUpdateDTO == null)
             {
                 return BadRequest("Invalid user data");
             }
+            _logger.LogInformation("Updating user with ID {UserID}.", user.UserUpdateDTO.ID);
             if (user.UserUpdateDTO.Email == null || user.UserUpdateDTO.Username == null|| string.IsNullOrEmpty(user.UserUpdateDTO.Email) || string.IsNullOrEmpty(user.UserUpdateDTO.Username))
             {
                 return BadRequest("Invalid user data");
