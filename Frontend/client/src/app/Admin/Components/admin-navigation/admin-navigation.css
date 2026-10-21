@@ -1,0 +1,64 @@
+/* Animation for mobile menu slide down */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Smooth transitions for navigation toggle */
+aside {
+  will-change: width;
+}
+
+/* Scrollbar styling for navigation items */
+nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: rgba(15, 76, 117, 0.1);
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: rgba(217, 27, 92, 0.3);
+  border-radius: 3px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 27, 92, 0.5);
+}
+
+/* Ensure proper text truncation in user profile section */
+.min-w-0 {
+  min-width: 0;
+}
+
+/* Active tab indicator animation */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Smooth color transitions */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Mobile header shadow effect */
+header {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure sidebar stays on top of content */
+aside {
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.4);
+}

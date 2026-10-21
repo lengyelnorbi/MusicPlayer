@@ -1,0 +1,24 @@
+<!-- Admin Main Container -->
+<div class="flex flex-col min-h-screen max-h-full overflow-hidden">
+  <!-- Navigation Component -->
+  <!-- <app-admin-navigation (activeTabChange)="onActiveTabChange($event)" (navExpandedChange)="onNavExpandedChange($event)"></app-admin-navigation> -->
+
+    <div class="flex justify-content-center items-center bg-gradient-to-b from-[#0a1628] to-[#000a21] border-r border-blue-900/40 min-h-16 w-screen-half">
+      <button (click)="activeSubTab = 'access-token'" 
+              [ngClass]="activeSubTab === 'access-token' ? 'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-b-2 border-pink-500' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+              class="min-h-16 pl-4 pr-4 flex-1 transition-all duration-200">
+        Access Tokens
+      </button>
+      <button (click)="activeSubTab = 'refresh-token'" 
+              [ngClass]="activeSubTab === 'refresh-token' ? 'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-b-2 border-pink-500' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+              class="min-h-16 pl-4 pr-4 flex-1 transition-all duration-200">
+        Refresh Tokens
+      </button>
+    </div>
+
+  <!-- Content Area // [style.marginLeft.px]="isNavExpanded ? 256 : 80"--> 
+  <main class="flex-1 transition-all duration-300 ease-in-out" >
+    <app-access-token-list *ngIf="activeSubTab === 'access-token'"></app-access-token-list>
+    <app-refresh-token-list *ngIf="activeSubTab === 'refresh-token'"></app-refresh-token-list>
+  </main>
+</div>

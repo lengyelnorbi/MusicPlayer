@@ -1,0 +1,77 @@
+<div>
+    <h2 class="text-2xl font-bold mb-4">
+        {{ 'settings.title' | translate }}
+    </h2>
+
+    <p>{{ 'settings.theme' | translate }}</p>
+
+    <Label class="flex items-center gap-2">
+        <input
+            type="radio"
+            name="theme"
+            value="light"
+            [(ngModel)]="selectedTheme"
+            (change)="onThemeChange('light')"
+        />
+        <span>{{ 'themes.light' | translate }}</span>
+    </Label>
+
+    <Label class="flex items-center gap-2">
+        <input
+            type="radio"
+            name="theme"
+            value="dark"
+            [(ngModel)]="selectedTheme"
+            (change)="onThemeChange('dark')"
+        />
+        <span>{{ 'themes.dark' | translate }}</span>
+    </Label>
+
+    <Label class="flex items-center gap-2">
+        <input
+            type="radio"
+            name="theme"
+            value="system"
+            [(ngModel)]="selectedTheme"
+            (change)="onThemeChange('system')"
+        />
+        <span>{{ 'themes.system' | translate }}</span>
+    </Label>
+
+    <p>Selected Theme: {{ ('themes.' + selectedTheme) | translate }}</p>
+
+    <hr class="my-4 border-gray-600" />
+
+    <Label class="flex items-center gap-2">
+        <span>{{ 'settings.downloadFolderPath' | translate }}</span>
+    </Label>
+    <input
+        type="text"
+        [(ngModel)]="selectedDownloadFolderPath"
+        class="w-full p-2 rounded border border-gray-600 bg-gray-800 text-white"
+    />
+    <button (click)="selectDownloadFolderPath()" 
+            class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+        {{ 'settings.selectPath' | translate }}
+    </button>
+    <button (click)="onDownloadFolderPathSave()" 
+            class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+        {{ 'settings.save' | translate }}
+    </button>
+    <Label class="flex items-center gap-2">
+        <span>{{ 'settings.musicFolderPath' | translate }}</span>
+    </Label>
+    <input
+        type="text"
+        [(ngModel)]="selectedMusicFolderPath"
+        class="w-full p-2 rounded border border-gray-600 bg-gray-800 text-white"
+    />
+    <button (click)="selectMusicFolderPath()" 
+            class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+        {{ 'settings.selectPath' | translate }}
+    </button>
+    <button (click)="onMusicFolderPathSave()" 
+            class="mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
+        {{ 'settings.save' | translate }}
+    </button>
+</div>

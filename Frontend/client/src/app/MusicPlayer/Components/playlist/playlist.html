@@ -1,0 +1,83 @@
+<div class="pt-20 px-6 min-h-screen bg-gradient-to-b from-[#0b3c5d] via-[#000a21] to-[#1d001d] text-white">
+    <div #scrollable class="max-w-2xl mx-auto">
+        <div class="shrink-0 pt-10 px-6">
+            <div class="text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
+                    {{ maxItemCount | paginationCount: currentPage: limit }}
+            </div>
+            <div  class="flex justify-center flex-row gap-2 text-sm text-blue-300/70 font-bold mb-4 px-12 text-color-white/80">
+                <button *ngFor="let page of [].constructor(maxPageCount); let i = index;" (click)="goToPage(i + 1)"
+                        [ngClass]="currentPage === i + 1 ? 'text-pink-300 hover:text-pink-100 hover:bg-pink-900/30' : 'text-blue- 300 hover:text-blue-100 hover:bg-blue-900/40'"
+                        class="px-3 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer w-content">
+                {{ i + 1 }}
+                </button>
+            </div>
+        </div>
+        <div class="space-y-4 pb-12">
+            <div
+            *ngFor="let playlist of playlists$ | async"
+            [ngClass]="{
+                'scale-x-[1.04] scale-y-[1.06] bg-gradient-to-r from-[#d91b5c] to-[#9a0f74] shadow-[0_0_25px_rgba(217,27,92,0.55)] border-pink-400 z-20':
+                selectedPlaylistID === playlist.id
+            }"
+            class="p-5 rounded-xl border backdrop-blur-md flex items-center justify-between transition-all duration-300 ease-out cursor-pointer relative group"
+            >
+            <!-- Zeneszám információk -->
+            <div class="playlist-info">
+                <div>
+                    <p [ngClass]="selectedPlaylistID === playlist.id ? 'text-cyan-100' : 'text-pink-400'" class="playlist-name">
+                        {{ playlist.name }}
+                    </p>
+                </div>
+                <div class="playlist-music-count" [ngClass]="selectedPlaylistID === playlist.id ? 'text-cyan-100' : 'text-pink-300'">
+                    <svg class="playlist-music-count-icon " fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                    <p>{{ playlist.musicCount }} {{ 'playlists.musicsCountText' | translate }}</p>
+                </div>
+                <div class="playlist-musics-time" [ngClass]="selectedPlaylistID === playlist.id ? 'text-cyan-100' : 'text-pink-300'">
+                    <svg class="playlist-musics-time-icon" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                        <!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+                        <path d="M320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64zM296 184L296 320C296 328 300 335.5 306.7 340L402.7 404C413.7 411.4 428.6 408.4 436 397.3C443.4 386.2 440.4 371.4 429.3 364L344 307.2L344 184C344 170.7 333.3 160 320 160C306.7 160 296 170.7 296 184z"/>
+                    </svg>
+                    <p>{{ formatTime(playlist.duration) }}</p>
+                </div>
+            </div>
+
+            <!-- 3 pontos Opciók Menü konténer -->
+            <div class="relative" (click)="$event.stopPropagation()" *ngIf="loggedIn">
+                <button (click)="toggleMenu(playlist.id)" 
+                        [ngClass]="'text-blue-300 hover:bg-blue-900/40 hover:text-pink-400'"
+                        class="p-2 rounded-full focus:outline-none transition-all">
+                    <svg class="w-5 h-5 cursor-pointer" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                </button>
+
+                <!-- Dropdown Menü (Mentés / Kedvencek) -->
+                <!-- Megemelt z-50 érték, hogy biztosan minden felett lebegjen -->
+                <div *ngIf="selectedPlaylistID === playlist.id" 
+                    class="absolute right-0 mt-2 w-44 bg-[#0a192f] border border-blue-800/60 rounded-lg shadow-2xl py-1 z-50 animate-fade-in text-left">
+                    
+                    <button (click)="onEdit(playlist.id)" 
+                            class="w-full px-4 py-2.5 text-sm text-blue-200 hover:bg-blue-900/50 hover:text-white flex items-center gap-2 transition-colors cursor-pointer">
+                        <svg class="edit-playlist-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 640 640">
+                            <!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+                            <path d="M535.6 85.7C513.7 63.8 478.3 63.8 456.4 85.7L432 110.1L529.9 208L554.3 183.6C576.2 161.7 576.2 126.3 554.3 104.4L535.6 85.7zM236.4 305.7C230.3 311.8 225.6 319.3 222.9 327.6L193.3 416.4C190.4 425 192.7 434.5 199.1 441C205.5 447.5 215 449.7 223.7 446.8L312.5 417.2C320.7 414.5 328.2 409.8 334.4 403.7L496 241.9L398.1 144L236.4 305.7zM160 128C107 128 64 171 64 224L64 480C64 533 107 576 160 576L416 576C469 576 512 533 512 480L512 384C512 366.3 497.7 352 480 352C462.3 352 448 366.3 448 384L448 480C448 497.7 433.7 512 416 512L160 512C142.3 512 128 497.7 128 480L128 224C128 206.3 142.3 192 160 192L256 192C273.7 192 288 177.7 288 160C288 142.3 273.7 128 256 128L160 128z"/>
+                        </svg>
+                    {{ 'playlists.edit' | translate }}
+                    </button>
+                    
+                    <button (click)="onPlayPlaylist(playlist.id)" 
+                            class="w-full px-4 py-2.5 text-sm text-blue-200 hover:bg-blue-900/50 hover:text-white flex items-center gap-2 transition-colors cursor-pointer">
+                    <svg class="play-playlist-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 640 640">
+                        <!--!Font Awesome Free v7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.-->
+                        <path d="M187.2 100.9C174.8 94.1 159.8 94.4 147.6 101.6C135.4 108.8 128 121.9 128 136L128 504C128 518.1 135.5 531.2 147.6 538.4C159.7 545.6 174.8 545.9 187.2 539.1L523.2 355.1C536 348.1 544 334.6 544 320C544 305.4 536 291.9 523.2 284.9L187.2 100.9z"/>
+                    </svg>
+                    {{ 'playlists.play' | translate }}
+                    </button>
+                </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

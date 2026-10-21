@@ -1,0 +1,117 @@
+/* ==========================
+   FLIP CARD
+========================== */
+
+.flip-container {
+  height: 150px;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+}
+
+.flip-inner {
+  position: relative;
+  min-height: 150px;
+
+  width: 100%;
+  height: 100%;
+
+  transform-style: preserve-3d;
+  transform-origin: center center;
+
+  transition: transform 0.7s ease-in-out;
+}
+
+.flip-container.flipped .flip-inner {
+  transform: rotateX(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 12px;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+  will-change: transform;
+
+  overflow: hidden;
+}
+
+.flip-front {
+  z-index: 2;
+  transform: rotateX(0deg) translateZ(1px);
+}
+
+.flip-back {
+  transform: rotateX(180deg) translateZ(1px);
+}
+
+/* ==========================
+   SCROLLBAR
+========================== */
+
+.scrollable {
+  overflow-y: auto;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.4);
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.6);
+}
+
+/* ==========================
+   FADE IN
+========================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.token-face {
+  background: rgba(15, 42, 74, 0.6);
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.token-face-active {
+  background: linear-gradient(
+    90deg,
+    #d91b5c 0%,
+    #9a0f74 100%
+  );
+}

@@ -1,0 +1,19 @@
+using API.Models;
+using API.DTO;
+using API.Utils;
+
+namespace API.Services.Interfaces;
+
+public interface IMusicService
+{
+    Task<MusicListResponseDTO> GetMusicsAsync(int page = 1, int limit = 10, int? userID = null, string? search = null, IReadOnlyCollection<string>? genres = null);
+    Task<Music> AddMusicAsync(Music music);
+    Task<Music> GetMusicByIDAsync(int id);
+    Task<Music> CreateMusicAsync(Music music);
+    Task<bool> DeleteMusicAsync(int id);
+    Task<List<Music>> GetFavoriteMusicsByUserIdAsync(int userId);
+    Task<string> GetGoogleDriveFileIdByMusicIdAsync(int musicID);
+    Task<int[]> GetMusicsIDFromDBAsync();
+    Task<MusicSyncResultDTO> AddMissingDriveMusicAsync(IEnumerable<Music> driveMusics);
+    Task<List<Music>> GetPlaylistMusics(List<int> playlistIDs, int page, int limit);
+}

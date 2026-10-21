@@ -1,0 +1,33 @@
+<!-- Admin Main Container -->
+<div class="flex flex-col h-full">
+  <!-- Navigation Component -->
+  <!-- <app-admin-navigation (activeTabChange)="onActiveTabChange($event)" (navExpandedChange)="onNavExpandedChange($event)"></app-admin-navigation> -->
+
+    <div class="flex justify-content-center items-center bg-gradient-to-b from-[#0a1628] to-[#000a21] border-r border-blue-900/40 min-h-16 w-screen-half">
+      <button (click)="activeSubTab = 'users'" 
+              [ngClass]="activeSubTab === 'users' ? 'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-b-2 border-pink-500' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+              class="min-h-16 pl-4 pr-4 flex-1 transition-all duration-200">
+        User List
+      </button>
+      <button (click)="activeSubTab = 'create'" 
+              [ngClass]="activeSubTab === 'create' ? 'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-b-2 border-pink-500' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+              class="min-h-16 pl-4 pr-4 flex-1 transition-all duration-200">
+        Create User
+      </button>
+      <button (click)="activeSubTab = 'update'" 
+              [ngClass]="activeSubTab === 'update' ? 'bg-gradient-to-r from-blue-600/40 to-pink-600/20 text-pink-400 border-b-2 border-pink-500' : 'text-blue-300 hover:text-blue-100 hover:bg-blue-900/30'"
+              class="min-h-16 pl-4 pr-4 flex-1 transition-all duration-200">
+        Update User
+      </button>
+    </div>
+
+  <!-- Content Area // [style.marginLeft.px]="isNavExpanded ? 256 : 80"--> 
+  <main class="flex-1 transition-all duration-300 ease-in-out" >
+    <!-- Mobile top padding for header -->
+    <div class="md:hidden h-16"></div>
+
+    <app-user-list (onUserUpdateCalled)="onUserUpdateCalled($event)" *ngIf="activeSubTab === 'users'"></app-user-list>
+    <app-create-user *ngIf="activeSubTab === 'create'"></app-create-user>
+    <app-update-user [user]="selectedUser" *ngIf="activeSubTab === 'update'"></app-update-user>
+  </main>
+</div>

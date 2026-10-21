@@ -1,0 +1,142 @@
+import { StyleSheet } from "react-native";
+import { colors, radius, spacing, typography } from "@/theme";
+
+export const loginScreenStyles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    flexGrow: 1,
+    justifyContent: "center",
+    paddingHorizontal: spacing.xxl,
+    paddingVertical: spacing.section - 4,
+  },
+  logo: {
+    width: 68,
+    height: 68,
+    borderRadius: radius.xl + 6,
+    backgroundColor: colors.primaryDark,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginBottom: spacing.xxl - 2,
+  },
+  logoText: {
+    color: colors.text,
+    fontSize: 38,
+    fontWeight: "700",
+  },
+  title: {
+    color: colors.text,
+    fontSize: 30,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  subtitle: {
+    color: colors.textSecondary,
+    fontSize: typography.subtitle.fontSize + 2,
+    textAlign: "center",
+    marginTop: spacing.sm,
+    marginBottom: spacing.xxxl - 2,
+  },
+  form: {
+    width: "100%",
+  },
+  label: {
+    color: colors.textPrimary,
+    fontSize: typography.subtitle.fontSize,
+    fontWeight: "700",
+    marginBottom: spacing.sm,
+    marginTop: spacing.md + 2,
+  },
+  input: {
+    color: colors.text,
+    backgroundColor: colors.surfaceRaised,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: radius.lg + 1,
+    paddingHorizontal: spacing.md + 3,
+    paddingVertical: spacing.md + 2,
+    fontSize: typography.bodyEmphasis.fontSize + 2,
+  },
+  primaryButton: {
+    backgroundColor: colors.primaryDark,
+    borderRadius: radius.lg + 1,
+    minHeight: 52,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: spacing.xl + 4,
+  },
+  primaryButtonText: {
+    color: colors.text,
+    fontSize: typography.bodyEmphasis.fontSize + 2,
+    fontWeight: "800",
+  },
+  disabled: {
+    opacity: 0.65,
+  },
+  smallPrint: {
+    color: colors.textMuted,
+    fontSize: typography.caption.fontSize + 1,
+    lineHeight: 18,
+    textAlign: "center",
+    marginTop: spacing.lg,
+  },
+  savedCard: {
+    backgroundColor: colors.surfaceRaised,
+    borderColor: colors.border,
+    borderWidth: 1,
+    borderRadius: radius.xl + 2,
+    padding: spacing.xl,
+    alignItems: "center",
+    gap: spacing.sm + 2,
+  },
+  statusDot: {
+    width: 10,
+    height: 10,
+    borderRadius: radius.pill,
+    backgroundColor: colors.success,
+  },
+  savedTitle: {
+    color: colors.text,
+    fontSize: typography.bodyEmphasis.fontSize + 3,
+    fontWeight: "800",
+    textAlign: "center",
+  },
+  muted: {
+    color: colors.textSecondary,
+    fontSize: typography.body.fontSize,
+    textAlign: "center",
+  },
+  offlineNote: {
+    color: colors.textSecondary,
+    fontSize: typography.caption.fontSize + 1,
+    lineHeight: 18,
+    textAlign: "center",
+    marginTop: spacing.xs,
+  },
+  linkButton: {
+    padding: spacing.sm,
+  },
+  linkText: {
+    color: colors.primaryLight,
+    fontWeight: "700",
+  },
+  error: {
+    color: colors.errorText,
+    backgroundColor: colors.errorSurface,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginTop: spacing.lg + 2,
+    lineHeight: 19,
+  },
+  notice: {
+    color: colors.successText,
+    backgroundColor: colors.successSurface,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginTop: spacing.lg + 2,
+    lineHeight: 19,
+  },
+});

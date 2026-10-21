@@ -1,0 +1,43 @@
+                     ┌───────────────┐
+                     │    Client     │
+                     └───────┬───────┘
+                             │
+                  POST /uploads
+                             │
+                             ▼
+                     ┌───────────────┐
+                     │   API Server  │
+                     └───────┬───────┘
+                             │
+                 create job + signed URL
+                             │
+               ┌─────────────┴─────────────┐
+               │                           │
+               ▼                           ▼
+        Object Storage                  Database
+          (S3 etc.)                    upload_jobs
+               │                           │
+               │                           │
+               └──────────────┬────────────┘
+                              │
+                           Queue
+                              │
+                ┌─────────────┼─────────────┐
+                ▼             ▼             ▼
+             Worker 1      Worker 2      Worker 3
+                │             │             │
+                └─────────────┼─────────────┘
+                              │
+                              ▼
+                       Third-party API
+                              │
+                              ▼
+                         Database
+                              │
+                     ┌────────┴────────┐
+                     │                 │
+                  polling          WebSocket/SSE
+                     │                 │
+                     └────────┬────────┘
+                              ▼
+                           Client
