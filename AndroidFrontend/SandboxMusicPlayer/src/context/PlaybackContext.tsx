@@ -33,8 +33,9 @@ type PlaybackContextValue = {
     title: string,
   ) => Promise<void>;
   playQueueTrack: (index: number) => Promise<void>;
-  nextTrack: () => Promise<void>;
+  nextTrack: (fromRemoteControl?: boolean) => Promise<void>;
   previousTrack: () => Promise<void>;
+  syncCurrentIndex: (index: number) => void;
 };
 
 const PlaybackContext = createContext<PlaybackContextValue | null>(null);
@@ -122,8 +123,13 @@ export function PlaybackProvider({ children }: React.PropsWithChildren) {
     setQueueTitle(title);
   }, []);
 
-  const nextTrack = useCallback(async () => {
-    if (!queue.length || currentIndex < 0) return;
+  const nextTrack = useCallback(async (fromRemoteControl = false) => {
+    if (!queue.length) return;
+
+    if (currentIndex < 0) {
+      if (fromRemoteControl) await playQueueTrack(0);
+      return;
+    }
 
     if (repeat === "one") {
       // AudioPlayer handles restarting the current track.
@@ -141,8 +147,10 @@ export function PlaybackProvider({ children }: React.PropsWithChildren) {
       await playQueueTrack(next);
     } else if (repeat === "all") {
       await playQueueTrack(0);
-    } else {
-      setCurrentIndex(-1);
+    } else if (fromRemoteControl) {
+      // With repeat off, playback stops at the end but Next starts the queue
+      // again instead of requiring the user to reopen the queue.
+      await playQueueTrack(0);
     }
   }, [queue, currentIndex, repeat, shuffle, playQueueTrack]);
 
@@ -150,6 +158,10 @@ export function PlaybackProvider({ children }: React.PropsWithChildren) {
     if (!queue.length || currentIndex < 0) return;
     await playQueueTrack(currentIndex > 0 ? currentIndex - 1 : queue.length - 1);
   }, [queue, currentIndex, playQueueTrack]);
+
+  const syncCurrentIndex = useCallback((index: number) => {
+    setCurrentIndex(index);
+  }, []);
 
   const value = useMemo(() => ({
     queue,
@@ -168,10 +180,11 @@ export function PlaybackProvider({ children }: React.PropsWithChildren) {
     playQueueTrack,
     nextTrack,
     previousTrack,
+    syncCurrentIndex,
   }), [
     queue, currentTrack, currentIndex, sourceMode, queueTitle,
     shuffle, repeat, muted, playCatalogueTrack, playPlaylist,
-    playQueueTrack, nextTrack, previousTrack,
+    playQueueTrack, nextTrack, previousTrack, syncCurrentIndex,
   ]);
 
   return (

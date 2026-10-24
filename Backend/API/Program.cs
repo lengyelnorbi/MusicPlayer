@@ -1,6 +1,7 @@
 using API.Services;
 using API.Services.Interfaces;
 using API.Data;
+using API.DTO;
 using API.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -488,7 +489,63 @@ if (app.Environment.IsDevelopment())
         app.Logger.LogInformation(
             "Runtime model has pending changes: {PendingChanges}",
             pendingChanges);
-                await dbContext.Database.MigrateAsync();
+        await dbContext.Database.MigrateAsync();
+
+        const string adminEmail = "lengyelnorbi5@gmail.com";
+        const string adminUsername = "lengyelnorbi5";
+        const string adminPassword = "admin1234";
+        const string adminRole = "Admin";
+
+        // Seed or repair the initial administrator after migrations have completed.
+        // The email index makes this safe to run on every application startup.
+        var passwordService = migrationScope.ServiceProvider
+            .GetRequiredService<IPasswordService>();
+        var existingAdmin = await dbContext.Users
+            .SingleOrDefaultAsync(user => user.Email == adminEmail);
+
+        if (existingAdmin == null)
+        {
+            var adminUser = new UserDTO(
+                Username: adminUsername,
+                Email: adminEmail,
+                PasswordHash: await passwordService.HashPasswordAsync(adminPassword),
+                Role: adminRole);
+
+            dbContext.Users.Add(adminUser);
+            await dbContext.SaveChangesAsync();
+            app.Logger.LogInformation("Initial administrator account created for {Email}.", adminEmail);
+        }
+        else
+        {
+            var passwordIsCorrect = await passwordService.VerifyPasswordAsync(
+                adminPassword,
+                existingAdmin.PasswordHash ?? string.Empty);
+            var userChanged = false;
+
+            if (!passwordIsCorrect)
+            {
+                existingAdmin.PasswordHash = await passwordService.HashPasswordAsync(adminPassword);
+                userChanged = true;
+            }
+
+            if (existingAdmin.Username != adminUsername)
+            {
+                existingAdmin.Username = adminUsername;
+                userChanged = true;
+            }
+
+            if (existingAdmin.Role != adminRole)
+            {
+                existingAdmin.Role = adminRole;
+                userChanged = true;
+            }
+
+            if (userChanged)
+            {
+                await dbContext.SaveChangesAsync();
+                app.Logger.LogInformation("Administrator account updated for {Email}.", adminEmail);
+            }
+        }
     }
     catch (Exception ex)
     {

@@ -48,7 +48,6 @@ public class PasswordService : IPasswordService
     {
         try
         {
-            return Task.FromResult(true);
             // Check if hash is valid before attempting verification
             if (string.IsNullOrEmpty(hash) || !hash.StartsWith("$2"))
             {

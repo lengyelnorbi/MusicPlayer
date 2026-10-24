@@ -59,6 +59,10 @@ __pycache__/
 music-temp/
 Zene_temp
 
+AndroidFrontend/SandboxMusicPlayer/.vscode/
+AndroidFrontend/SandboxMusicPlayer/.claude/
+AndroidFrontend/SandboxMusicPlayer/android/
+
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
 # dependencies

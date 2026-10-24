@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -7,8 +7,8 @@ import {
   View,
 } from "react-native";
 import {
-  useAudioPlayer,
-  useAudioPlayerStatus,
+  useAudioPlaylist,
+  useAudioPlaylistStatus,
   setAudioModeAsync,
 } from "expo-audio";
 
@@ -23,13 +23,14 @@ function formatTime(seconds: number) {
 }
 
 export default function AudioPlayer() {
-  const player = useAudioPlayer(null);
-  const status = useAudioPlayerStatus(player);
+  const playlist = useAudioPlaylist({ sources: [], loop: "none" });
+  const status = useAudioPlaylistStatus(playlist);
 
   const {
     currentTrack,
     currentIndex,
     queue,
+    queueTitle,
     sourceMode,
     shuffle,
     repeat,
@@ -40,66 +41,45 @@ export default function AudioPlayer() {
     nextTrack,
     previousTrack,
     playQueueTrack,
+    syncCurrentIndex,
   } = usePlayback();
 
   const [queueVisible, setQueueVisible] = useState(false);
   const [playerError, setPlayerError] = useState("");
-  const lastLoadedSource = useRef<string | null>(null);
   const handledFinish = useRef(false);
 
+  const queueSources = useMemo(
+    () => queue
+      .map((track) => sourceMode === "offline" ? track.fileUri : streamMusicByID(track.id))
+      .filter((source): source is string => Boolean(source)),
+    [queue, sourceMode],
+  );
+  const queueKey = queueSources.join("\n");
+
   useEffect(() => {
-    let cancelled = false;
+    playlist.clear();
+    queueSources.forEach((source) => playlist.add({ uri: source }));
 
-    async function loadTrack() {
-      if (!currentTrack) {
-        player.pause();
-        lastLoadedSource.current = null;
-        return;
-      }
-
-      const uri =
-        sourceMode === "offline"
-          ? currentTrack.fileUri
-          : streamMusicByID(currentTrack.id);
-
-      if (!uri) {
-        setPlayerError("This track is not available for playback.");
-        return;
-      }
-
-      if (lastLoadedSource.current === uri) return;
-
-      setPlayerError("");
-
-      try {
-        await player.replace({ uri });
-
-        if (cancelled) return;
-
-        lastLoadedSource.current = uri;
-        player.volume = muted ? 0 : 1;
-        player.play();
-      } catch (error) {
-        if (!cancelled) {
-          setPlayerError(
-            error instanceof Error
-              ? error.message
-              : "Could not play this track.",
-          );
-        }
-      }
+    if (!queueSources.length || currentIndex < 0) {
+      playlist.pause();
+      return;
     }
 
-    void loadTrack();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [currentTrack?.id, currentTrack?.fileUri, sourceMode, player]);
+    setPlayerError("");
+    playlist.skipTo(currentIndex);
+    playlist.volume = muted ? 0 : 1;
+    playlist.play();
+  }, [queueKey, playlist]);
 
   useEffect(() => {
-    player.volume = muted ? 0 : 1;
-  }, [muted, player]);
+    if (currentIndex >= 0 && currentIndex < playlist.trackCount) {
+      playlist.skipTo(currentIndex);
+    }
+  }, [currentIndex, playlist]);
+
+  useEffect(() => {
+    playlist.volume = muted ? 0 : 1;
+  }, [muted, playlist]);
 
   useEffect(() => {
     if (!status.didJustFinish) {
@@ -111,11 +91,11 @@ export default function AudioPlayer() {
     handledFinish.current = true;
 
     if (repeat === "one") {
-      void player.seekTo(0).then(() => player.play());
+      void playlist.seekTo(0).then(() => playlist.play());
     } else {
       void nextTrack();
     }
-  }, [status.didJustFinish, repeat, nextTrack, player]);
+  }, [status.didJustFinish, repeat, nextTrack, playlist]);
 
   useEffect(() => {
     void setAudioModeAsync({
@@ -129,22 +109,49 @@ export default function AudioPlayer() {
 
   useEffect(() => {
     if (!currentTrack) {
-      player.clearLockScreenControls();
+      playlist.setActiveForLockScreen?.(false);
       return;
     }
 
-    player.setActiveForLockScreen(
+    playlist.setActiveForLockScreen?.(
       true,
       {
         title: currentTrack.title,
       },
       {
-       showSeekForward: false,
-       showSeekBackward: false,
-       isLiveStream: false,
+        showSeekForward: false,
+        showSeekBackward: false,
+        showNextTrack: true,
+        showPreviousTrack: true,
+        showShuffle: true,
+        showRepeat: true,
+        repeatMode: repeat,
+        isLiveStream: false,
       },
     );
-  }, [currentTrack?.id, currentTrack?.title, player]);
+  }, [currentTrack?.id, currentTrack?.title, queueTitle, queue.length, shuffle, repeat, playlist]);
+
+  useEffect(() => {
+    const trackSubscription = playlist.addListener(
+      "trackChanged",
+      ({ currentIndex: nextIndex }) => syncCurrentIndex(nextIndex),
+    );
+    const shuffleSubscription = playlist.addListener(
+      'remoteShuffle',
+      () => setShuffle(!shuffle),
+    );
+
+    const repeatSubscription = playlist.addListener(
+      'remoteRepeat',
+      () => setRepeat(repeat === 'off' ? 'one' : repeat === 'one' ? 'all' : 'off'),
+    );
+
+    return () => {
+      trackSubscription.remove();
+      shuffleSubscription.remove();
+      repeatSubscription.remove();
+    };
+  }, [playlist, setShuffle, setRepeat, shuffle, repeat, syncCurrentIndex]);
 
 //   useEffect(() => {
 //   let cancelled = false;
@@ -215,9 +222,9 @@ export default function AudioPlayer() {
 
   const togglePlay = () => {
     if (status.playing) {
-      player.pause();
+      playlist.pause();
     } else {
-      player.play();
+      playlist.play();
     }
   };
 
