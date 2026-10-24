@@ -1,6 +1,8 @@
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system/legacy';
 import type { Music } from '@/types/music';
+import * as DocumentPicker from "expo-document-picker";
+
 
 const DB_NAME = 'offline-music.db';
 const AUDIO_DIR = `${FileSystem.documentDirectory ?? ''}offline-music/`;
@@ -152,7 +154,7 @@ export async function saveDownloadedTrack(
     throw new Error(`Audio download failed (HTTP ${result.status}).`);
   }
 
-  const downloadedFile = await FileSystem.getInfoAsync(result.uri, { size: true });
+  const downloadedFile = await FileSystem.getInfoAsync(result.uri);
   if (!downloadedFile.exists || !downloadedFile.size) {
     await FileSystem.deleteAsync(result.uri, { idempotent: true }).catch(() => undefined);
     throw new Error("The downloaded audio file is empty or could not be saved.");
@@ -218,4 +220,238 @@ export async function getOfflineTrackUri(id: number): Promise<string | null> {
   if (!row) return null;
   const info = await FileSystem.getInfoAsync(row.fileUri);
   return info.exists ? row.fileUri : null;
+}
+
+/**
+ * Returns downloaded tracks that belong to a playlist in the
+ * locally imported music-library.db database.
+ */
+export async function getDownloadedTracksForPlaylist(
+  playlistID: number,
+): Promise<OfflineTrack[]> {
+  if (!Number.isInteger(playlistID) || playlistID <= 0) {
+    throw new Error("A valid playlist ID is required.");
+  }
+
+  // This database contains the exported playlist membership table.
+  const libraryDb = await SQLite.openDatabaseAsync("music-library.db");
+
+  const tables = await libraryDb.getAllAsync<{ name: string }>(
+    `SELECT name FROM sqlite_master
+     WHERE type = 'table' AND lower(name) = 'playlistmusics'`
+  );
+
+  if (tables.length === 0) {
+    throw new Error(
+      "The local playlist database is missing. Sync your music library while online first."
+    );
+  }
+
+  // Discover the actual column names from the imported schema.
+  const columns = await libraryDb.getAllAsync<{ name: string }>(
+    `PRAGMA table_info("playlistmusics")`
+  );
+
+  const normalize = (value: string) =>
+    value.replace(/[^a-z0-9]/gi, "").toLowerCase();
+
+  const playlistColumn = columns.find(
+    column => normalize(column.name) === "playlistid"
+  )?.name;
+
+  const musicColumn = columns.find(
+    column => normalize(column.name) === "musicid"
+  )?.name;
+
+  if (!playlistColumn || !musicColumn) {
+    throw new Error(
+      "The local playlist membership table is missing PlaylistID or MusicID."
+    );
+  }
+
+  // Identifiers come from the database schema, so quote them safely.
+  const quote = (value: string) =>
+    `"${value.replace(/"/g, '""')}"`;
+
+  const memberships = await libraryDb.getAllAsync<{
+    musicID: number | string;
+  }>(
+    `SELECT ${quote(musicColumn)} AS musicID
+     FROM ${quote("playlistmusics")}
+     WHERE ${quote(playlistColumn)} = ?`,
+    playlistID
+  );
+
+  const playlistMusicIDs = new Set(
+    memberships
+      .map(row => Number(row.musicID))
+      .filter(id => Number.isInteger(id) && id > 0)
+  );
+
+  if (playlistMusicIDs.size === 0) {
+    return [];
+  }
+
+  // Only return songs whose downloaded files still exist.
+  const downloaded = await getOfflineTracks();
+
+  return downloaded.filter(track => playlistMusicIDs.has(track.id));
+}
+
+
+// Add this function at the bottom of offlineLibrary.ts.
+// Reuse your existing SQLite and FileSystem imports.
+
+function normalizeTrackName(value: string): string {
+  return value
+    .replace(/\.[^/.]+$/, "")
+    .normalize("NFKC")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, " ");
+}
+
+function normalizeColumnName(value: string): string {
+  return value.replace(/[^a-z0-9]/gi, "").toLowerCase();
+}
+
+export async function importExistingMusic(): Promise<{
+  imported: number;
+  skipped: string[];
+}> {
+  await initializeOfflineLibrary();
+
+  const result = await DocumentPicker.getDocumentAsync({
+    type: "audio/*",
+    multiple: true,
+    copyToCacheDirectory: true,
+  });
+
+  if (result.canceled) {
+    return { imported: 0, skipped: [] };
+  }
+
+  const libraryDb = await SQLite.openDatabaseAsync("music-library.db");
+  const offlineDb = await SQLite.openDatabaseAsync("offline-music.db");
+
+  const columns = await libraryDb.getAllAsync<{ name: string }>(
+    `PRAGMA table_info("music")`
+  );
+
+  const findColumn = (...names: string[]) =>
+    columns.find(column =>
+      names.includes(normalizeColumnName(column.name))
+    )?.name;
+
+  const idColumn = findColumn("id", "musicid");
+  const titleColumn = findColumn("title", "name");
+  const fileIdColumn = findColumn("fileid", "file_id");
+  const genreColumn = findColumn("genre");
+  const addedAtColumn = findColumn("addedat", "createdat");
+
+  if (!idColumn || !titleColumn) {
+    throw new Error(
+      "Could not identify the song ID and title columns in music-library.db."
+    );
+  }
+
+  const quote = (name: string) =>
+    `"${name.replace(/"/g, '""')}"`;
+
+  const libraryTracks = await libraryDb.getAllAsync<
+    Record<string, unknown>
+  >(`SELECT * FROM ${quote("music")}`);
+
+  const trackByTitle = new Map<
+    string,
+    Record<string, unknown>
+  >();
+
+  for (const track of libraryTracks) {
+    const title = String(track[titleColumn] ?? "");
+    const key = normalizeTrackName(title);
+
+    // Avoid silently choosing between duplicate titles.
+    if (key && !trackByTitle.has(key)) {
+      trackByTitle.set(key, track);
+    } else if (key) {
+      trackByTitle.set(key, {});
+    }
+  }
+
+  const skipped: string[] = [];
+  let imported = 0;
+
+  for (const asset of result.assets) {
+    const match = trackByTitle.get(normalizeTrackName(asset.name));
+
+    if (!match || Object.keys(match).length === 0) {
+      skipped.push(asset.name);
+      continue;
+    }
+
+    const id = Number(match[idColumn]);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      skipped.push(asset.name);
+      continue;
+    }
+
+    const extension = asset.name.match(/\.[a-z0-9]{1,8}$/i)?.[0] ?? ".mp3";
+    const destination = `${AUDIO_DIR}${id}${extension.toLowerCase()}`;
+
+    try {
+      await FileSystem.copyAsync({
+        from: asset.uri,
+        to: destination,
+      });
+
+      const fileInfo = await FileSystem.getInfoAsync(destination);
+
+      if (!fileInfo.exists) {
+        skipped.push(asset.name);
+        continue;
+      }
+
+      const fileId = fileIdColumn
+        ? String(match[fileIdColumn] ?? "")
+        : "";
+
+      const genre = genreColumn
+        ? String(match[genreColumn] ?? "")
+        : "";
+
+      const addedAt = addedAtColumn
+        ? String(match[addedAtColumn] ?? "")
+        : "";
+
+      await offlineDb.runAsync(
+        `INSERT INTO offline_tracks
+          (id, file_id, title, genre, addedAt, playlistIDs,
+           fileUri, downloadedAt)
+         VALUES (?, ?, ?, ?, ?, '[]', ?, ?)
+         ON CONFLICT(id) DO UPDATE SET
+           file_id = excluded.file_id,
+           title = excluded.title,
+           genre = excluded.genre,
+           addedAt = excluded.addedAt,
+           fileUri = excluded.fileUri,
+           downloadedAt = excluded.downloadedAt`,
+        id,
+        fileId,
+        String(match[titleColumn] ?? asset.name),
+        genre,
+        addedAt,
+        destination,
+        new Date().toISOString()
+      );
+
+      imported++;
+    } catch (error) {
+      console.error(`Could not import ${asset.name}:`, error);
+      skipped.push(asset.name);
+    }
+  }
+
+  return { imported, skipped };
 }

@@ -1,7 +1,10 @@
-import React from "react";
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import { Cloud, LogIn, LogOut, Music, Settings } from "lucide-react-native";
+import { Alert, Modal, Pressable, Text, View } from "react-native";
+
 import { useMusicApp } from "@/context/MusicAppContext";
-import CreateSqliteDatabaseButton from "@/components/CreateSqliteDatabaseButton";
+import { colors } from "@/theme";
+import { hamburgerMenuStyles as styles } from "@/components/styles/HamburgerMenu.styles";
 
 export function HamburgerMenu({ onLogin }: { onLogin: () => void }) {
   const { menuOpen, setMenuOpen, mode, setMode, session, logout } = useMusicApp();
@@ -10,7 +13,10 @@ export function HamburgerMenu({ onLogin }: { onLogin: () => void }) {
     try {
       await setMode(nextMode);
     } catch (error) {
-      Alert.alert("Could not change library mode", error instanceof Error ? error.message : "Please try again.");
+      Alert.alert(
+        "Could not change library mode",
+        error instanceof Error ? error.message : "Please try again.",
+      );
     }
   };
 
@@ -19,43 +25,122 @@ export function HamburgerMenu({ onLogin }: { onLogin: () => void }) {
       await logout();
       setMenuOpen(false);
     } catch (error) {
-      Alert.alert("Could not sign out", error instanceof Error ? error.message : "Please try again.");
+      Alert.alert(
+        "Could not sign out",
+        error instanceof Error ? error.message : "Please try again.",
+      );
     }
   };
 
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <Modal visible={menuOpen} transparent animationType="fade" onRequestClose={() => setMenuOpen(false)}>
+    <Modal
+      visible={menuOpen}
+      transparent
+      animationType="fade"
+      onRequestClose={closeMenu}
+    >
       <View style={styles.overlay}>
-        <Pressable accessibilityLabel="Close navigation menu" style={styles.scrim} onPress={() => setMenuOpen(false)} />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Close navigation menu"
+          style={styles.dismissArea}
+          onPress={closeMenu}
+        />
+
         <View style={styles.drawer}>
-          <Text style={styles.heading}>Music library</Text>
-          <Text style={styles.subheading}>{session?.user?.username ?? session?.user?.Username ?? "Not signed in"}</Text>
+          <Text style={styles.title}>Music library</Text>
+          <Text style={styles.subtitle}>
+            {session?.user?.username ??
+              session?.user?.Username ??
+              "Not signed in"}
+          </Text>
+
           <View style={styles.separator} />
-          <Text style={styles.section}>LIBRARY MODE</Text>
-          <Pressable style={[styles.item, mode === "online" && styles.selected]} onPress={() => void selectMode("online")}>
-            <Text style={styles.itemText}>☁  Online library</Text>
+          <Text style={styles.sectionTitle}>LIBRARY MODE</Text>
+
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Switch to online library"
+            accessibilityState={{ selected: mode === "online" }}
+            style={[styles.item, mode === "online" && styles.selected]}
+            onPress={() => void selectMode("online")}
+          >
+            <View style={styles.itemRow}>
+              <Cloud size={24} color={colors.primaryLight} />
+              <Text style={styles.itemText}>Online library</Text>
+            </View>
           </Pressable>
-          <Pressable style={[styles.item, mode === "offline" && styles.selected]} onPress={() => void selectMode("offline")}>
-            <Text style={styles.itemText}>♫  Offline library</Text>
+
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Switch to offline library"
+            accessibilityState={{ selected: mode === "offline" }}
+            style={[styles.item, mode === "offline" && styles.selected]}
+            onPress={() => void selectMode("offline")}
+          >
+            <View style={styles.itemRow}>
+              <Music size={24} color={colors.primaryLight} />
+              <Text style={styles.itemText}>Offline library</Text>
+            </View>
           </Pressable>
+
           {session && (
             <>
               <View style={styles.separator} />
-              <Text style={styles.section}>LOCAL DATA</Text>
-              <CreateSqliteDatabaseButton />
+              <Text style={styles.sectionTitle}>LOCAL DATA</Text>
+
+              <Pressable
+                accessibilityRole="button"
+                style={styles.item}
+                onPress={() => {
+                  closeMenu();
+                  router.push("/settings");
+                }}
+              >
+                <View style={styles.itemRow}>
+                  <Settings size={22} color={colors.primaryLight} />
+                  <Text style={styles.itemText}>Settings</Text>
+                </View>
+              </Pressable>
             </>
           )}
+
           <View style={styles.separator} />
+
           {session ? (
-            <Pressable style={styles.item} onPress={() => void signOut()}>
-              <Text style={styles.itemText}>↪  Log out</Text>
+            <Pressable
+              accessibilityRole="button"
+              style={styles.item}
+              onPress={() => void signOut()}
+            >
+              <View style={styles.itemRow}>
+                <LogOut size={22} color={colors.primaryLight} />
+                <Text style={styles.itemText}>Log out</Text>
+              </View>
             </Pressable>
           ) : (
-            <Pressable style={styles.item} onPress={() => { setMenuOpen(false); onLogin(); }}>
-              <Text style={styles.itemText}>⇥  Login</Text>
+            <Pressable
+              accessibilityRole="button"
+              style={styles.item}
+              onPress={() => {
+                closeMenu();
+                onLogin();
+              }}
+            >
+              <View style={styles.itemRow}>
+                <LogIn size={22} color={colors.primaryLight} />
+                <Text style={styles.itemText}>Login</Text>
+              </View>
             </Pressable>
           )}
-          <Pressable style={styles.close} onPress={() => setMenuOpen(false)}>
+
+          <Pressable
+            accessibilityRole="button"
+            style={styles.close}
+            onPress={closeMenu}
+          >
             <Text style={styles.closeText}>Close menu</Text>
           </Pressable>
         </View>
@@ -63,18 +148,3 @@ export function HamburgerMenu({ onLogin }: { onLogin: () => void }) {
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: { flex: 1, flexDirection: "row", backgroundColor: "rgba(0,0,0,0.45)" },
-  scrim: { flex: 1 },
-  drawer: { width: 310, maxWidth: "88%", backgroundColor: "#10101b", paddingTop: 58, paddingHorizontal: 18, borderLeftWidth: 1, borderColor: "#302943" },
-  heading: { color: "#fff", fontSize: 24, fontWeight: "900" },
-  subheading: { color: "#aaa7bd", marginTop: 6, marginBottom: 18 },
-  separator: { height: 1, backgroundColor: "#302943", marginVertical: 14 },
-  section: { color: "#a78bfa", fontSize: 11, fontWeight: "900", letterSpacing: 1.5, marginBottom: 8 },
-  item: { paddingVertical: 13, paddingHorizontal: 12, borderRadius: 12 },
-  selected: { backgroundColor: "#302044" },
-  itemText: { color: "#f4f0ff", fontSize: 15, fontWeight: "600" },
-  close: { marginTop: "auto", marginBottom: 32, alignItems: "center", padding: 14, borderRadius: 12, backgroundColor: "#272039" },
-  closeText: { color: "#ddd6fe", fontWeight: "800" },
-});

@@ -1,0 +1,41 @@
+ .../SandboxMusicPlayer/.claude/settings.json       |   5 [31m-[m
+ .../SandboxMusicPlayer/.vscode/extensions.json     |   1 [31m-[m
+ .../SandboxMusicPlayer/.vscode/settings.json       |   7 [31m-[m
+ .../SandboxMusicPlayer/android/.gitignore          |  19 [31m--[m
+ .../SandboxMusicPlayer/android/app/build.gradle    | 182 [31m---------------[m
+ .../SandboxMusicPlayer/android/app/debug.keystore  | Bin [31m2257[m -> [32m0[m bytes
+ .../android/app/proguard-rules.pro                 |  14 [31m--[m
+ .../android/app/src/debug/AndroidManifest.xml      |   7 [31m-[m
+ .../app/src/debugOptimized/AndroidManifest.xml     |   7 [31m-[m
+ .../android/app/src/main/AndroidManifest.xml       |  42 [31m----[m
+ .../anonymous/SandboxMusicPlayer/MainActivity.kt   |  65 [31m------[m
+ .../SandboxMusicPlayer/MainApplication.kt          |  45 [31m----[m
+ .../main/res/drawable-hdpi/splashscreen_logo.png   | Bin [31m16158[m -> [32m0[m bytes
+ .../main/res/drawable-mdpi/splashscreen_logo.png   | Bin [31m5853[m -> [32m0[m bytes
+ .../main/res/drawable-xhdpi/splashscreen_logo.png  | Bin [31m25771[m -> [32m0[m bytes
+ .../main/res/drawable-xxhdpi/splashscreen_logo.png | Bin [31m48771[m -> [32m0[m bytes
+ .../res/drawable-xxxhdpi/splashscreen_logo.png     | Bin [31m75659[m -> [32m0[m bytes
+ .../main/res/drawable/ic_launcher_background.xml   |   6 [31m-[m
+ .../main/res/drawable/rn_edit_text_material.xml    |  37 [31m---[m
+ .../app/src/main/res/mipmap-hdpi/ic_launcher.webp  | Bin [31m6282[m -> [32m0[m bytes
+ .../res/mipmap-hdpi/ic_launcher_foreground.webp    | Bin [31m23443[m -> [32m0[m bytes
+ .../app/src/main/res/mipmap-mdpi/ic_launcher.webp  | Bin [31m3090[m -> [32m0[m bytes
+ .../res/mipmap-mdpi/ic_launcher_foreground.webp    | Bin [31m12209[m -> [32m0[m bytes
+ .../app/src/main/res/mipmap-xhdpi/ic_launcher.webp | Bin [31m10335[m -> [32m0[m bytes
+ .../res/mipmap-xhdpi/ic_launcher_foreground.webp   | Bin [31m37877[m -> [32m0[m bytes
+ .../src/main/res/mipmap-xxhdpi/ic_launcher.webp    | Bin [31m19451[m -> [32m0[m bytes
+ .../res/mipmap-xxhdpi/ic_launcher_foreground.webp  | Bin [31m82295[m -> [32m0[m bytes
+ .../src/main/res/mipmap-xxxhdpi/ic_launcher.webp   | Bin [31m31064[m -> [32m0[m bytes
+ .../res/mipmap-xxxhdpi/ic_launcher_foreground.webp | Bin [31m145645[m -> [32m0[m bytes
+ .../app/src/main/res/values-night/colors.xml       |   1 [31m-[m
+ .../android/app/src/main/res/values/colors.xml     |   5 [31m-[m
+ .../android/app/src/main/res/values/strings.xml    |   5 [31m-[m
+ .../android/app/src/main/res/values/styles.xml     |  14 [31m--[m
+ .../SandboxMusicPlayer/android/build.gradle        |  24 [31m--[m
+ .../SandboxMusicPlayer/android/gradle.properties   |  63 [31m------[m
+ .../android/gradle/wrapper/gradle-wrapper.jar      | Bin [31m46175[m -> [32m0[m bytes
+ .../gradle/wrapper/gradle-wrapper.properties       |   7 [31m-[m
+ AndroidFrontend/SandboxMusicPlayer/android/gradlew | 248 [31m---------------------[m
+ .../SandboxMusicPlayer/android/gradlew.bat         |  98 [31m--------[m
+ .../SandboxMusicPlayer/android/settings.gradle     |  39 [31m----[m
+ 40 files changed, 941 deletions(-)

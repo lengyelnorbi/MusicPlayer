@@ -112,7 +112,7 @@ public class MusicController : ControllerBase
     /// <param name="musicID">The ID of the music file to download.</param>
     /// <returns>The downloaded music file.</returns>
     [HttpGet("{musicID}/download")]
-    [Authorize(Policy = "AdminSource")]
+    [Authorize]
     public async Task<IActionResult> Download(string musicID)
     {
         if(string.IsNullOrEmpty(musicID))
@@ -148,7 +148,7 @@ public class MusicController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("download-all")]
-    [Authorize(Policy = "AdminSource")]
+    [Authorize]
     public async Task<IEnumerable<int>> DownloadAllMusic()
     {
         var result = await _musicService.GetMusicsIDFromDBAsync();

@@ -44,6 +44,7 @@ __screenshots__/
 Thumbs.db
 
 musicplayer-api-3abee89ba528.json
+Backend/API/musicplayer-api-4512d00577ce.json
 
 .env
 .venv
@@ -58,6 +59,10 @@ __pycache__/
 *.py[cod]
 music-temp/
 Zene_temp
+
+AndroidFrontend/SandboxMusicPlayer/.vscode/
+AndroidFrontend/SandboxMusicPlayer/.claude/
+AndroidFrontend/SandboxMusicPlayer/android/
 
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 

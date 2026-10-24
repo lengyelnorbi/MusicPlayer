@@ -1,6 +1,7 @@
 import { apiFetch, responseError } from "@/services/apiClient";
 import type { PagedResult } from "@/types/PagedResult";
 import type { Playlist } from "@/types/playlist";
+import { Music } from "@/types/music";
 
 function normalizePlaylist(value: unknown): Playlist {
   const raw = value && typeof value === "object" ? value as Record<string, unknown> : {};
@@ -62,4 +63,30 @@ export async function createPlaylist(name: string): Promise<Playlist> {
   if (!response.ok) throw await responseError(response, "Could not create playlist");
   const payload = await response.json() as Record<string, unknown>;
   return normalizePlaylist(payload.result ?? payload.Result ?? payload);
+}
+
+function normalizePlaylistMusic(value: unknown): Music {
+  const raw = value && typeof value === "object"
+    ? value as Record<string, unknown>
+    : {};
+
+  const rawId = raw.id ?? raw.ID;
+  const rawTitle = raw.title ?? raw.Title;
+  const rawFileId = raw.file_id ?? raw.fileId ?? raw.File_id ?? raw.FileID;
+  const rawGenre = raw.genre ?? raw.Genre;
+  const rawAddedAt = raw.addedAt ?? raw.AddedAt;
+  const rawPlaylistIds = raw.playlistIDs ?? raw.playlistIds ?? raw.PlaylistIDs;
+
+  return {
+    id: typeof rawId === "number" ? rawId : Number(rawId) || 0,
+    title: typeof rawTitle === "string" ? rawTitle : "Untitled track",
+    file_id: typeof rawFileId === "string" ? rawFileId : "",
+    genre: typeof rawGenre === "string" ? rawGenre : "",
+    addedAt: typeof rawAddedAt === "string" ? rawAddedAt : "",
+    playlistIDs: Array.isArray(rawPlaylistIds)
+      ? rawPlaylistIds.filter(
+          (id): id is number => typeof id === "number" && Number.isInteger(id),
+        )
+      : [],
+  };
 }
